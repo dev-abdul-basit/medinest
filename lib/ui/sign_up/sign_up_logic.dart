@@ -15,7 +15,7 @@ import 'package:medinest/routes/app_routes.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/preference.dart';
 import 'package:medinest/utils/utils.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+// import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class SignUpLogic extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -206,76 +206,76 @@ class SignUpLogic extends GetxController {
     final digest = sha256.convert(bytes);
     return digest.toString();
   }
-
-  loginWithApple(context) async {
-    try {
-      isShowProgress = true;
-      update([Constant.idProVersionProgress]);
-
-      final rawNonce = generateNonce();
-      final nonce = sha256ofString(rawNonce);
-
-      final appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-        nonce: nonce,
-      );
-
-      final oauthCredential = OAuthProvider("apple.com").credential(
-        idToken: appleCredential.identityToken,
-        rawNonce: rawNonce,
-      );
-      var auth =
-          await FirebaseAuth.instance.signInWithCredential(oauthCredential);
-
-      if (Preference.shared.getProfileAdded()) {
-        List<UserTable> userDataList = await DataBaseHelper.instance
-            .getUserData(
-                auth.user!.email); //6whdgdrg3c@privatereley.appleid.com
-        if (userDataList.isNotEmpty) {
-          await FireStoreHelper().onSync();
-          Preference.shared.setIsUserLogin(true);
-          Preference.shared
-              .setString(Preference.firebaseAuthUid, auth.user!.uid);
-          Preference.shared
-              .setString(Preference.firebaseEmail, auth.user!.email!);
-          Utils.showToast(context, "toastLogin".tr);
-          isShowProgress = false;
-          Get.offAllNamed(AppRoutes.home,
-              parameters: {Constant.idIsFromLogIn: "true"});
-        } else {
-          Preference.shared
-              .setString(Preference.firebaseAuthUid, auth.user!.uid);
-          Preference.shared
-              .setString(Preference.firebaseEmail, auth.user!.email!);
-          await FireStoreHelper().checkAndSyncExistingUser();
-          isShowProgress = false;
-          update([Constant.idProVersionProgress]);
-          Utils.showToast(context, "toastLogin".tr);
-          //Get.toNamed(AppRoutes.addOrEditProfile,parameters: {Constant.idIsEditProfile : "false"});
-        }
-      } else {
-        Preference.shared.setString(Preference.firebaseAuthUid, auth.user!.uid);
-        Preference.shared
-            .setString(Preference.firebaseEmail, auth.user!.email!);
-        await FireStoreHelper().checkAndSyncExistingUser();
-        isShowProgress = false;
-        update([Constant.idProVersionProgress]);
-        Utils.showToast(context, "toastLogin".tr);
-      }
-      emailController.text = '';
-      passwordController.text = '';
-      confirmPasswordController.text = '';
-      update([Constant.idProVersionProgress]);
-      return auth;
-    } catch (e) {
-      isShowProgress = false;
-      update([Constant.idProVersionProgress]);
-      Utils.showToast(context, e.toString());
-    }
-  }
+  //
+  // loginWithApple(context) async {
+  //   try {
+  //     isShowProgress = true;
+  //     update([Constant.idProVersionProgress]);
+  //
+  //     final rawNonce = generateNonce();
+  //     final nonce = sha256ofString(rawNonce);
+  //
+  //     final appleCredential = await SignInWithApple.getAppleIDCredential(
+  //       scopes: [
+  //         AppleIDAuthorizationScopes.email,
+  //         AppleIDAuthorizationScopes.fullName,
+  //       ],
+  //       nonce: nonce,
+  //     );
+  //
+  //     final oauthCredential = OAuthProvider("apple.com").credential(
+  //       idToken: appleCredential.identityToken,
+  //       rawNonce: rawNonce,
+  //     );
+  //     var auth =
+  //         await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+  //
+  //     if (Preference.shared.getProfileAdded()) {
+  //       List<UserTable> userDataList = await DataBaseHelper.instance
+  //           .getUserData(
+  //               auth.user!.email); //6whdgdrg3c@privatereley.appleid.com
+  //       if (userDataList.isNotEmpty) {
+  //         await FireStoreHelper().onSync();
+  //         Preference.shared.setIsUserLogin(true);
+  //         Preference.shared
+  //             .setString(Preference.firebaseAuthUid, auth.user!.uid);
+  //         Preference.shared
+  //             .setString(Preference.firebaseEmail, auth.user!.email!);
+  //         Utils.showToast(context, "toastLogin".tr);
+  //         isShowProgress = false;
+  //         Get.offAllNamed(AppRoutes.home,
+  //             parameters: {Constant.idIsFromLogIn: "true"});
+  //       } else {
+  //         Preference.shared
+  //             .setString(Preference.firebaseAuthUid, auth.user!.uid);
+  //         Preference.shared
+  //             .setString(Preference.firebaseEmail, auth.user!.email!);
+  //         await FireStoreHelper().checkAndSyncExistingUser();
+  //         isShowProgress = false;
+  //         update([Constant.idProVersionProgress]);
+  //         Utils.showToast(context, "toastLogin".tr);
+  //         //Get.toNamed(AppRoutes.addOrEditProfile,parameters: {Constant.idIsEditProfile : "false"});
+  //       }
+  //     } else {
+  //       Preference.shared.setString(Preference.firebaseAuthUid, auth.user!.uid);
+  //       Preference.shared
+  //           .setString(Preference.firebaseEmail, auth.user!.email!);
+  //       await FireStoreHelper().checkAndSyncExistingUser();
+  //       isShowProgress = false;
+  //       update([Constant.idProVersionProgress]);
+  //       Utils.showToast(context, "toastLogin".tr);
+  //     }
+  //     emailController.text = '';
+  //     passwordController.text = '';
+  //     confirmPasswordController.text = '';
+  //     update([Constant.idProVersionProgress]);
+  //     return auth;
+  //   } catch (e) {
+  //     isShowProgress = false;
+  //     update([Constant.idProVersionProgress]);
+  //     Utils.showToast(context, e.toString());
+  //   }
+  // }
 
   void toggleShowHidePassword() {
     isShowPassword = !isShowPassword;

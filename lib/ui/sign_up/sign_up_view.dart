@@ -262,12 +262,12 @@ class SocialLogin extends StatelessWidget {
           if (Platform.isIOS)SizedBox(
             width: AppSizes.width_3,
           ),
-          if (Platform.isIOS)InkWell(
-            onTap: ()=>logic.loginWithApple(context),
-            child: Image.asset(Assets.imagesImgApple,
-                height: AppSizes.height_7,
-                width: AppSizes.height_7),
-          ),
+          // if (Platform.isIOS)InkWell(
+          //   onTap: ()=>logic.loginWithApple(context),
+          //   child: Image.asset(Assets.imagesImgApple,
+          //       height: AppSizes.height_7,
+          //       width: AppSizes.height_7),
+          // ),
         ],
       );
     });

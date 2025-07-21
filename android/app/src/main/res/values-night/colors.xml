@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_40">#65FFFFFF</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
+
+<!--    <color name="primary">#FF4ba181</color>-->
+    <color name="primary">#17CE92</color>
+    <color name="primary_dark">#FF213c33</color>
+    <color name="gray">#7F8180</color>
+    <color name="gray_light">#959596</color>
+    <color name="gray_light_two">#BCBCBC</color>
+    <color name="gray_40">#667F8180</color>
+    <color name="light_black">#0e0e0e</color>
+    <color name="light_black2">#141416</color>
+    <color name="light_black3">#202022</color>
+    <color name="light_black4">#252527</color>
+    <color name="chatOne">#CC2E423B</color>
+    <color name="chatThree">#2E423B</color>
+    <color name="chatTwo">#28493F</color>
+    <color name="primary_background">#141417</color>
+    <color name="secondary_background">#202024</color>
+    <color name="subscriptionSelected">#305e44</color>
+    <color name="subscriptionSelectedBorder">#4b9b7e</color>
+    <color name="suggestionSelectedBorder">#316552</color>
+    <color name="primary_light">#61ab8b</color>
+    <color name="primary_dark_1">#325144</color>
+    <color name="black_light_2">#212123</color>
+    <color name="chatAi">#243f37</color>
+    <color name="red">#de3f2b</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="blackBorder">#35383F</color>
+    <color name="blackTopic">#1F222A</color>
+    <color name="blackUser">#262A35</color>
+
+
+
+
+</resources>

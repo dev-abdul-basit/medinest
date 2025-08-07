@@ -38,7 +38,7 @@ def get_aab_path()
   # Use environment variable for CI/CD, fallback to local path
   if ENV['GITHUB_ACTIONS']
     # In CI, use the environment variable or default path
-    aab_path = ENV['AAB_FILE_PATH'] || 'build/app/outputs/bundle/release/app-release.aab'
+    aab_path = ENV['AAB_FILE_PATH'] || '../build/app/outputs/bundle/release/app-release.aab'
 
     return File.expand_path(aab_path, Dir.pwd)
   else

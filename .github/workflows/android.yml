@@ -50,6 +50,16 @@ jobs:
       - name: Build Flutter App (Android)
         run: flutter build appbundle --release
 
+      - name: Print working directory
+        run: pwd  
+
+      - name: Verify AAB Location
+        run: |
+          echo "Checking AAB paths:"
+          ls -la ../build/app/outputs/bundle/release/ || echo "Path ../ not found"
+          ls -la ../../build/app/outputs/bundle/release/ || echo "Path ../../ not found"
+          ls -la build/app/outputs/bundle/release/ || echo "Path ./ not found"
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -67,7 +77,7 @@ jobs:
           cd android
           bundle exec fastlane deploy_to_testers
         env:
-          AAB_FILE_PATH: ../build/app/outputs/bundle/release/app-release.aab
+          AAB_FILE_PATH: ../../build/app/outputs/bundle/release/app-release.aab
           PLAY_STORE_JSON_KEY_PATH: ./app/medinest-app-fastlane-key.json
 
       - name: Deploy to Production (Master Branch)

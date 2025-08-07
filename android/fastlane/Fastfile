@@ -1,0 +1,114 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+def bump_version_code()
+  latest_version_code = latest_version_code(package_name: 'com.mednest.pill.reminder')
+  return (latest_version_code + 1)
+end
+
+
+def get_json_key_path()
+  # Use environment variable for CI/CD, fallback to local path
+  if ENV['GITHUB_ACTIONS']
+    # In CI, we're running from android folder, so construct path from environment variable
+    json_key_path = ENV['PLAY_STORE_JSON_KEY_PATH'] || 'app/medinest-app-fastlane-key.json'
+    return File.expand_path("../#{json_key_path}", Dir.pwd)
+  else
+    # Local development - use your actual local path structure
+    # From android folder, go to app folder for the JSON key
+    return '/Users/abdulzmac/Documents/Dev/FreelanceWork/abdulz/mediNest/codebase/medinest/android/app/medinest-app-fastlane-key.json'
+  end
+end
+
+def get_aab_path()
+  # Use environment variable for CI/CD, fallback to local path
+  if ENV['GITHUB_ACTIONS']
+    # In CI, use the environment variable or default path
+    aab_path = ENV['AAB_FILE_PATH'] || '../build/app/outputs/bundle/release/app-release.aab'
+
+    return File.expand_path(aab_path, Dir.pwd)
+  else
+    # Local development - relative path from android directory
+    return '/Users/abdulzmac/Documents/Dev/FreelanceWork/abdulz/mediNest/codebase/medinest/build/app/outputs/bundle/release/app-release.aab'
+  end
+end
+
+
+platform :android do
+  # Lane to build the Android App (AAB)
+  desc "Build the Android App (AAB)"
+  lane :build_android do
+    gradle(task: "clean bundleRelease")
+  end
+
+
+
+  # Lane to deploy a new version to Google Play for internal testing
+  desc "Deploy a new version to the Google Play Internal Test Track"
+  lane :deploy_to_testers do
+   # Build the AAB first
+      sh("cd .. && flutter build appbundle")
+
+    aab_path = get_aab_path()
+    json_key_path = get_json_key_path()
+
+    UI.message("AAB Path: #{aab_path}")
+    UI.message("JSON Key Path: #{json_key_path}")
+
+    # Verify files exist
+    unless File.exist?(aab_path)
+      UI.user_error!("AAB file not found at: #{aab_path}")
+    end
+
+    unless File.exist?(json_key_path)
+      UI.user_error!("JSON key file not found at: #{json_key_path}")
+    end
+
+    upload_to_play_store(
+      track: 'internal',
+      json_key: json_key_path,
+      release_status: 'draft',
+      aab: aab_path,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+
+    UI.success("Successfully uploaded to Play Store Internal Testing!")
+  end
+
+#   # Lane to deploy a new version to Google Play for internal testing
+#   desc "Deploy a new version to the Google Play Internal Test Track"
+#   lane :deploy_to_testers do
+#     # gradle(task: 'bundleRelease')
+#     aab_path = '/Users/abdulzmac/Documents/Dev/FreelanceWork/Upwork/Pebium/mCareApp/flourish/build/app/outputs/bundle/release/app-release.aab'
+#     json_key_path = '/Users/abdulzmac/Documents/Dev/FreelanceWork/Upwork/Pebium/mCareApp/flourish/android/app/flourish-app-fastlane-key.json'
+#     UI.message("AAB Path: #{aab_path}")
+#     upload_to_play_store(
+#       track: 'internal',
+#       json_key: json_key_path,
+#       release_status: 'draft',
+#       aab: aab_path,
+#     )
+#   end
+
+  # Lane to promote the app from the internal testing track to production (optional)
+  desc "Promote the app from internal testing to production"
+  lane :promote_to_production do
+    supply(track: 'internal', promote_to: 'production') # Promote to production
+  end
+end

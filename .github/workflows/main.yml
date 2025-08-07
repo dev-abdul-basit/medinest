@@ -1,0 +1,26 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - development
+      - master
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  android:
+    needs: [test]
+    uses: ./.github/workflows/android.yml
+    secrets: inherit
+
+#   web:
+#     needs: [test]
+#     uses: ./.github/workflows/web.yml
+#     secrets: inherit
+
+#  ios:
+#    needs: [test]
+#    uses: ./.github/workflows/ios.yml
+#    secrets: inherit

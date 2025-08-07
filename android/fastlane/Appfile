@@ -1,0 +1,2 @@
+json_key_file("/Users/abdulzmac/Documents/Dev/FreelanceWork/abdulz/mediNest/codebase/medinest/android/app/medinest-app-fastlane-key.json")
+package_name("com.mednest.pill.reminder")

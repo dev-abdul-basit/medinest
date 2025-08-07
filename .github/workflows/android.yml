@@ -47,13 +47,13 @@ jobs:
           echo "storeFile = upload-keystore.jks" >> android/key.properties
         working-directory: .
 
-      - name: Build Flutter App (Android)
-        run: flutter build appbundle --release
+      # - name: Build Flutter App (Android)
+      #   run: flutter build appbundle --release
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0.0'
+          ruby-version: '3.1'
 
       - name: Install Fastlane Dependencies
         run: |

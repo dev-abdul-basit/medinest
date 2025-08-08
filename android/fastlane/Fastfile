@@ -60,8 +60,8 @@ platform :android do
   # Lane to deploy a new version to Google Play for internal testing
   desc "Deploy a new version to the Google Play Internal Test Track"
   lane :deploy_to_testers do
-   # Build the AAB first
-      sh("cd .. && flutter build appbundle")
+  #  # Build the AAB first
+  #     sh("cd .. && flutter build appbundle")
 
     aab_path = get_aab_path()
     json_key_path = get_json_key_path()

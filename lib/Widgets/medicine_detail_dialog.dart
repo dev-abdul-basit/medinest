@@ -44,12 +44,15 @@ class MedicineDetailsDialog {
 
     Color? otherColor;
 
+    // if (medicineData.mColorPhotoType == "shadeColor") {
+    //   Color color = Color(int.parse(medicineData.mColorPhoto!));
+    //   String colorString = color.toString();
+    //   String valueString = colorString.split('(0x')[1].split(')')[0];
+    //   int value = int.parse(valueString, radix: 16);
+    //   otherColor = Color(value);
+    // }
     if (medicineData.mColorPhotoType == "shadeColor") {
-      Color color = Color(int.parse(medicineData.mColorPhoto!));
-      String colorString = color.toString();
-      String valueString = colorString.split('(0x')[1].split(')')[0];
-      int value = int.parse(valueString, radix: 16);
-      otherColor = Color(value);
+      otherColor = Color(int.parse(medicineData.mColorPhoto!, radix: 16));
     }
 
     List<TimeOfDay> times = NotificationHelper().parseTimeList(medicineData.mTime!);
@@ -104,8 +107,8 @@ class MedicineDetailsDialog {
                       Row(
                         children: [
                           Container(
-                            width: AppSizes.height_18,
-                            height: AppSizes.height_18,
+                            width: AppSizes.height_16,
+                            height: AppSizes.height_16,
                             padding: EdgeInsets.all(AppSizes.width_7),
                             margin: EdgeInsetsDirectional.only(start: AppSizes.width_3_5,top: AppSizes.width_5,bottom: AppSizes.width_5,end:AppSizes.width_4),
                             decoration: BoxDecoration(shape: BoxShape.circle, color: Color.lerp(otherColor, Colors.white, 0.40)),

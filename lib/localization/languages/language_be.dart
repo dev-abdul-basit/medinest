@@ -286,4 +286,5 @@ final Map<String, String> beBE = {
   'txtProfileIsUpdatedSuccessfully': "Профіль паспяхова абнаўляецца!",
   'txtProfileIsAddedSuccessfully': "Профіль дадаецца паспяхова!",
   'txtCheckYourInternetConnectivity': "Калі ласка, праверце падключэнне да Інтэрнэту",
+
 };

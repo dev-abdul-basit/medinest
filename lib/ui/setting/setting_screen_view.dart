@@ -83,23 +83,24 @@ class SettingScreenPage extends StatelessWidget {
                               onTap: () {
                                 logic.goToChangeLanguage();
                               }),
-                          SizedBox(
-                            height: AppSizes.height_6_5,
-                          ),
-                          GetBuilder<SettingScreenLogic>(
-                              id: Constant.idDarkThemSwitch,
-                              builder: (logic) {
-                                return menuItem(
-                                    icon: Assets.iconsIcTheme,
-                                    text: "txtDarkTheme".tr,
-                                    isLast: true,
-                                    onTap: () {},
-                                    isSwitch: true,
-                                    switchValue: logic.isDarkTheme,
-                                    onChanged: (value) {
-                                      logic.onThemeChange(value);
-                                    });
-                              })
+                          //TODO: 1:Uncomment to enable Dark/light theme
+                          // SizedBox(
+                          //   height: AppSizes.height_6_5,
+                          // ),
+                          // GetBuilder<SettingScreenLogic>(
+                          //     id: Constant.idDarkThemSwitch,
+                          //     builder: (logic) {
+                          //       return menuItem(
+                          //           icon: Assets.iconsIcTheme,
+                          //           text: "txtDarkTheme".tr,
+                          //           isLast: true,
+                          //           onTap: () {},
+                          //           isSwitch: true,
+                          //           switchValue: logic.isDarkTheme,
+                          //           onChanged: (value) {
+                          //             logic.onThemeChange(value);
+                          //           });
+                          //     })
                         ],
                       ),
                     ),

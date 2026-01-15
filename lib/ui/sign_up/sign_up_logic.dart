@@ -15,6 +15,8 @@ import 'package:medinest/routes/app_routes.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/preference.dart';
 import 'package:medinest/utils/utils.dart';
+
+import '../../services/google_auth_service.dart';
 // import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class SignUpLogic extends GetxController {
@@ -29,11 +31,15 @@ class SignUpLogic extends GetxController {
   bool isShowPassword = false;
   bool isShowConformPassword = false;
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>[
-      'email',
-    ],
-  );
+  //
+  // final GoogleSignIn _googleSignIn = GoogleSignIn(
+  //   scopes: <String>[
+  //     'email',
+  //   ],
+  // );
+
+  // Use the centralized service
+  //final GoogleAuthService _googleAuthService = GoogleAuthService();
 
   @override
   void onInit() {
@@ -57,24 +63,31 @@ class SignUpLogic extends GetxController {
 
         try {
           var auth = await _auth.createUserWithEmailAndPassword(
-              email: emailController.text.trim(),
-              password: confirmPasswordController.text.trim());
-          Preference.shared
-              .setString(Preference.firebaseAuthUid, auth.user!.uid);
-          Preference.shared
-              .setString(Preference.firebaseEmail, auth.user!.email!);
+            email: emailController.text.trim(),
+            password: confirmPasswordController.text.trim(),
+          );
+          Preference.shared.setString(
+            Preference.firebaseAuthUid,
+            auth.user!.uid,
+          );
+          Preference.shared.setString(
+            Preference.firebaseEmail,
+            auth.user!.email!,
+          );
 
           if (Preference.shared.getProfileAdded()) {
-            List<UserTable> userDataList =
-                await DataBaseHelper.instance.getUserData(auth.user!.email!);
+            List<UserTable> userDataList = await DataBaseHelper.instance
+                .getUserData(auth.user!.email!);
             if (userDataList.isNotEmpty) {
               await FireStoreHelper().onSync();
               isShowProgress = false;
               update([Constant.idProVersionProgress]);
               Utils.showToast(context, "You are successfully logged in");
               Preference.shared.setIsUserLogin(true);
-              Get.offAllNamed(AppRoutes.home,
-                  parameters: {Constant.idIsFromLogIn: "true"});
+              Get.offAllNamed(
+                AppRoutes.home,
+                parameters: {Constant.idIsFromLogIn: "true"},
+              );
             } else {
               await FireStoreHelper().checkAndSyncExistingUser();
               Utils.showToast(context, "You are successfully logged in");
@@ -94,11 +107,13 @@ class SignUpLogic extends GetxController {
         } catch (firebaseAuthException) {
           isShowProgress = false;
           update([Constant.idProVersionProgress]);
-          if (firebaseAuthException
-              .toString()
-              .contains('email-already-in-use')) {
-            Utils.showToast(context,
-                'This Email address is already used try with another Email');
+          if (firebaseAuthException.toString().contains(
+            'email-already-in-use',
+          )) {
+            Utils.showToast(
+              context,
+              'This Email address is already used try with another Email',
+            );
           } else {
             Utils.showToast(context, firebaseAuthException.toString());
           }
@@ -109,82 +124,42 @@ class SignUpLogic extends GetxController {
     }
   }
 
+  /// Google Sign-In (Using Centralized Service)
+  /// Google Sign-In (Using Centralized Service)
   loginWithGoogle(context) async {
     if (await InternetConnectivity.isInternetConnect(context)) {
       try {
         isShowProgress = true;
         update([Constant.idProVersionProgress]);
-        await _auth.signOut();
-        await _googleSignIn.signOut();
-        GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
 
-        if (googleSignInAccount != null) {
-          GoogleSignInAuthentication googleSignInAuthentication =
-              await googleSignInAccount.authentication;
+        final result =
+        await GoogleAuthService.instance.signInWithGoogle();
 
-          AuthCredential credential = GoogleAuthProvider.credential(
-            accessToken: googleSignInAuthentication.accessToken,
-            idToken: googleSignInAuthentication.idToken,
-          );
-          UserCredential? userCredential =
-              await _auth.signInWithCredential(credential).catchError((onErr) {
-            isShowProgress = false;
-
-            return Utils.showToast(context, onErr.toString());
-          });
-          if (userCredential.user != null) {
-            if (Preference.shared.getProfileAdded()) {
-              List<UserTable> userDataList = await DataBaseHelper.instance
-                  .getUserData(userCredential.user!.uid);
-              if (userDataList.isNotEmpty) {
-                await FireStoreHelper().onSync();
-                Preference.shared.setString(
-                    Preference.firebaseAuthUid, userCredential.user!.uid);
-                Preference.shared.setString(
-                    Preference.firebaseEmail, userCredential.user!.email!);
-                isShowProgress = false;
-                update([Constant.idProVersionProgress]);
-                Utils.showToast(context, "toastLogin".tr);
-                Preference.shared.setIsUserLogin(true);
-                Get.offAllNamed(AppRoutes.home,
-                    parameters: {Constant.idIsFromLogIn: "true"});
-              } else {
-                Preference.shared.setString(
-                    Preference.firebaseAuthUid, userCredential.user!.uid);
-                Preference.shared.setString(
-                    Preference.firebaseEmail, userCredential.user!.email!);
-                await FireStoreHelper().checkAndSyncExistingUser();
-                isShowProgress = false;
-                update([Constant.idProVersionProgress]);
-                Utils.showToast(context, "toastLogin".tr);
-                //Get.toNamed(AppRoutes.addOrEditProfile,parameters: {Constant.idIsEditProfile : "false"});
-              }
-            } else {
-              Preference.shared.setString(
-                  Preference.firebaseAuthUid, userCredential.user!.uid);
-              Preference.shared.setString(
-                  Preference.firebaseEmail, userCredential.user!.email!);
-              await FireStoreHelper().checkAndSyncExistingUser();
-              Utils.showToast(context, "toastLogin".tr);
-              isShowProgress = false;
-              update([Constant.idProVersionProgress]);
-            }
-          } else {
-            isShowProgress = false;
-          }
-        } else {
-          Utils.showToast(context, "Something Went Wrong");
-          isShowProgress = false;
+        if (result.isSuccess) {
+          await FireStoreHelper().checkAndSyncExistingUser();
+          Get.offAllNamed(AppRoutes.home);
         }
-        emailController.text = '';
-        passwordController.text = '';
-        confirmPasswordController.text = '';
-      } catch (e) {
-        Utils.showToast(context, e.toString());
+
+        if (!result.isSuccess) {
+          Utils.showToast(
+            context,
+            result.errorMessage ?? "Something went wrong",
+          );
+          isShowProgress = false;
+          update([Constant.idProVersionProgress]);
+          return;
+        }
+
+        // Sign-in successful - sync using FireStoreHelper
+        await FireStoreHelper().checkAndSyncExistingUser();
 
         isShowProgress = false;
         update([Constant.idProVersionProgress]);
-      } finally {
+
+        emailController.text = '';
+        passwordController.text = '';
+      } catch (e) {
+        Utils.showToast(context, e.toString());
         isShowProgress = false;
         update([Constant.idProVersionProgress]);
       }
@@ -193,12 +168,98 @@ class SignUpLogic extends GetxController {
     }
   }
 
+  // loginWithGoogle(context) async {
+  //   if (await InternetConnectivity.isInternetConnect(context)) {
+  //     try {
+  //       isShowProgress = true;
+  //       update([Constant.idProVersionProgress]);
+  //       await _auth.signOut();
+  //       await _googleSignIn.signOut();
+  //       GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+  //
+  //       if (googleSignInAccount != null) {
+  //         GoogleSignInAuthentication googleSignInAuthentication =
+  //             await googleSignInAccount.authentication;
+  //
+  //         AuthCredential credential = GoogleAuthProvider.credential(
+  //           accessToken: googleSignInAuthentication.accessToken,
+  //           idToken: googleSignInAuthentication.idToken,
+  //         );
+  //         UserCredential? userCredential =
+  //             await _auth.signInWithCredential(credential).catchError((onErr) {
+  //           isShowProgress = false;
+  //
+  //           return Utils.showToast(context, onErr.toString());
+  //         });
+  //         if (userCredential.user != null) {
+  //           if (Preference.shared.getProfileAdded()) {
+  //             List<UserTable> userDataList = await DataBaseHelper.instance
+  //                 .getUserData(userCredential.user!.uid);
+  //             if (userDataList.isNotEmpty) {
+  //               await FireStoreHelper().onSync();
+  //               Preference.shared.setString(
+  //                   Preference.firebaseAuthUid, userCredential.user!.uid);
+  //               Preference.shared.setString(
+  //                   Preference.firebaseEmail, userCredential.user!.email!);
+  //               isShowProgress = false;
+  //               update([Constant.idProVersionProgress]);
+  //               Utils.showToast(context, "toastLogin".tr);
+  //               Preference.shared.setIsUserLogin(true);
+  //               Get.offAllNamed(AppRoutes.home,
+  //                   parameters: {Constant.idIsFromLogIn: "true"});
+  //             } else {
+  //               Preference.shared.setString(
+  //                   Preference.firebaseAuthUid, userCredential.user!.uid);
+  //               Preference.shared.setString(
+  //                   Preference.firebaseEmail, userCredential.user!.email!);
+  //               await FireStoreHelper().checkAndSyncExistingUser();
+  //               isShowProgress = false;
+  //               update([Constant.idProVersionProgress]);
+  //               Utils.showToast(context, "toastLogin".tr);
+  //               //Get.toNamed(AppRoutes.addOrEditProfile,parameters: {Constant.idIsEditProfile : "false"});
+  //             }
+  //           } else {
+  //             Preference.shared.setString(
+  //                 Preference.firebaseAuthUid, userCredential.user!.uid);
+  //             Preference.shared.setString(
+  //                 Preference.firebaseEmail, userCredential.user!.email!);
+  //             await FireStoreHelper().checkAndSyncExistingUser();
+  //             Utils.showToast(context, "toastLogin".tr);
+  //             isShowProgress = false;
+  //             update([Constant.idProVersionProgress]);
+  //           }
+  //         } else {
+  //           isShowProgress = false;
+  //         }
+  //       } else {
+  //         Utils.showToast(context, "Something Went Wrong");
+  //         isShowProgress = false;
+  //       }
+  //       emailController.text = '';
+  //       passwordController.text = '';
+  //       confirmPasswordController.text = '';
+  //     } catch (e) {
+  //       Utils.showToast(context, e.toString());
+  //
+  //       isShowProgress = false;
+  //       update([Constant.idProVersionProgress]);
+  //     } finally {
+  //       isShowProgress = false;
+  //       update([Constant.idProVersionProgress]);
+  //     }
+  //   } else {
+  //     Utils.showToast(context, "txtCheckYourInternetConnectivity".tr);
+  //   }
+  // }
+
   String generateNonce([int length = 32]) {
     const charset =
         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
     final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-        .join();
+    return List.generate(
+      length,
+      (_) => charset[random.nextInt(charset.length)],
+    ).join();
   }
 
   String sha256ofString(String input) {
@@ -206,6 +267,7 @@ class SignUpLogic extends GetxController {
     final digest = sha256.convert(bytes);
     return digest.toString();
   }
+
   //
   // loginWithApple(context) async {
   //   try {

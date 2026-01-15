@@ -39,10 +39,13 @@ class DataBaseHelper {
     bool dbExistsEnliven = await io.File(dbPathPillReminder).exists();
 
     if (!dbExistsEnliven) {
-      ByteData data = await rootBundle
-          .load(path.join("assets/database", "PillReminder2.db"));
-      List<int> bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      ByteData data = await rootBundle.load(
+        path.join("assets/database", "PillReminder2.db"),
+      );
+      List<int> bytes = data.buffer.asUint8List(
+        data.offsetInBytes,
+        data.lengthInBytes,
+      );
 
       await io.File(dbPathPillReminder).writeAsBytes(bytes, flush: true);
     }
@@ -96,8 +99,10 @@ class DataBaseHelper {
   Future<int> insertFamilyMember(FamilyMemberTable familyMember) async {
     var dbClient = await db;
 
-    var result =
-        await dbClient.insert(familyMemberTable, familyMember.toJson());
+    var result = await dbClient.insert(
+      familyMemberTable,
+      familyMember.toJson(),
+    );
 
     Debug.printLog("insert familyMember res: $result");
     return result;
@@ -115,8 +120,12 @@ class DataBaseHelper {
   Future<int> updateUser(UserTable userData) async {
     var dbClient = await db;
 
-    var result = await dbClient.update(userTable, userData.toJson(),
-        where: '$uId = ?', whereArgs: [userData.uId]);
+    var result = await dbClient.update(
+      userTable,
+      userData.toJson(),
+      where: '$uId = ?',
+      whereArgs: [userData.uId],
+    );
 
     Debug.printLog("insert UserData res: $result");
     return result;
@@ -126,8 +135,11 @@ class DataBaseHelper {
     var dbClient = await db;
     List<UserTable> userDataList = [];
     Debug.printLog("userEmail :$userEmail");
-    List<Map<String, dynamic>> maps = await dbClient
-        .query(userTable, where: '$email = ?', whereArgs: [userEmail]);
+    List<Map<String, dynamic>> maps = await dbClient.query(
+      userTable,
+      where: '$email = ?',
+      whereArgs: [userEmail],
+    );
     Debug.printLog("maps.isNotEmpty :${maps.isNotEmpty}");
     if (maps.isNotEmpty) {
       for (var answer in maps) {
@@ -138,18 +150,27 @@ class DataBaseHelper {
     return userDataList;
   }
 
-  Future<List<FamilyMemberTable>> getFamilyMemberData(
-      [int? result, bool isNotSynced = false]) async {
+  Future<List<FamilyMemberTable>> getFamilyMemberData([
+    int? result,
+    bool isNotSynced = false,
+  ]) async {
     var dbClient = await db;
     List<FamilyMemberTable> familyMemberDataList = [];
     Debug.printLog('getFamilyMember: $result');
     List<Map<String, dynamic>> maps = result != null
-        ? await dbClient.query(familyMemberTable,
-            where: "$fId = ?", whereArgs: [result], limit: 1)
+        ? await dbClient.query(
+            familyMemberTable,
+            where: "$fId = ?",
+            whereArgs: [result],
+            limit: 1,
+          )
         : isNotSynced
-            ? await dbClient.query(familyMemberTable,
-                where: "$mIsSynced = ?", whereArgs: [0])
-            : await dbClient.query(familyMemberTable);
+        ? await dbClient.query(
+            familyMemberTable,
+            where: "$mIsSynced = ?",
+            whereArgs: [0],
+          )
+        : await dbClient.query(familyMemberTable);
     if (maps.isNotEmpty) {
       for (var answer in maps) {
         var familyMemberData = FamilyMemberTable.fromJson(answer);
@@ -159,20 +180,33 @@ class DataBaseHelper {
     return familyMemberDataList;
   }
 
-  Future<List<DoctorsTable>> getDoctorsData(
-      {int? result, bool isList = false, bool isNotSynced = false}) async {
+  Future<List<DoctorsTable>> getDoctorsData({
+    int? result,
+    bool isList = false,
+    bool isNotSynced = false,
+  }) async {
     var dbClient = await db;
     List<DoctorsTable> doctorsDataList = [];
     List<Map<String, dynamic>> maps = result != null
-        ? await dbClient.query(doctorsTable,
-            where: "$dId = ?", whereArgs: [result], limit: 1)
+        ? await dbClient.query(
+            doctorsTable,
+            where: "$dId = ?",
+            whereArgs: [result],
+            limit: 1,
+          )
         : isList
-            ? await dbClient
-                .query(doctorsTable, where: "$mIsDeleted != ?", whereArgs: [1])
-            : isNotSynced
-                ? await dbClient.query(doctorsTable,
-                    where: "$mIsSynced != ?", whereArgs: [0])
-                : await dbClient.query(doctorsTable);
+        ? await dbClient.query(
+            doctorsTable,
+            where: "$mIsDeleted != ?",
+            whereArgs: [1],
+          )
+        : isNotSynced
+        ? await dbClient.query(
+            doctorsTable,
+            where: "$mIsSynced != ?",
+            whereArgs: [0],
+          )
+        : await dbClient.query(doctorsTable);
     if (maps.isNotEmpty) {
       for (var answer in maps) {
         var doctorsData = DoctorsTable.fromJson(answer);
@@ -186,8 +220,12 @@ class DataBaseHelper {
     var dbClient = await db;
     List<ShapeTable> shapeDataList = [];
     List<Map<String, dynamic>> maps = result != null
-        ? await dbClient.query(shapeTable,
-            where: "$sId = ?", whereArgs: [result], limit: 1)
+        ? await dbClient.query(
+            shapeTable,
+            where: "$sId = ?",
+            whereArgs: [result],
+            limit: 1,
+          )
         : await dbClient.query(shapeTable);
     if (maps.isNotEmpty) {
       for (var answer in maps) {
@@ -201,19 +239,24 @@ class DataBaseHelper {
   Future<int> insertHistoryData(MedicineHistoryTable historyTableData) async {
     var dbClient = await db;
 
-    var result =
-        await dbClient.insert(medicineHistoryTable, historyTableData.toJson());
+    var result = await dbClient.insert(
+      medicineHistoryTable,
+      historyTableData.toJson(),
+    );
 
     Debug.printLog("insert HistoryData res: $result");
     return result;
   }
 
   Future<int> insertAppointmentHistoryData(
-      AppointmentHistoryTable historyTableData) async {
+    AppointmentHistoryTable historyTableData,
+  ) async {
     var dbClient = await db;
 
     var result = await dbClient.insert(
-        appointmentHistoryTable, historyTableData.toJson());
+      appointmentHistoryTable,
+      historyTableData.toJson(),
+    );
 
     Debug.printLog("insert appointmentHistoryTable res: $result");
     return result;
@@ -231,8 +274,10 @@ class DataBaseHelper {
   Future<int> insertAppointment(AppointmentTable appointmentData) async {
     var dbClient = await db;
 
-    var result =
-        await dbClient.insert(appointmentTable, appointmentData.toJson());
+    var result = await dbClient.insert(
+      appointmentTable,
+      appointmentData.toJson(),
+    );
 
     Debug.printLog("insert MedicineData res: $result");
     return result;
@@ -262,7 +307,8 @@ class DataBaseHelper {
   }
 
   Future<int> insertOrUpdateAppointment(
-      AppointmentTable appointmentData) async {
+    AppointmentTable appointmentData,
+  ) async {
     var dbClient = await db;
     var result = await dbClient.insert(
       appointmentTable,
@@ -285,12 +331,14 @@ class DataBaseHelper {
   }
 
   Future<int> insertOrUpdateNotificationData(
-      MedicineNotificationTable notificationData) async {
+    MedicineNotificationTable notificationData,
+  ) async {
     var dbClient = await db;
     List<Map<String, Object?>> dataList = await dbClient.query(
-        notificationTable,
-        where: '$nId = ?',
-        whereArgs: [notificationData.nId]);
+      notificationTable,
+      where: '$nId = ?',
+      whereArgs: [notificationData.nId],
+    );
     if (dataList.isEmpty) {
       var result = await dbClient.insert(
         notificationTable,
@@ -310,12 +358,14 @@ class DataBaseHelper {
   }
 
   Future<int> insertOrUpdateAppointmentNotificationData(
-      AppointmentNotificationTable notificationData) async {
+    AppointmentNotificationTable notificationData,
+  ) async {
     var dbClient = await db;
     List<Map<String, Object?>> dataList = await dbClient.query(
-        appointmentNotificationTable,
-        where: '$anId = ?',
-        whereArgs: [notificationData.anId]);
+      appointmentNotificationTable,
+      where: '$anId = ?',
+      whereArgs: [notificationData.anId],
+    );
     if (dataList.isEmpty) {
       var result = await dbClient.insert(
         appointmentNotificationTable,
@@ -335,12 +385,14 @@ class DataBaseHelper {
   }
 
   Future<int> insertOrUpdateHistoryData(
-      MedicineHistoryTable historyData) async {
+    MedicineHistoryTable historyData,
+  ) async {
     var dbClient = await db;
     List<Map<String, Object?>> dataList = await dbClient.query(
-        medicineHistoryTable,
-        where: '$hId = ?',
-        whereArgs: [historyData.hId]);
+      medicineHistoryTable,
+      where: '$hId = ?',
+      whereArgs: [historyData.hId],
+    );
     if (dataList.isEmpty) {
       var result = await dbClient.insert(
         medicineHistoryTable,
@@ -360,12 +412,14 @@ class DataBaseHelper {
   }
 
   Future<int> insertOrUpdateAppointmentHistoryData(
-      AppointmentHistoryTable historyData) async {
+    AppointmentHistoryTable historyData,
+  ) async {
     var dbClient = await db;
     List<Map<String, Object?>> dataList = await dbClient.query(
-        appointmentHistoryTable,
-        where: '$ahId = ?',
-        whereArgs: [historyData.ahId]);
+      appointmentHistoryTable,
+      where: '$ahId = ?',
+      whereArgs: [historyData.ahId],
+    );
     if (dataList.isEmpty) {
       var result = await dbClient.insert(
         appointmentHistoryTable,
@@ -387,9 +441,10 @@ class DataBaseHelper {
   Future<int> insertOrUpdateFamilyMember(FamilyMemberTable familyMember) async {
     var dbClient = await db;
     List<Map<String, Object?>> dataList = await dbClient.query(
-        familyMemberTable,
-        where: '$fId = ?',
-        whereArgs: [familyMember.fId]);
+      familyMemberTable,
+      where: '$fId = ?',
+      whereArgs: [familyMember.fId],
+    );
     if (dataList.isEmpty) {
       var result = await dbClient.insert(
         familyMemberTable,
@@ -410,8 +465,11 @@ class DataBaseHelper {
 
   Future<int> insertOrUpdateDoctor(DoctorsTable doctor) async {
     var dbClient = await db;
-    List<Map<String, Object?>> dataList = await dbClient
-        .query(doctorsTable, where: '$dId = ?', whereArgs: [doctor.dId]);
+    List<Map<String, Object?>> dataList = await dbClient.query(
+      doctorsTable,
+      where: '$dId = ?',
+      whereArgs: [doctor.dId],
+    );
     if (dataList.isEmpty) {
       var result = await dbClient.insert(
         doctorsTable,
@@ -430,26 +488,40 @@ class DataBaseHelper {
     }
   }
 
-  Future<List<MedicineTable>> getMedicineData(
-      {int? result,
-      int? fId,
-      bool isNotDeletedOnly = false,
-      bool isNotSynced = false}) async {
+  Future<List<MedicineTable>> getMedicineData({
+    int? result,
+    int? fId,
+    bool isNotDeletedOnly = false,
+    bool isNotSynced = false,
+  }) async {
     var dbClient = await db;
     List<MedicineTable> medicineDataList = [];
     List<Map<String, dynamic>> maps = result != null
-        ? await dbClient.query(medicineTable,
-            where: "$mId = ?", whereArgs: [result], limit: 1)
+        ? await dbClient.query(
+            medicineTable,
+            where: "$mId = ?",
+            whereArgs: [result],
+            limit: 1,
+          )
         : fId != null
-            ? await dbClient.query(medicineTable,
-                where: "$mFamilyMemberId = ?", whereArgs: [fId])
-            : isNotDeletedOnly
-                ? await dbClient.query(medicineTable,
-                    where: "$mIsDeleted = ?", whereArgs: [0])
-                : isNotSynced
-                    ? await dbClient.query(medicineTable,
-                        where: "$mIsSynced = ?", whereArgs: [0])
-                    : await dbClient.query(medicineTable);
+        ? await dbClient.query(
+            medicineTable,
+            where: "$mFamilyMemberId = ?",
+            whereArgs: [fId],
+          )
+        : isNotDeletedOnly
+        ? await dbClient.query(
+            medicineTable,
+            where: "$mIsDeleted = ?",
+            whereArgs: [0],
+          )
+        : isNotSynced
+        ? await dbClient.query(
+            medicineTable,
+            where: "$mIsSynced = ?",
+            whereArgs: [0],
+          )
+        : await dbClient.query(medicineTable);
     if (maps.isNotEmpty) {
       for (var answer in maps) {
         var medicineData = MedicineTable.fromJson(answer);
@@ -459,43 +531,77 @@ class DataBaseHelper {
     return medicineDataList;
   }
 
-  Future<List<AppointmentTable>> getAppointmentTableData(
-      {int? result, int? dId, int? fId, bool isNotSynced = false}) async {
-    var dbClient = await db;
-    List<AppointmentTable> appointmentTableDataList = [];
-    List<Map<String, dynamic>> maps = result != null
-        ? await dbClient
-            .query(appointmentTable, where: "$aId = ?", whereArgs: [result])
-        : dId != null
-            ? await dbClient.query(appointmentTable,
-                where: "$doctorId = ?", whereArgs: [dId])
-            : fId != null
-                ? await dbClient.query(appointmentTable,
-                    where: "$bookedForFamilyMemberId = ?", whereArgs: [fId])
-                : isNotSynced
-                    ? await dbClient.query(appointmentTable,
-                        where: "$mIsSynced = ?", whereArgs: [0])
-                    : await dbClient.query(appointmentTable);
-    if (maps.isNotEmpty) {
-      for (var answer in maps) {
-        var appointmentTableData = AppointmentTable.fromJson(answer);
-        appointmentTableDataList.add(appointmentTableData);
-      }
+  Future<List<AppointmentTable>> getAppointmentTableData({
+    int? result, // <-- keep this (aId filter)
+    bool isNotSynced = false,
+  }) async {
+    final dbClient = await db;
+    List<Map<String, dynamic>> maps;
+    if (result != null) {
+      maps = await dbClient.query(
+        appointmentTable,
+        where: "aId = ?",
+        whereArgs: [result],
+      );
+    } else if (isNotSynced) {
+      maps = await dbClient.query(
+        appointmentTable,
+        where: "mIsSynced = ?",
+        whereArgs: [0],
+      );
+    } else {
+      maps = await dbClient.query(appointmentTable);
     }
-    return appointmentTableDataList;
+
+    return maps.map((row) => AppointmentTable.fromJson(row)).toList();
   }
 
-  Future<List<MedicineHistoryTable>> getMedicineHistoryData(
-      {int? result, bool isNotSynced = false}) async {
+  // Future<List<AppointmentTable>> getAppointmentTableData(
+  //     {int? result, int? dId, int? fId, bool isNotSynced = false}) async {
+  //   var dbClient = await db;
+  //   List<AppointmentTable> appointmentTableDataList = [];
+  //   List<Map<String, dynamic>> maps = result != null
+  //       ? await dbClient
+  //           .query(appointmentTable, where: "$aId = ?", whereArgs: [result])
+  //       : dId != null
+  //           ? await dbClient.query(appointmentTable,
+  //               where: "$doctorId = ?", whereArgs: [dId])
+  //           : fId != null
+  //               ? await dbClient.query(appointmentTable,
+  //                   where: "$bookedForFamilyMemberId = ?", whereArgs: [fId])
+  //               : isNotSynced
+  //                   ? await dbClient.query(appointmentTable,
+  //                       where: "$mIsSynced = ?", whereArgs: [0])
+  //                   : await dbClient.query(appointmentTable);
+  //   if (maps.isNotEmpty) {
+  //     for (var answer in maps) {
+  //       var appointmentTableData = AppointmentTable.fromJson(answer);
+  //       appointmentTableDataList.add(appointmentTableData);
+  //     }
+  //   }
+  //   return appointmentTableDataList;
+  // }
+
+  Future<List<MedicineHistoryTable>> getMedicineHistoryData({
+    int? result,
+    bool isNotSynced = false,
+  }) async {
     var dbClient = await db;
     List<MedicineHistoryTable> historyTableDataList = [];
     List<Map<String, dynamic>> maps = result != null
-        ? await dbClient.query(medicineHistoryTable,
-            where: "$mId = ?", whereArgs: [result], limit: 1)
+        ? await dbClient.query(
+            medicineHistoryTable,
+            where: "$mId = ?",
+            whereArgs: [result],
+            limit: 1,
+          )
         : isNotSynced
-            ? await dbClient.query(medicineHistoryTable,
-                where: "$mIsSynced = ?", whereArgs: [0])
-            : await dbClient.query(medicineHistoryTable);
+        ? await dbClient.query(
+            medicineHistoryTable,
+            where: "$mIsSynced = ?",
+            whereArgs: [0],
+          )
+        : await dbClient.query(medicineHistoryTable);
     if (maps.isNotEmpty) {
       for (var answer in maps) {
         var historyTableData = MedicineHistoryTable.fromJson(answer);
@@ -505,19 +611,29 @@ class DataBaseHelper {
     return historyTableDataList;
   }
 
-  Future<List<AppointmentHistoryTable>> getAppointmentHistoryData(
-      {int? result, bool isNotSynced = false}) async {
+  Future<List<AppointmentHistoryTable>> getAppointmentHistoryData({
+    int? result,
+    bool isNotSynced = false,
+  }) async {
     var dbClient = await db;
     List<AppointmentHistoryTable> historyTableDataList = [];
     List<Map<String, dynamic>> maps = result != null
-        ? await dbClient.query(appointmentHistoryTable,
-            where: "$ahId = ?", whereArgs: [result], limit: 1)
+        ? await dbClient.query(
+            appointmentHistoryTable,
+            where: "$ahId = ?",
+            whereArgs: [result],
+            limit: 1,
+          )
         : isNotSynced
-            ? await dbClient.query(appointmentHistoryTable,
-                where: "$mIsSynced = ?", whereArgs: [0])
-            : await dbClient.query(appointmentHistoryTable);
+        ? await dbClient.query(
+            appointmentHistoryTable,
+            where: "$mIsSynced = ?",
+            whereArgs: [0],
+          )
+        : await dbClient.query(appointmentHistoryTable);
     Debug.printLog(
-        ":: appointmentHistoryTableList.isNotEmpty ::: ${maps.toString()}");
+      ":: appointmentHistoryTableList.isNotEmpty ::: ${maps.toString()}",
+    );
     if (maps.isNotEmpty) {
       for (var answer in maps) {
         var historyTableData = AppointmentHistoryTable.fromJson(answer);
@@ -624,7 +740,9 @@ class DataBaseHelper {
   }
 
   Future<int?> updateAppointmentData(
-      int id, AppointmentTable appointmentData) async {
+    int id,
+    AppointmentTable appointmentData,
+  ) async {
     var dbClient = await db;
     var result = await dbClient.update(
       appointmentTable,
@@ -673,7 +791,9 @@ class DataBaseHelper {
   }
 
   Future<int?> updateNotificationData(
-      int id, MedicineNotificationTable notificationData) async {
+    int id,
+    MedicineNotificationTable notificationData,
+  ) async {
     var dbClient = await db;
     var result = await dbClient.update(
       notificationTable,
@@ -687,7 +807,9 @@ class DataBaseHelper {
   }
 
   Future<int?> updateHistoryTableData(
-      int id, MedicineHistoryTable historyTableData) async {
+    int id,
+    MedicineHistoryTable historyTableData,
+  ) async {
     var dbClient = await db;
     var result = await dbClient.update(
       medicineHistoryTable,
@@ -701,14 +823,17 @@ class DataBaseHelper {
   }
 
   Future<int?> updateAppointmentHistoryTableData(
-      AppointmentHistoryTable historyTableData) async {
+    AppointmentHistoryTable historyTableData,
+  ) async {
     var dbClient = await db;
     Debug.printLog("updateAppointment result: ${historyTableData.toJson()}");
     var result = await dbClient.update(
-        appointmentHistoryTable, historyTableData.toJson(),
-        where: "$ahId = ?",
-        whereArgs: [historyTableData.ahId],
-        conflictAlgorithm: ConflictAlgorithm.replace);
+      appointmentHistoryTable,
+      historyTableData.toJson(),
+      where: "$ahId = ?",
+      whereArgs: [historyTableData.ahId],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
 
     Debug.printLog("updateAppointment result: $result");
     return result;
@@ -717,8 +842,11 @@ class DataBaseHelper {
   Future<int?> deleteMedicineData([int? id]) async {
     var dbClient = await db;
     var result = id != null
-        ? await dbClient
-            .delete(medicineTable, where: "$mId = ?", whereArgs: [id])
+        ? await dbClient.delete(
+            medicineTable,
+            where: "$mId = ?",
+            whereArgs: [id],
+          )
         : await dbClient.delete(medicineTable);
 
     Debug.printLog("deleteReminder -->>$result");
@@ -728,8 +856,11 @@ class DataBaseHelper {
   Future<int?> deleteAppointment([int? id]) async {
     var dbClient = await db;
     var result = id != null
-        ? await dbClient
-            .delete(appointmentTable, where: "$aId = ?", whereArgs: [id])
+        ? await dbClient.delete(
+            appointmentTable,
+            where: "$aId = ?",
+            whereArgs: [id],
+          )
         : await dbClient.delete(appointmentTable);
 
     Debug.printLog("deleteReminder -->>$result");
@@ -739,8 +870,11 @@ class DataBaseHelper {
   Future<int?> deleteMedicineHistory([int? id]) async {
     var dbClient = await db;
     var result = id != null
-        ? await dbClient
-            .delete(medicineHistoryTable, where: "$hId = ?", whereArgs: [id])
+        ? await dbClient.delete(
+            medicineHistoryTable,
+            where: "$hId = ?",
+            whereArgs: [id],
+          )
         : await dbClient.delete(medicineHistoryTable);
 
     Debug.printLog("deleteReminder -->>$result");
@@ -750,8 +884,11 @@ class DataBaseHelper {
   Future<int?> deleteAppointmentHistory([int? id]) async {
     var dbClient = await db;
     var result = id != null
-        ? await dbClient.delete(appointmentHistoryTable,
-            where: "$ahId = ?", whereArgs: [id])
+        ? await dbClient.delete(
+            appointmentHistoryTable,
+            where: "$ahId = ?",
+            whereArgs: [id],
+          )
         : await dbClient.delete(appointmentHistoryTable);
 
     Debug.printLog("deleteReminder -->>$result");
@@ -761,8 +898,11 @@ class DataBaseHelper {
   Future<int?> deleteFamilyMemberData([int? id]) async {
     var dbClient = await db;
     var result = id != null
-        ? await dbClient
-            .delete(familyMemberTable, where: "$fId = ?", whereArgs: [id])
+        ? await dbClient.delete(
+            familyMemberTable,
+            where: "$fId = ?",
+            whereArgs: [id],
+          )
         : await dbClient.delete(familyMemberTable);
 
     Debug.printLog("deleteReminder -->>$result");
@@ -772,8 +912,11 @@ class DataBaseHelper {
   Future<int?> deleteDoctor([int? id]) async {
     var dbClient = await db;
     var result = id != null
-        ? await dbClient
-            .delete(doctorsTable, where: "$dId = ?", whereArgs: [id])
+        ? await dbClient.delete(
+            doctorsTable,
+            where: "$dId = ?",
+            whereArgs: [id],
+          )
         : await dbClient.delete(doctorsTable);
 
     Debug.printLog("delete Doctor -->>$result");
@@ -791,12 +934,18 @@ class DataBaseHelper {
   Future<int?> deleteNotificationData({int? id, int? fId}) async {
     var dbClient = await db;
     var result = id != null
-        ? await dbClient.delete(notificationTable,
-            where: "$notificationMid = ?", whereArgs: [id])
+        ? await dbClient.delete(
+            notificationTable,
+            where: "$notificationMid = ?",
+            whereArgs: [id],
+          )
         : fId != null
-            ? await dbClient.delete(notificationTable,
-                where: "$nFamilyMemberId = ?", whereArgs: [fId])
-            : await dbClient.delete(notificationTable);
+        ? await dbClient.delete(
+            notificationTable,
+            where: "$nFamilyMemberId = ?",
+            whereArgs: [fId],
+          )
+        : await dbClient.delete(notificationTable);
 
     Debug.printLog("deleteReminder -->>$result");
     return result;
@@ -805,34 +954,52 @@ class DataBaseHelper {
   Future<int?> deleteAppointmentNotificationData({int? id, int? fId}) async {
     var dbClient = await db;
     var result = id != null
-        ? await dbClient.delete(appointmentNotificationTable,
-            where: "$appointmentId = ?", whereArgs: [id])
+        ? await dbClient.delete(
+            appointmentNotificationTable,
+            where: "$appointmentId = ?",
+            whereArgs: [id],
+          )
         : fId != null
-            ? await dbClient.delete(appointmentNotificationTable,
-                where: "$bookedForFamilyMemberId = ?", whereArgs: [fId])
-            : await dbClient.delete(appointmentNotificationTable);
+        ? await dbClient.delete(
+            appointmentNotificationTable,
+            where: "$bookedForFamilyMemberId = ?",
+            whereArgs: [fId],
+          )
+        : await dbClient.delete(appointmentNotificationTable);
 
     Debug.printLog("deleteReminder -->>$result");
     return result;
   }
 
-  Future<List<MedicineNotificationTable>> getNotificationData(
-      {int? result, int? startForm, int? limit, int? fId}) async {
+  Future<List<MedicineNotificationTable>> getNotificationData({
+    int? result,
+    int? startForm,
+    int? limit,
+    int? fId,
+  }) async {
     var dbClient = await db;
     List<MedicineNotificationTable> notificationDataList = [];
     List<Map<String, dynamic>> maps = result != null
-        ? await dbClient.query(notificationTable,
-            where: "$notificationMid = ?", whereArgs: [result])
+        ? await dbClient.query(
+            notificationTable,
+            where: "$notificationMid = ?",
+            whereArgs: [result],
+          )
         : startForm != null
-            ? await dbClient.query(notificationTable,
-                where: '$nNotificationTimeStamp > ? AND ($nIsActive = ?)',
-                whereArgs: [startForm, 1],
-                orderBy: '$nNotificationTimeStamp ASC',
-                limit: limit)
-            : fId != null
-                ? await dbClient.query(notificationTable,
-                    where: "$nFamilyMemberId = ?", whereArgs: [fId])
-                : await dbClient.query(notificationTable);
+        ? await dbClient.query(
+            notificationTable,
+            where: '$nNotificationTimeStamp > ? AND ($nIsActive = ?)',
+            whereArgs: [startForm, 1],
+            orderBy: '$nNotificationTimeStamp ASC',
+            limit: limit,
+          )
+        : fId != null
+        ? await dbClient.query(
+            notificationTable,
+            where: "$nFamilyMemberId = ?",
+            whereArgs: [fId],
+          )
+        : await dbClient.query(notificationTable);
     if (maps.isNotEmpty) {
       for (var answer in maps) {
         var notificationData = MedicineNotificationTable.fromJson(answer);
@@ -842,23 +1009,35 @@ class DataBaseHelper {
     return notificationDataList;
   }
 
-  Future<List<AppointmentNotificationTable>> getAppointmentNotificationData(
-      {int? result, int? startForm, int? limit, int? fId}) async {
+  Future<List<AppointmentNotificationTable>> getAppointmentNotificationData({
+    int? result,
+    int? startForm,
+    int? limit,
+    int? fId,
+  }) async {
     var dbClient = await db;
     List<AppointmentNotificationTable> notificationDataList = [];
     List<Map<String, dynamic>> maps = result != null
-        ? await dbClient.query(appointmentNotificationTable,
-            where: "$appointmentId = ?", whereArgs: [result])
+        ? await dbClient.query(
+            appointmentNotificationTable,
+            where: "$appointmentId = ?",
+            whereArgs: [result],
+          )
         : startForm != null
-            ? await dbClient.query(appointmentNotificationTable,
-                where: '$appointmentNotificationTimeStamp > ?',
-                whereArgs: [startForm],
-                orderBy: '$appointmentNotificationTimeStamp ASC',
-                limit: limit)
-            : fId != null
-                ? await dbClient.query(appointmentNotificationTable,
-                    where: "$bookedForFamilyMemberId = ?", whereArgs: [fId])
-                : await dbClient.query(appointmentNotificationTable);
+        ? await dbClient.query(
+            appointmentNotificationTable,
+            where: '$appointmentNotificationTimeStamp > ?',
+            whereArgs: [startForm],
+            orderBy: '$appointmentNotificationTimeStamp ASC',
+            limit: limit,
+          )
+        : fId != null
+        ? await dbClient.query(
+            appointmentNotificationTable,
+            where: "$bookedForFamilyMemberId = ?",
+            whereArgs: [fId],
+          )
+        : await dbClient.query(appointmentNotificationTable);
     if (maps.isNotEmpty) {
       for (var answer in maps) {
         var notificationData = AppointmentNotificationTable.fromJson(answer);

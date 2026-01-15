@@ -104,12 +104,15 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
 
   splitColor() {
     if (medicines?.mColorPhotoType == "shadeColor") {
-      Color color = Color(int.parse(medicines!.mColorPhoto!));
-      String colorString = color.toString();
-      String valueString = colorString.split('(0x')[1].split(')')[0];
-      int value = int.parse(valueString, radix: 16);
-      shadeColor = Color(value);
+      shadeColor = Color(int.parse(medicines!.mColorPhoto!, radix: 16));
     }
+    // if (medicines?.mColorPhotoType == "shadeColor") {
+    //   Color color = Color(int.parse(medicines!.mColorPhoto!));
+    //   String colorString = color.toString();
+    //   String valueString = colorString.split('(0x')[1].split(')')[0];
+    //   int value = int.parse(valueString, radix: 16);
+    //   shadeColor = Color(value);
+    // }
   }
 
   getDataFromArgs() {

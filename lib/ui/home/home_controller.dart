@@ -584,12 +584,12 @@ class HomeController extends GetxController
 
     List<AppointmentTable> appointmentDataList =
         await DataBaseHelper.instance.getAppointmentTableData();
-    for (var appointmentTable in appointmentDataList) {
-      if (isFromLogin) {
-        await NotificationHelper()
-            .scheduleAppointment(appointmentTable: appointmentTable);
-      }
-    }
+    // for (var appointmentTable in appointmentDataList) {
+    //   if (isFromLogin) {
+    //     await NotificationHelper()
+    //         .scheduleAppointment(appointmentTable: appointmentTable);
+    //   }
+    // }
     NotificationHelper().scheduleMedicineNotification();
   }
 

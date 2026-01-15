@@ -95,11 +95,11 @@ class NotificationHelper {
       );
 
 
-      await scheduleAppointmentNotification(
-          result: appointmentNotificationData.anId!,
-          currentNotificationDateTime: currentNotificationDateTime,
-          appointmentNotificationTable: appointmentNotificationData,
-          notificationPayload: notificationPayload);
+      // await scheduleAppointmentNotification(
+      //     result: appointmentNotificationData.anId!,
+      //     currentNotificationDateTime: currentNotificationDateTime,
+      //     appointmentNotificationTable: appointmentNotificationData,
+      //     notificationPayload: notificationPayload);
     }
   }
 
@@ -173,66 +173,66 @@ class NotificationHelper {
     }
   }
 
-  Future<void> scheduleAppointment(
-      {required AppointmentTable appointmentTable}) async {
-    final DateTime startDate =
-        DateTime.parse(appointmentTable.appointmentDate!);
-    TimeOfDay appointmentTime =
-        parseTimeList(appointmentTable.appointmentTime!).first;
-    final tz.TZDateTime initialNotificationDateTime = tz.TZDateTime(
-      tz.local,
-      startDate.year,
-      startDate.month,
-      startDate.day,
-      appointmentTime.hour,
-      appointmentTime.minute,
-    );
-    tz.TZDateTime currentNotificationDateTime;
-
-
-    if (appointmentTable.reminderBeforeTime == null ||appointmentTable.reminderBeforeTime == 'null' ||
-        appointmentTable.reminderBeforeTime == 'None') {
-      currentNotificationDateTime = initialNotificationDateTime;
-    } else {
-      currentNotificationDateTime = initialNotificationDateTime.subtract(
-          Duration(minutes: int.parse(appointmentTable.reminderBeforeTime!)));
-    }
-
-    await addAndAndScheduleAppointment(
-        currentNotificationDateTime: currentNotificationDateTime,
-        appointmentTable: appointmentTable);
-  }
-
-  addAndAndScheduleAppointment(
-      {required tz.TZDateTime currentNotificationDateTime,
-      required AppointmentTable appointmentTable}) async {
-    DateTime notificationTime =
-        getDateTimeFromTZDateTime(currentNotificationDateTime);
-    AppointmentNotificationTable appointmentNotificationTable =
-        AppointmentNotificationTable(
-          anId: null,
-      appointmentId: appointmentTable.aId,
-      bookedForFamilyMemberId: appointmentTable.bookedForFamilyMemberId,
-      doctorId: appointmentTable.doctorId,
-      appointmentDate: appointmentTable.appointmentDate,
-      appointmentTime: appointmentTable.appointmentTime,
-      appointmentNotificationTime: notificationTime.toIso8601String(),
-      appointmentNotificationTimeStamp: notificationTime.millisecondsSinceEpoch,
-      mDeviceSoundUri: appointmentTable.mDeviceSoundUri,
-      mSoundTitle: appointmentTable.mSoundTitle,
-      mSoundType: appointmentTable.mSoundType,
-      mIsFromDevice: appointmentTable.mIsFromDevice,
-      reminderBeforeTime: appointmentTable.reminderBeforeTime.toString(),
-      description: appointmentTable.description,
-      mIsSynced: 0,
-    );
-    if(notificationTime.isAfter(DateTime.now())){
-      var result = await DataBaseHelper.instance
-          .insertOrUpdateAppointmentNotificationData(
-          appointmentNotificationTable);
-      appointmentNotificationTable.anId = result;
-    }
-  }
+  // Future<void> scheduleAppointment(
+  //     {required AppointmentTable appointmentTable}) async {
+  //   final DateTime startDate =
+  //       DateTime.parse(appointmentTable.appointmentDate!);
+  //   TimeOfDay appointmentTime =
+  //       parseTimeList(appointmentTable.appointmentTime!).first;
+  //   final tz.TZDateTime initialNotificationDateTime = tz.TZDateTime(
+  //     tz.local,
+  //     startDate.year,
+  //     startDate.month,
+  //     startDate.day,
+  //     appointmentTime.hour,
+  //     appointmentTime.minute,
+  //   );
+  //   tz.TZDateTime currentNotificationDateTime;
+  //
+  //
+  //   if (appointmentTable.reminderBeforeTime == null ||appointmentTable.reminderBeforeTime == 'null' ||
+  //       appointmentTable.reminderBeforeTime == 'None') {
+  //     currentNotificationDateTime = initialNotificationDateTime;
+  //   } else {
+  //     currentNotificationDateTime = initialNotificationDateTime.subtract(
+  //         Duration(minutes: int.parse(appointmentTable.reminderBeforeTime!)));
+  //   }
+  //
+  //   await addAndAndScheduleAppointment(
+  //       currentNotificationDateTime: currentNotificationDateTime,
+  //       appointmentTable: appointmentTable);
+  // }
+  //
+  // addAndAndScheduleAppointment(
+  //     {required tz.TZDateTime currentNotificationDateTime,
+  //     required AppointmentTable appointmentTable}) async {
+  //   DateTime notificationTime =
+  //       getDateTimeFromTZDateTime(currentNotificationDateTime);
+  //   AppointmentNotificationTable appointmentNotificationTable =
+  //       AppointmentNotificationTable(
+  //         anId: null,
+  //     appointmentId: appointmentTable.aId,
+  //     bookedForFamilyMemberId: appointmentTable.bookedForFamilyMemberId,
+  //     doctorId: appointmentTable.doctorId,
+  //     appointmentDate: appointmentTable.appointmentDate,
+  //     appointmentTime: appointmentTable.appointmentTime,
+  //     appointmentNotificationTime: notificationTime.toIso8601String(),
+  //     appointmentNotificationTimeStamp: notificationTime.millisecondsSinceEpoch,
+  //     mDeviceSoundUri: appointmentTable.mDeviceSoundUri,
+  //     mSoundTitle: appointmentTable.mSoundTitle,
+  //     mSoundType: appointmentTable.mSoundType,
+  //     mIsFromDevice: appointmentTable.mIsFromDevice,
+  //     reminderBeforeTime: appointmentTable.reminderBeforeTime.toString(),
+  //     description: appointmentTable.description,
+  //     mIsSynced: 0,
+  //   );
+  //   if(notificationTime.isAfter(DateTime.now())){
+  //     var result = await DataBaseHelper.instance
+  //         .insertOrUpdateAppointmentNotificationData(
+  //         appointmentNotificationTable);
+  //     appointmentNotificationTable.anId = result;
+  //   }
+  // }
 
   Future<void> checkPendingNotificationRequests() async {
     final List<PendingNotificationRequest> pendingNotificationRequests =
@@ -487,129 +487,129 @@ class NotificationHelper {
   //   );
   // }
 
-  Future<void> scheduleAppointmentNotification({
-    required int result,
-    required tz.TZDateTime currentNotificationDateTime,
-    AppointmentTable? appointmentTable,
-    AppointmentNotificationTable? appointmentNotificationTable,
-    required String notificationPayload,
-  }) async {
-    final Int64List vibrationPattern = Int64List(4);
-    vibrationPattern[0] = 0;
-    vibrationPattern[1] = 4000;
-    vibrationPattern[2] = 4000;
-    vibrationPattern[3] = 4000;
-
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      'daily_notification_channel_id_${appointmentTable?.mSoundTitle ?? appointmentNotificationTable?.mSoundTitle}',
-      'Daily Notification Channel ${appointmentTable?.mSoundTitle ?? appointmentNotificationTable?.mSoundTitle}',
-      channelDescription: 'Daily Notification Description ${appointmentTable?.mSoundTitle ?? appointmentNotificationTable?.mSoundTitle}' ,
-      playSound: true,
-      audioAttributesUsage: AudioAttributesUsage.alarm,
-      category: AndroidNotificationCategory.call,
-      additionalFlags: Int32List.fromList(<int>[4]),
-      vibrationPattern: vibrationPattern,
-      sound: appointmentTable?.mIsFromDevice == 1 ||
-              appointmentNotificationTable?.mIsFromDevice == 1
-          ? UriAndroidNotificationSound(appointmentTable?.mDeviceSoundUri ??
-              appointmentNotificationTable!.mDeviceSoundUri??'')
-          : RawResourceAndroidNotificationSound(appointmentTable?.mSoundTitle
-                  ?.trim()
-                  .toLowerCase()
-                  .replaceAll(' ', '') ??
-              appointmentNotificationTable?.mSoundTitle
-                  ?.trim()
-                  .toLowerCase()
-                  .replaceAll(' ', '')),
-      visibility: NotificationVisibility.public,
-      importance: Importance.max,
-      priority: Priority.max,
-      ticker: 'ticker',
-      fullScreenIntent: true,
-      actions: <AndroidNotificationAction>[
-        AndroidNotificationAction(
-          acceptId,
-          'Accept',
-          titleColor: Get.theme.colorScheme.primary,
-        ),
-        // AndroidNotificationAction(
-        //   reScheduleId,
-        //   'Re-Schedule',
-        //   titleColor: Get.theme.colorScheme.primary,
-        //   // icon: DrawableResourceAndroidBitmap('secondary_icon'),
-        // ),
-        AndroidNotificationAction(
-          snoozeId,
-          'Snooze for 5 minutes',
-          titleColor: Get.theme.colorScheme.secondary,
-          // icon: DrawableResourceAndroidBitmap('secondary_icon'),
-        ),
-      ],
-    );
-
-    DarwinNotificationDetails iosNotificationDetails =
-        DarwinNotificationDetails(
-      sound: appointmentTable != null
-          ? "${appointmentTable.mSoundTitle?.trim().toLowerCase().replaceAll(' ', '')}.mp3"
-          : '${appointmentNotificationTable?.mSoundTitle?.trim().toLowerCase().replaceAll(' ', '')}.mp3',
-      presentSound: true,
-      categoryIdentifier: darwinNotificationCategoryPlain,
-    );
-    String nameOfFamilyMember = await getFamilyMember(appointmentTable != null
-            ? appointmentTable.bookedForFamilyMemberId
-            : appointmentNotificationTable?.bookedForFamilyMemberId ?? 1)
-        .then((value) {
-      return value!.name!;
-    });
-
-    String nameOfDoctor = await getDoctorData(appointmentTable != null
-            ? appointmentTable.doctorId
-            : appointmentNotificationTable?.doctorId ?? 1)
-        .then((value) {
-      return value!.name!;
-    });
-
-    String title =
-        'Appointment For $nameOfFamilyMember Is Schedule with';
-    DateTime? startDate = DateTime.parse(appointmentTable?.appointmentDate ??
-        appointmentNotificationTable?.appointmentDate ??
-        '');
-    TimeOfDay? tempSelectedTime = parseTimeList(
-            appointmentTable?.appointmentTime ??
-                appointmentNotificationTable?.appointmentTime ??
-                '')
-        .first;
-    String time = DateFormat("HH:mm a").format(
-        DateTime(2000, 1, 1, tempSelectedTime.hour, tempSelectedTime.minute));
-    String description =
-        '$nameOfDoctor On ${DateFormat('d MMM, yyyy').format(startDate)} at $time';
-
-    // await flutterLocalNotificationsPlugin.zonedSchedule(
-    //   result,
-    //   title,
-    //   description,
-    //   currentNotificationDateTime,
-    //   NotificationDetails(
-    //       android: androidNotificationDetails, iOS: iosNotificationDetails),
-    //   androidScheduleMode: AndroidScheduleMode.alarmClock,
-    //   payload: notificationPayload,
-    //   uiLocalNotificationDateInterpretation:
-    //       UILocalNotificationDateInterpretation.absoluteTime,
-    //   matchDateTimeComponents: DateTimeComponents.dateAndTime,
-    // );
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      result,
-      title,
-      description,
-      currentNotificationDateTime,
-      NotificationDetails(android: androidNotificationDetails, iOS: iosNotificationDetails),
-      androidScheduleMode: AndroidScheduleMode.alarmClock,
-      payload: notificationPayload,
-      matchDateTimeComponents: DateTimeComponents.dateAndTime,
-    );
-
-  }
+  // Future<void> scheduleAppointmentNotification({
+  //   required int result,
+  //   required tz.TZDateTime currentNotificationDateTime,
+  //   AppointmentTable? appointmentTable,
+  //   AppointmentNotificationTable? appointmentNotificationTable,
+  //   required String notificationPayload,
+  // }) async {
+  //   final Int64List vibrationPattern = Int64List(4);
+  //   vibrationPattern[0] = 0;
+  //   vibrationPattern[1] = 4000;
+  //   vibrationPattern[2] = 4000;
+  //   vibrationPattern[3] = 4000;
+  //
+  //   AndroidNotificationDetails androidNotificationDetails =
+  //       AndroidNotificationDetails(
+  //     'daily_notification_channel_id_${appointmentTable?.mSoundTitle ?? appointmentNotificationTable?.mSoundTitle}',
+  //     'Daily Notification Channel ${appointmentTable?.mSoundTitle ?? appointmentNotificationTable?.mSoundTitle}',
+  //     channelDescription: 'Daily Notification Description ${appointmentTable?.mSoundTitle ?? appointmentNotificationTable?.mSoundTitle}' ,
+  //     playSound: true,
+  //     audioAttributesUsage: AudioAttributesUsage.alarm,
+  //     category: AndroidNotificationCategory.call,
+  //     additionalFlags: Int32List.fromList(<int>[4]),
+  //     vibrationPattern: vibrationPattern,
+  //     sound: appointmentTable?.mIsFromDevice == 1 ||
+  //             appointmentNotificationTable?.mIsFromDevice == 1
+  //         ? UriAndroidNotificationSound(appointmentTable?.mDeviceSoundUri ??
+  //             appointmentNotificationTable!.mDeviceSoundUri??'')
+  //         : RawResourceAndroidNotificationSound(appointmentTable?.mSoundTitle
+  //                 ?.trim()
+  //                 .toLowerCase()
+  //                 .replaceAll(' ', '') ??
+  //             appointmentNotificationTable?.mSoundTitle
+  //                 ?.trim()
+  //                 .toLowerCase()
+  //                 .replaceAll(' ', '')),
+  //     visibility: NotificationVisibility.public,
+  //     importance: Importance.max,
+  //     priority: Priority.max,
+  //     ticker: 'ticker',
+  //     fullScreenIntent: true,
+  //     actions: <AndroidNotificationAction>[
+  //       AndroidNotificationAction(
+  //         acceptId,
+  //         'Accept',
+  //         titleColor: Get.theme.colorScheme.primary,
+  //       ),
+  //       // AndroidNotificationAction(
+  //       //   reScheduleId,
+  //       //   'Re-Schedule',
+  //       //   titleColor: Get.theme.colorScheme.primary,
+  //       //   // icon: DrawableResourceAndroidBitmap('secondary_icon'),
+  //       // ),
+  //       AndroidNotificationAction(
+  //         snoozeId,
+  //         'Snooze for 5 minutes',
+  //         titleColor: Get.theme.colorScheme.secondary,
+  //         // icon: DrawableResourceAndroidBitmap('secondary_icon'),
+  //       ),
+  //     ],
+  //   );
+  //
+  //   DarwinNotificationDetails iosNotificationDetails =
+  //       DarwinNotificationDetails(
+  //     sound: appointmentTable != null
+  //         ? "${appointmentTable.mSoundTitle?.trim().toLowerCase().replaceAll(' ', '')}.mp3"
+  //         : '${appointmentNotificationTable?.mSoundTitle?.trim().toLowerCase().replaceAll(' ', '')}.mp3',
+  //     presentSound: true,
+  //     categoryIdentifier: darwinNotificationCategoryPlain,
+  //   );
+  //   String nameOfFamilyMember = await getFamilyMember(appointmentTable != null
+  //           ? appointmentTable.bookedForFamilyMemberId
+  //           : appointmentNotificationTable?.bookedForFamilyMemberId ?? 1)
+  //       .then((value) {
+  //     return value!.name!;
+  //   });
+  //
+  //   String nameOfDoctor = await getDoctorData(appointmentTable != null
+  //           ? appointmentTable.doctorId
+  //           : appointmentNotificationTable?.doctorId ?? 1)
+  //       .then((value) {
+  //     return value!.name!;
+  //   });
+  //
+  //   String title =
+  //       'Appointment For $nameOfFamilyMember Is Schedule with';
+  //   DateTime? startDate = DateTime.parse(appointmentTable?.appointmentDate ??
+  //       appointmentNotificationTable?.appointmentDate ??
+  //       '');
+  //   TimeOfDay? tempSelectedTime = parseTimeList(
+  //           appointmentTable?.appointmentTime ??
+  //               appointmentNotificationTable?.appointmentTime ??
+  //               '')
+  //       .first;
+  //   String time = DateFormat("HH:mm a").format(
+  //       DateTime(2000, 1, 1, tempSelectedTime.hour, tempSelectedTime.minute));
+  //   String description =
+  //       '$nameOfDoctor On ${DateFormat('d MMM, yyyy').format(startDate)} at $time';
+  //
+  //   // await flutterLocalNotificationsPlugin.zonedSchedule(
+  //   //   result,
+  //   //   title,
+  //   //   description,
+  //   //   currentNotificationDateTime,
+  //   //   NotificationDetails(
+  //   //       android: androidNotificationDetails, iOS: iosNotificationDetails),
+  //   //   androidScheduleMode: AndroidScheduleMode.alarmClock,
+  //   //   payload: notificationPayload,
+  //   //   uiLocalNotificationDateInterpretation:
+  //   //       UILocalNotificationDateInterpretation.absoluteTime,
+  //   //   matchDateTimeComponents: DateTimeComponents.dateAndTime,
+  //   // );
+  //   await flutterLocalNotificationsPlugin.zonedSchedule(
+  //     result,
+  //     title,
+  //     description,
+  //     currentNotificationDateTime,
+  //     NotificationDetails(android: androidNotificationDetails, iOS: iosNotificationDetails),
+  //     androidScheduleMode: AndroidScheduleMode.alarmClock,
+  //     payload: notificationPayload,
+  //     matchDateTimeComponents: DateTimeComponents.dateAndTime,
+  //   );
+  //
+  // }
 
   DateTime getDateTimeFromTZDateTime(
       [tz.TZDateTime? currentNotificationDateTime]) {

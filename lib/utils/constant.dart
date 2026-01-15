@@ -25,6 +25,7 @@ class Constant {
 
   static const notificationStartID = 1000;
 
+  static const String idAppointmentTitle = 'idAppointmentTitle';
   static const idDosageSelect = 'idDosageSelect';
 
   static var idSelectedDosage = 'idSelectedDosage';

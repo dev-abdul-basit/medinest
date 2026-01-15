@@ -288,4 +288,5 @@ final Map<String, String> azAZ = {
   'txtProfileIsUpdatedSuccessfully': "Profil uğurla yenilənir!",
   'txtProfileIsAddedSuccessfully': "Profil uğurla əlavə olunur!",
   'txtCheckYourInternetConnectivity': "Lütfən, internet bağlantınızı yoxlayın",
+
 };

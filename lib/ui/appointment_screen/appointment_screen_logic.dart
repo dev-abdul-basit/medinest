@@ -79,14 +79,14 @@ class AppointmentScreenLogic extends GetxController
               .compareTo(DateTime.parse(a!.acceptTime!)));
         Debug.printLog(
             ":: appointmentHistoryTableList.isNotEmpty2 ::: ${tempAppointmentHistoryTableList.isNotEmpty}");
-        if (tempAppointmentHistoryTableList.isNotEmpty) {
-          appointmentTable!.isAccept =
-              tempAppointmentHistoryTableList.first!.isAccept;
-          appointmentTable.isReSchedule =
-              tempAppointmentHistoryTableList.first!.isReSchedule;
-          Debug.printLog(
-              ":: appointmentTable.isReSchedule ::: ${appointmentTable.isReSchedule}");
-        }
+        // if (tempAppointmentHistoryTableList.isNotEmpty) {
+        //   appointmentTable!.isAccept =
+        //       tempAppointmentHistoryTableList.first!.isAccept;
+        //   appointmentTable.isReSchedule =
+        //       tempAppointmentHistoryTableList.first!.isReSchedule;
+        //   Debug.printLog(
+        //       ":: appointmentTable.isReSchedule ::: ${appointmentTable.isReSchedule}");
+        // }
       }
 
       update([Constant.idAppointmentListItem]);

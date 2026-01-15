@@ -288,4 +288,5 @@ final Map<String, String> bnIN = {
   'txtProfileIsUpdatedSuccessfully': "প্রোফাইল সফলভাবে আপডেট করা হয়!",
   'txtProfileIsAddedSuccessfully': "প্রোফাইল সফলভাবে যুক্ত করা হয়!",
   'txtCheckYourInternetConnectivity': "অনুগ্রহ করে আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন",
+
 };

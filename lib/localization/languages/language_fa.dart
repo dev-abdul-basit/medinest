@@ -287,5 +287,7 @@ final Map<String, String> faIR = {
   'txtYouHaveSuccessfullyDeletedMedicine': "شما با موفقیت دارو را حذف کرده اید!",
   'txtProfileIsUpdatedSuccessfully': "پروفایل با موفقیت به روز می شود!",
   'txtProfileIsAddedSuccessfully': "پروفایل با موفقیت اضافه می شود!",
-  'txtCheckYourInternetConnectivity': "لطفا اتصال به اینترنت خود را بررسی کنید"
+  'txtCheckYourInternetConnectivity': "لطفا اتصال به اینترنت خود را بررسی کنید",
+
+
 };

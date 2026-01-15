@@ -286,4 +286,5 @@ final Map<String, String> arSA = {
   'txtProfileIsUpdatedSuccessfully': "يتم تحديث الملف الشخصي بنجاح!",
   'txtProfileIsAddedSuccessfully': "يتم إضافة ملف التعريف بنجاح!",
   'txtCheckYourInternetConnectivity': "الرجاء التحقق من اتصالك بالإنترنت",
+
 };

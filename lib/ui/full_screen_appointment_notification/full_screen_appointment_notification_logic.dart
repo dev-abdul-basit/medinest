@@ -146,11 +146,11 @@ class FullScreenAppointmentNotificationLogic extends GetxController {
         notificationTime.toIso8601String();
     await flutterLocalNotificationsPlugin
         .cancel(appointmentNotificationTable!.anId!);
-    await NotificationHelper().scheduleAppointmentNotification(
-        result: appointmentNotificationTable!.anId!,
-        currentNotificationDateTime: scheduledDate,
-        notificationPayload: appointmentNotificationTable!.toRawJson(),
-        appointmentNotificationTable: appointmentNotificationTable!);
+    // await NotificationHelper().scheduleAppointmentNotification(
+    //     result: appointmentNotificationTable!.anId!,
+    //     currentNotificationDateTime: scheduledDate,
+    //     notificationPayload: appointmentNotificationTable!.toRawJson(),
+    //     appointmentNotificationTable: appointmentNotificationTable!);
     isShowProgress = false;
     update([Constant.notificationAlert]);
     // if (Platform.isAndroid)SystemNavigator.pop();

@@ -122,13 +122,18 @@ class MedicineHistoryScreenPage extends StatelessWidget {
 
           Color? otherColor;
 
+
           if (medicineData.mColorPhotoType == "shadeColor") {
-            Color color = Color(int.parse(medicineData.mColorPhoto!));
-            String colorString = color.toString();
-            String valueString = colorString.split('(0x')[1].split(')')[0];
-            int value = int.parse(valueString, radix: 16);
-            otherColor = Color(value);
+            otherColor = Color(int.parse(medicineData.mColorPhoto!, radix: 16));
           }
+
+          // if (medicineData.mColorPhotoType == "shadeColor") {
+          //   Color color = Color(int.parse(medicineData.mColorPhoto!));
+          //   String colorString = color.toString();
+          //   String valueString = colorString.split('(0x')[1].split(')')[0];
+          //   int value = int.parse(valueString, radix: 16);
+          //   otherColor = Color(value);
+          // }
           Uint8List? imageData = logic.allShapeList
               .where((element) => element.sId == medicineData.mSelectedShapeId!)
               .first
@@ -269,7 +274,7 @@ class MedicineHistoryScreenPage extends StatelessWidget {
                                 //     '${medicineData.mDosage} ${medicineData.mUnits!.capitalizeFirst}',
                                 //     textColor: Color.lerp(
                                 //         otherColor, Colors.black, 0.60)!,
-                                //     fontWeight: FontWeight.w500,
+                                //     fontWeight: FontWeight.w500,//     fontWeight: FontWeight.w500,
                                 //     fontSize: AppFontSize.size_11),
                               ],
                             ),

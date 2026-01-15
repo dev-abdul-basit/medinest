@@ -288,4 +288,5 @@ final Map<String, String> esES = {
   'txtProfileIsUpdatedSuccessfully': "¡El perfil se actualiza con éxito!",
   'txtProfileIsAddedSuccessfully': "¡El perfil se agrega con éxito!",
   'txtCheckYourInternetConnectivity': "Por favor verifique su conectividad a Internet",
+
 };

@@ -34,8 +34,8 @@ class AddOrEditAppointmentPage extends StatelessWidget {
                 backgroundColor: Get.theme.colorScheme.background,
                 appBar: CommonAppBar(
                   title: logic.isEdit
-                      ? 'txtUpdateAppointment'.tr
-                      : 'txtCreateAppointment'.tr,
+                      ? 'txtUpdateJournal'.tr
+                      : 'txtCreateJournal'.tr,
                 ),
                 body: SingleChildScrollView(
                   child: Form(
@@ -46,212 +46,230 @@ class AddOrEditAppointmentPage extends StatelessWidget {
                       child: Column(
                         children: [
                           SizedBox(
-                            height: AppSizes.height_2,
+                            height: AppSizes.height_2
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              GetBuilder<AddOrEditAppointmentLogic>(
-                                  id: Constant.idSelectMember,
-                                  builder: (logic) {
-                                    return DropdownWithPrefixSelectMember(
-                                      prefix: Padding(
-                                        padding: EdgeInsetsDirectional.only(
-                                            start: AppSizes.width_4_5,
-                                            end: AppSizes.width_3_6),
-                                        child: Image.asset(
-                                            Assets.iconsIcUserName,
-                                            width: AppSizes.width_5_5,
-                                            height: AppSizes.width_5_5),
-                                      ),
-                                      familyMemberItems: logic.familyMembersList.reversed.toList()
-                                          .where((element) =>
-                                              element.mIsDeleted != 1)
-                                          .toList(),
-                                      selectedFamilyMemberItem:
-                                          logic.selectedFamilyMembers,
-                                      onChangedFamilyMember: (value) {
-                                        logic.selectedFamilyMembers = value!;
-                                        logic.update([Constant.idSelectMember]);
-                                      },
-                                    );
-                                  }),
-                              SizedBox(
-                                width: AppSizes.width_2,
-                              ),
-                              InkWell(
-                                onTap: () =>
-                                    Get.find<AddOrEditAppointmentLogic>()
-                                        .goToAddMember(),
-                                child: Image.asset(
-                                  Assets.iconsIcPlus,
-                                  gaplessPlayback: true,
-                                  height: AppSizes.width_10,
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisSize: MainAxisSize.max,
+                          //   children: [
+                          //     GetBuilder<AddOrEditAppointmentLogic>(
+                          //         id: Constant.idSelectMember,
+                          //         builder: (logic) {
+                          //           return DropdownWithPrefixSelectMember(
+                          //             prefix: Padding(
+                          //               padding: EdgeInsetsDirectional.only(
+                          //                   start: AppSizes.width_4_5,
+                          //                   end: AppSizes.width_4_5),
+                          //               child: Image.asset(
+                          //                   Assets.iconsIcUserName,
+                          //                   width: AppSizes.width_5_5,
+                          //                   height: AppSizes.width_5_5),
+                          //             ),
+                          //             familyMemberItems: logic.familyMembersList.reversed.toList()
+                          //                 .where((element) =>
+                          //                     element.mIsDeleted != 1)
+                          //                 .toList(),
+                          //             selectedFamilyMemberItem:
+                          //                 logic.selectedFamilyMembers,
+                          //             onChangedFamilyMember: (value) {
+                          //               logic.selectedFamilyMembers = value!;
+                          //               logic.update([Constant.idSelectMember]);
+                          //             },
+                          //           );
+                          //         }),
+                          //     // SizedBox(
+                          //     //   width: AppSizes.width_2,
+                          //     // ),
+                          //     // InkWell(
+                          //     //   onTap: () =>
+                          //     //       Get.find<AddOrEditAppointmentLogic>()
+                          //     //           .goToAddMember(),
+                          //     //   child: Image.asset(
+                          //     //     Assets.iconsIcPlus,
+                          //     //     gaplessPlayback: true,
+                          //     //     height: AppSizes.width_10,
+                          //     //   ),
+                          //     // ),
+                          //   ],
+                          // ),
                           SizedBox(
-                            height: AppSizes.height_0_5,
+                              height: AppSizes.height_2
                           ),
-                          Row(
-                            children: [
-                              CommonText(
-                                  text: 'txtClick'.tr,
-                                  textColor: Get.theme.colorScheme.onSurface,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: AppFontSize.size_10),
-                              CommonText(
-                                  text: '+',
-                                  textColor: Get.theme.colorScheme.onSecondary,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: AppFontSize.size_12),
-                              CommonText(
-                                  text: 'txtToAddMember'.tr,
-                                  textColor: Get.theme.colorScheme.onSurface,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: AppFontSize.size_10),
-                            ],
-                          ),
-                          SizedBox(
-                            height: AppSizes.height_2,
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              GetBuilder<AddOrEditAppointmentLogic>(
-                                  id: Constant.idSelectDoctor,
-                                  builder: (logic) {
-                                    return DropdownWithPrefixSelectDoctor(
-                                      prefix: Padding(
-                                        padding: EdgeInsetsDirectional.only(
-                                            start: AppSizes.width_4_5,
-                                            end: AppSizes.width_3_6),
-                                        child: Image.asset(
-                                            Assets.iconsIcDoctorName,
-                                            width: AppSizes.width_5_5,
-                                            height: AppSizes.width_5_5),
-                                      ),
-                                      doctorsListItems: logic.doctorsList.reversed.toList(),
-                                      selectedDoctorItem:
-                                          logic.selectedDoctorItem,
-                                      onChangedDoctor: (value) {
-                                        logic.selectedDoctorItem = value!;
-                                        logic.update([Constant.idSelectDoctor]);
-                                      },
-                                    );
-                                  }),
-                              SizedBox(
-                                width: AppSizes.width_2,
-                              ),
-                              InkWell(
-                                onTap: () =>
-                                    Get.find<AddOrEditAppointmentLogic>()
-                                        .goToAddDoctor(),
-                                child: Image.asset(
-                                  Assets.iconsIcPlus,
-                                  gaplessPlayback: true,
-                                  height: AppSizes.width_10,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: AppSizes.height_0_5,
-                          ),
-                          Row(
-                            children: [
-                              CommonText(
-                                  text: 'txtClick'.tr,
-                                  textColor: Get.theme.colorScheme.onSurface,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: AppFontSize.size_10),
-                              CommonText(
-                                  text: '+',
-                                  textColor: Get.theme.colorScheme.onSecondary,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: AppFontSize.size_12),
-                              CommonText(
-                                  text: 'txtToAddDoctor'.tr,
-                                  textColor: Get.theme.colorScheme.onSurface,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: AppFontSize.size_10),
-                            ],
-                          ),
-                          SizedBox(
-                            height: AppSizes.height_2,
-                          ),
+                          // SizedBox(
+                          //   height: AppSizes.height_0_5,
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     CommonText(
+                          //         text: 'txtClick'.tr,
+                          //         textColor: Get.theme.colorScheme.onSurface,
+                          //         fontWeight: FontWeight.w400,
+                          //         fontSize: AppFontSize.size_10),
+                          //     CommonText(
+                          //         text: '+',
+                          //         textColor: Get.theme.colorScheme.onSecondary,
+                          //         fontWeight: FontWeight.w800,
+                          //         fontSize: AppFontSize.size_12),
+                          //     CommonText(
+                          //         text: 'txtToAddMember'.tr,
+                          //         textColor: Get.theme.colorScheme.onSurface,
+                          //         fontWeight: FontWeight.w400,
+                          //         fontSize: AppFontSize.size_10),
+                          //   ],
+                          // ),
+                          // SizedBox(
+                          //   height: AppSizes.height_2,
+                          // ),
+                          // Row(
+                          //   mainAxisSize: MainAxisSize.max,
+                          //   children: [
+                          //     GetBuilder<AddOrEditAppointmentLogic>(
+                          //         id: Constant.idSelectDoctor,
+                          //         builder: (logic) {
+                          //           return DropdownWithPrefixSelectDoctor(
+                          //             prefix: Padding(
+                          //               padding: EdgeInsetsDirectional.only(
+                          //                   start: AppSizes.width_4_5,
+                          //                   end: AppSizes.width_3_6),
+                          //               child: Image.asset(
+                          //                   Assets.iconsIcDoctorName,
+                          //                   width: AppSizes.width_5_5,
+                          //                   height: AppSizes.width_5_5),
+                          //             ),
+                          //             doctorsListItems: logic.doctorsList.reversed.toList(),
+                          //             selectedDoctorItem:
+                          //                 logic.selectedDoctorItem,
+                          //             onChangedDoctor: (value) {
+                          //               logic.selectedDoctorItem = value!;
+                          //               logic.update([Constant.idSelectDoctor]);
+                          //             },
+                          //           );
+                          //         }),
+                          //     SizedBox(
+                          //       width: AppSizes.width_2,
+                          //     ),
+                          //     InkWell(
+                          //       onTap: () =>
+                          //           Get.find<AddOrEditAppointmentLogic>()
+                          //               .goToAddDoctor(),
+                          //       child: Image.asset(
+                          //         Assets.iconsIcPlus,
+                          //         gaplessPlayback: true,
+                          //         height: AppSizes.width_10,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                          // SizedBox(
+                          //   height: AppSizes.height_0_5,
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     CommonText(
+                          //         text: 'txtClick'.tr,
+                          //         textColor: Get.theme.colorScheme.onSurface,
+                          //         fontWeight: FontWeight.w400,
+                          //         fontSize: AppFontSize.size_10),
+                          //     CommonText(
+                          //         text: '+',
+                          //         textColor: Get.theme.colorScheme.onSecondary,
+                          //         fontWeight: FontWeight.w800,
+                          //         fontSize: AppFontSize.size_12),
+                          //     CommonText(
+                          //         text: 'txtToAddDoctor'.tr,
+                          //         textColor: Get.theme.colorScheme.onSurface,
+                          //         fontWeight: FontWeight.w400,
+                          //         fontSize: AppFontSize.size_10),
+                          //   ],
+                          // ),
+                          // SizedBox(
+                          //   height: AppSizes.height_2,
+                          // ),
+                          // GetBuilder<AddOrEditAppointmentLogic>(
+                          //     id: Constant.idSelectStartDate,
+                          //     builder: (logic) {
+                          //       return _settingItem(
+                          //         icon: Assets.iconsIcCalendar,
+                          //         text: '${"txtSelectDate".tr} *',
+                          //         onTap: logic.selectStartDate,
+                          //         defaultIcon: Assets.iconsIcDropdown,
+                          //         defaultText: logic.startDate != null
+                          //             ? DateFormat('d MMM, yyyy')
+                          //                 .format(logic.startDate!)
+                          //             : null,
+                          //       );
+                          //     }),
+                          // SizedBox(
+                          //   height: AppSizes.height_2,
+                          // ),
+                          // GetBuilder<AddOrEditAppointmentLogic>(
+                          //     id: Constant.idSelectedTime,
+                          //     builder: (logic) {
+                          //       return _settingItem(
+                          //         icon: Assets.iconsIcWatch,
+                          //         text: '${"txtSelectTime".tr} *',
+                          //         defaultText:
+                          //             logic.tempSelectedTime?.format(context),
+                          //         onTap: () => logic.selectTime(context),
+                          //       );
+                          //     }),
+                          // SizedBox(
+                          //   height: AppSizes.height_2,
+                          // ),
+                          // if (Platform.isAndroid)
+                          //   GetBuilder<AddOrEditAppointmentLogic>(
+                          //       id: Constant.idSelectAlertSound,
+                          //       builder: (logic) {
+                          //         return _settingItem(
+                          //           icon: Assets.iconsIcSound,
+                          //           text: '${"txtChooseSound".tr} *',
+                          //           defaultIcon: Assets.iconsIcRightArrow,
+                          //           onTap: logic.gotoSelectAlertSound,
+                          //           defaultText: logic.pickedSoundTitle,
+                          //         );
+                          //       }),
+                          // if (Platform.isAndroid)
+                          //   SizedBox(
+                          //     height: AppSizes.height_2,
+                          //   ),
+                          // GetBuilder<AddOrEditAppointmentLogic>(
+                          //     id: Constant.idSelectMinutesBeforeTime,
+                          //     builder: (logic) {
+                          //       return DropdownWithPrefixMinutes(
+                          //         prefix: Padding(
+                          //           padding: EdgeInsetsDirectional.only(
+                          //               start: AppSizes.width_4_6,
+                          //               end: AppSizes.width_3_2),
+                          //           child: Image.asset(Assets.iconsIcReminder,
+                          //               width: AppSizes.width_6,
+                          //               height: AppSizes.width_6),
+                          //         ),
+                          //         items: Constant.minutesList,
+                          //         selectedItem: logic.minutesChoose,
+                          //         onChanged: (value) {
+                          //           logic.minutesChoose = value!;
+                          //           logic.update(
+                          //               [Constant.idSelectMinutesBeforeTime]);
+                          //         },
+                          //       );
+                          //     }),
+                          // SizedBox(
+                          //   height: AppSizes.height_2,
+                          // ),
                           GetBuilder<AddOrEditAppointmentLogic>(
-                              id: Constant.idSelectStartDate,
+                              id: Constant.idAppointmentTitle,
                               builder: (logic) {
-                                return _settingItem(
-                                  icon: Assets.iconsIcCalendar,
-                                  text: '${"txtSelectDate".tr} *',
-                                  onTap: logic.selectStartDate,
-                                  defaultIcon: Assets.iconsIcDropdown,
-                                  defaultText: logic.startDate != null
-                                      ? DateFormat('d MMM, yyyy')
-                                          .format(logic.startDate!)
-                                      : null,
+                                return CommonTextFormFieldWithSuffix(
+                                  controller: logic.titleController,
+                                  hintText: 'Enter Title'.tr,
+                                  fillColor: Get.theme.colorScheme.surfaceVariant,
+                                  keyboardType: TextInputType.text,
+                                  maxLines: 1,
+                                  prefixIcon: Assets.iconsIcDescription,
+                                  validatorText: 'Enter Title'.tr,
                                 );
                               }),
-                          SizedBox(
-                            height: AppSizes.height_2,
-                          ),
-                          GetBuilder<AddOrEditAppointmentLogic>(
-                              id: Constant.idSelectedTime,
-                              builder: (logic) {
-                                return _settingItem(
-                                  icon: Assets.iconsIcWatch,
-                                  text: '${"txtSelectTime".tr} *',
-                                  defaultText:
-                                      logic.tempSelectedTime?.format(context),
-                                  onTap: () => logic.selectTime(context),
-                                );
-                              }),
-                          SizedBox(
-                            height: AppSizes.height_2,
-                          ),
-                          if (Platform.isAndroid)
-                            GetBuilder<AddOrEditAppointmentLogic>(
-                                id: Constant.idSelectAlertSound,
-                                builder: (logic) {
-                                  return _settingItem(
-                                    icon: Assets.iconsIcSound,
-                                    text: '${"txtChooseSound".tr} *',
-                                    defaultIcon: Assets.iconsIcRightArrow,
-                                    onTap: logic.gotoSelectAlertSound,
-                                    defaultText: logic.pickedSoundTitle,
-                                  );
-                                }),
-                          if (Platform.isAndroid)
-                            SizedBox(
-                              height: AppSizes.height_2,
-                            ),
-                          GetBuilder<AddOrEditAppointmentLogic>(
-                              id: Constant.idSelectMinutesBeforeTime,
-                              builder: (logic) {
-                                return DropdownWithPrefixMinutes(
-                                  prefix: Padding(
-                                    padding: EdgeInsetsDirectional.only(
-                                        start: AppSizes.width_4_6,
-                                        end: AppSizes.width_3_2),
-                                    child: Image.asset(Assets.iconsIcReminder,
-                                        width: AppSizes.width_6,
-                                        height: AppSizes.width_6),
-                                  ),
-                                  items: Constant.minutesList,
-                                  selectedItem: logic.minutesChoose,
-                                  onChanged: (value) {
-                                    logic.minutesChoose = value!;
-                                    logic.update(
-                                        [Constant.idSelectMinutesBeforeTime]);
-                                  },
-                                );
-                              }),
-                          SizedBox(
-                            height: AppSizes.height_2,
-                          ),
+                          SizedBox(height: AppSizes.height_2),
+
                           GetBuilder<AddOrEditAppointmentLogic>(
                               id: Constant.idUserComment,
                               builder: (logic) {

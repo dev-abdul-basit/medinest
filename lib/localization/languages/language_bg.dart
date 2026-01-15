@@ -286,4 +286,5 @@ final Map<String, String> bgBUL = {
   'txtProfileIsUpdatedSuccessfully': "Профилът се актуализира успешно!",
   'txtProfileIsAddedSuccessfully': "Профилът се добавя успешно!",
   'txtCheckYourInternetConnectivity': "Моля, проверете вашата интернет връзка",
+
 };

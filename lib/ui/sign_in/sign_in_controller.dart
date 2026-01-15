@@ -15,6 +15,8 @@ import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
 import 'package:medinest/utils/preference.dart';
 import 'package:medinest/utils/utils.dart';
+
+import '../../services/google_auth_service.dart';
 // import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class SignInController extends GetxController {
@@ -27,11 +29,13 @@ class SignInController extends GetxController {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String? fcmToken;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>[
-      'email',
-    ],
-  );
+
+  // final GoogleSignIn _googleSignIn = GoogleSignIn(
+  //   scopes: <String>[
+  //     'email',
+  //   ],
+  // );
+
 
   @override
   void onInit() {
@@ -51,19 +55,25 @@ class SignInController extends GetxController {
           isShowProgress = true;
           update([Constant.idProVersionProgress]);
           var auth = await _auth.signInWithEmailAndPassword(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim());
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
 
-          Preference.shared
-              .setString(Preference.firebaseAuthUid, auth.user!.uid);
-          Preference.shared
-              .setString(Preference.firebaseEmail, auth.user!.email!);
+          Preference.shared.setString(
+            Preference.firebaseAuthUid,
+            auth.user!.uid,
+          );
+          Preference.shared.setString(
+            Preference.firebaseEmail,
+            auth.user!.email!,
+          );
 
           Debug.printLog(
-              "Preference.shared.getProfileAdded() :${Preference.shared.getProfileAdded()}");
+            "Preference.shared.getProfileAdded() :${Preference.shared.getProfileAdded()}",
+          );
           if (Preference.shared.getProfileAdded()) {
-            List<UserTable> userDataList =
-                await DataBaseHelper.instance.getUserData(auth.user!.email!);
+            List<UserTable> userDataList = await DataBaseHelper.instance
+                .getUserData(auth.user!.email!);
             if (userDataList.isNotEmpty) {
               Debug.printLog("userDataList.isNotEmpty :${userDataList.length}");
               await FireStoreHelper().onSync();
@@ -73,8 +83,10 @@ class SignInController extends GetxController {
               Preference.shared.setIsUserLogin(true);
               emailController.text = '';
               passwordController.text = '';
-              Get.offAllNamed(AppRoutes.home,
-                  parameters: {Constant.idIsFromLogIn: "true"});
+              Get.offAllNamed(
+                AppRoutes.home,
+                parameters: {Constant.idIsFromLogIn: "true"},
+              );
             } else {
               Debug.printLog("userDataList.isEmpty :${userDataList.length}");
 
@@ -99,16 +111,20 @@ class SignInController extends GetxController {
           update([Constant.idProVersionProgress]);
           if (firebaseAuthException.toString().contains('wrong-password')) {
             Utils.showToast(context, 'Invalid Password, please try again!');
-          } else if (firebaseAuthException
-              .toString()
-              .contains('user-not-found')) {
+          } else if (firebaseAuthException.toString().contains(
+            'user-not-found',
+          )) {
             Utils.showToast(
-                context, 'User not found, please check your email again!');
-          }else if (firebaseAuthException
-              .toString()
-              .contains('too-many-requests')) {
+              context,
+              'User not found, please check your email again!',
+            );
+          } else if (firebaseAuthException.toString().contains(
+            'too-many-requests',
+          )) {
             Utils.showToast(
-                context, 'You have tried wrong password too many times, please try again after some time');
+              context,
+              'You have tried wrong password too many times, please try again after some time',
+            );
           } else {
             Utils.showToast(context, firebaseAuthException.toString());
           }
@@ -124,92 +140,179 @@ class SignInController extends GetxController {
     return emailRegex.hasMatch(email);
   }
 
-  loginWithGoogle(context) async {
-    if (await InternetConnectivity.isInternetConnect(context)) {
-      try {
-        isShowProgress = true;
-        update([Constant.idProVersionProgress]);
-        await _auth.signOut();
-        await _googleSignIn.signOut();
+  /// Google Sign-In (Using Centralized Service)
+  /// Google Sign-In (Using Centralized Service)
 
-        GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
 
-        if (googleSignInAccount != null) {
-          GoogleSignInAuthentication googleSignInAuthentication =
-              await googleSignInAccount.authentication;
+  loginWithGoogle(BuildContext context) async {
+    if (!await InternetConnectivity.isInternetConnect(context)) {
+      Utils.showToast(context, "txtCheckYourInternetConnectivity".tr);
+      return;
+    }
 
-          AuthCredential credential = GoogleAuthProvider.credential(
-            accessToken: googleSignInAuthentication.accessToken,
-            idToken: googleSignInAuthentication.idToken,
-          );
-          UserCredential? userCredential =
-              await _auth.signInWithCredential(credential).catchError((onErr) {
-            isShowProgress = false;
+    try {
+      isShowProgress = true;
+      update([Constant.idProVersionProgress]);
 
-            return Utils.showToast(context, onErr.toString());
-          });
-          if (userCredential.user != null) {
-            Preference.shared.setString(
-                Preference.firebaseAuthUid, userCredential.user!.uid);
-            Preference.shared.setString(
-                Preference.firebaseEmail, userCredential.user!.email!);
+      // Call your GoogleAuthService (handles auth + Firebase + prefs)
+      final result = await GoogleAuthService.instance.signInWithGoogle();
 
-            if (Preference.shared.getProfileAdded()) {
-              List<UserTable> userDataList = await DataBaseHelper.instance
-                  .getUserData(userCredential.user!.email!);
-              if (userDataList.isNotEmpty) {
-                await FireStoreHelper().onSync();
-                isShowProgress = false;
-                update([Constant.idProVersionProgress]);
-                Utils.showToast(context, "toastLogin".tr);
-                Preference.shared.setIsUserLogin(true);
-                emailController.text = '';
-                passwordController.text = '';
-                Get.offAllNamed(AppRoutes.home,
-                    parameters: {Constant.idIsFromLogIn: "true"});
-              } else {
-                await FireStoreHelper().checkAndSyncExistingUser();
-                isShowProgress = false;
-                update([Constant.idProVersionProgress]);
-                emailController.text = '';
-                passwordController.text = '';
-                Utils.showToast(context, "toastLogin".tr);
-                //Get.toNamed(AppRoutes.addOrEditProfile,parameters: {Constant.idIsEditProfile : "false"});
-              }
-            } else {
-              await FireStoreHelper().checkAndSyncExistingUser();
-              Utils.showToast(context, "toastLogin".tr);
-              emailController.text = '';
-              passwordController.text = '';
-              isShowProgress = false;
-              update([Constant.idProVersionProgress]);
-            }
+      if (result.isSuccess && result.credential != null) {
+        // Firestore sync & profile checks
+        if (Preference.shared.getProfileAdded()) {
+          List<UserTable> userDataList = await DataBaseHelper.instance
+              .getUserData(result.credential!.user!.email!);
+
+          if (userDataList.isNotEmpty) {
+            await FireStoreHelper().onSync();
+            Preference.shared.setIsUserLogin(true);
+            Utils.showToast(context, "toastLogin".tr);
+            Get.offAllNamed(AppRoutes.home,
+                parameters: {Constant.idIsFromLogIn: "true"});
           } else {
-            isShowProgress = false;
+            await FireStoreHelper().checkAndSyncExistingUser();
+            Utils.showToast(context, "toastLogin".tr);
+            // Optionally navigate to add profile screen
           }
         } else {
-          Utils.showToast(context, "Something Went Wrong");
-          isShowProgress = false;
+          await FireStoreHelper().checkAndSyncExistingUser();
+          Utils.showToast(context, "toastLogin".tr);
         }
-      } on Exception catch (e) {
-        Utils.showToast(context, e.toString());
-        isShowProgress = false;
-        update([Constant.idProVersionProgress]);
-      } finally {
-        isShowProgress = false;
-        update([Constant.idProVersionProgress]);
+
+        // Clear form
+        emailController.clear();
+        passwordController.clear();
+      } else if (result.isCancelled) {
+        Utils.showToast(context, "Google Sign-In cancelled");
+      } else if (result.errorMessage != null) {
+        Utils.showToast(context, result.errorMessage!);
       }
-    } else {
-      Utils.showToast(context, "txtCheckYourInternetConnectivity".tr);
+    } catch (e) {
+      Utils.showToast(context, e.toString());
+    } finally {
+      isShowProgress = false;
+      update([Constant.idProVersionProgress]);
     }
   }
+
+  // loginWithGoogle(context) async {
+  //   if (await InternetConnectivity.isInternetConnect(context)) {
+  //     try {
+  //       isShowProgress = true;
+  //       update([Constant.idProVersionProgress]);
+  //
+  //       final result =
+  //       await GoogleAuthService.instance.signInWithGoogle();
+  //
+  //       if (result.isSuccess) {
+  //         await FireStoreHelper().checkAndSyncExistingUser();
+  //         Get.offAllNamed(AppRoutes.home);
+  //       }
+  //       isShowProgress = false;
+  //       update([Constant.idProVersionProgress]);
+  //
+  //       emailController.text = '';
+  //       passwordController.text = '';
+  //
+  //     } catch (e) {
+  //       Utils.showToast(context, e.toString());
+  //       isShowProgress = false;
+  //       update([Constant.idProVersionProgress]);
+  //     }
+  //   } else {
+  //     Utils.showToast(context, "txtCheckYourInternetConnectivity".tr);
+  //   }
+  // }
+
+  //
+  // loginWithGoogle(context) async {
+  //   if (await InternetConnectivity.isInternetConnect(context)) {
+  //     try {
+  //       isShowProgress = true;
+  //       update([Constant.idProVersionProgress]);
+  //       await _auth.signOut();
+  //       await _googleSignIn.signOut();
+  //
+  //       GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+  //
+  //       if (googleSignInAccount != null) {
+  //         GoogleSignInAuthentication googleSignInAuthentication =
+  //             await googleSignInAccount.authentication;
+  //
+  //         AuthCredential credential = GoogleAuthProvider.credential(
+  //           accessToken: googleSignInAuthentication.accessToken,
+  //           idToken: googleSignInAuthentication.idToken,
+  //         );
+  //         UserCredential? userCredential =
+  //             await _auth.signInWithCredential(credential).catchError((onErr) {
+  //           isShowProgress = false;
+  //
+  //           return Utils.showToast(context, onErr.toString());
+  //         });
+  //         if (userCredential.user != null) {
+  //           Preference.shared.setString(
+  //               Preference.firebaseAuthUid, userCredential.user!.uid);
+  //           Preference.shared.setString(
+  //               Preference.firebaseEmail, userCredential.user!.email!);
+  //
+  //           if (Preference.shared.getProfileAdded()) {
+  //             List<UserTable> userDataList = await DataBaseHelper.instance
+  //                 .getUserData(userCredential.user!.email!);
+  //             if (userDataList.isNotEmpty) {
+  //               await FireStoreHelper().onSync();
+  //               isShowProgress = false;
+  //               update([Constant.idProVersionProgress]);
+  //               Utils.showToast(context, "toastLogin".tr);
+  //               Preference.shared.setIsUserLogin(true);
+  //               emailController.text = '';
+  //               passwordController.text = '';
+  //               Get.offAllNamed(AppRoutes.home,
+  //                   parameters: {Constant.idIsFromLogIn: "true"});
+  //             } else {
+  //               await FireStoreHelper().checkAndSyncExistingUser();
+  //               isShowProgress = false;
+  //               update([Constant.idProVersionProgress]);
+  //               emailController.text = '';
+  //               passwordController.text = '';
+  //               Utils.showToast(context, "toastLogin".tr);
+  //               //Get.toNamed(AppRoutes.addOrEditProfile,parameters: {Constant.idIsEditProfile : "false"});
+  //             }
+  //           } else {
+  //             await FireStoreHelper().checkAndSyncExistingUser();
+  //             Utils.showToast(context, "toastLogin".tr);
+  //             emailController.text = '';
+  //             passwordController.text = '';
+  //             isShowProgress = false;
+  //             update([Constant.idProVersionProgress]);
+  //           }
+  //         } else {
+  //           isShowProgress = false;
+  //         }
+  //       } else {
+  //         Utils.showToast(context, "Something Went Wrong");
+  //         isShowProgress = false;
+  //       }
+  //     } on Exception catch (e) {
+  //       Utils.showToast(context, e.toString());
+  //       isShowProgress = false;
+  //       update([Constant.idProVersionProgress]);
+  //     } finally {
+  //       isShowProgress = false;
+  //       update([Constant.idProVersionProgress]);
+  //     }
+  //   } else {
+  //     Utils.showToast(context, "txtCheckYourInternetConnectivity".tr);
+  //   }
+  // }
 
   String generateNonce([int length = 32]) {
     const charset =
         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
     final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-        .join();
+    return List.generate(
+      length,
+      (_) => charset[random.nextInt(charset.length)],
+    ).join();
   }
 
   String sha256ofString(String input) {
@@ -217,6 +320,7 @@ class SignInController extends GetxController {
     final digest = sha256.convert(bytes);
     return digest.toString();
   }
+
   //
   // loginWithApple(context) async {
   //   if (await InternetConnectivity.isInternetConnect(context)) {
@@ -297,9 +401,16 @@ class SignInController extends GetxController {
   //   }
   // }
 
+  // Future<void> logoutGoogle() async {
+  //   await _googleSignIn.signOut();
+  //   // Get.back();
+  // }
+
   Future<void> logoutGoogle() async {
-    await _googleSignIn.signOut();
-    // Get.back();
+
+    await GoogleAuthService.instance.signOut();
+
+    // await _googleAuthService.signOut();
   }
 
   void toggleShowHidePassword() {

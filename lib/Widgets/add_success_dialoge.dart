@@ -96,42 +96,42 @@ class AddSuccessDialog{
             SizedBox(
               height: AppSizes.height_0_5,
             ),
-            if(isFromAppointment)Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0,
-                  AppSizes.height_0_5,
-                  AppSizes.height_1,
-                  AppSizes.height_1),
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: '${'txtYourAppointmentWith'.tr} ',
-                        style:AppFontStyle.styleGrayLexendDeca13_400),
-                    TextSpan(
-                        text: successDescription??'',
-                        style: AppFontStyle.styleGrayLexendDeca13_700),
-                    TextSpan(
-                        text: ' ${'txtHasBeenOn'.tr} ',
-                        style: AppFontStyle.styleGrayLexendDeca13_400),
-                    TextSpan(
-                        text: '${
-                        DateFormat.EEEE('en_US').format(tempStartDate!)
-                      }, ',
-                        style: AppFontStyle.styleGrayLexendDeca13_700),
-                    TextSpan(
-                        text: DateFormat.MMMMd().format(tempStartDate!),
-                        style: AppFontStyle.styleGrayLexendDeca13_700),
-                    TextSpan(
-                        text: ' at ',
-                        style: AppFontStyle.styleGrayLexendDeca13_400),
-                    TextSpan(
-                        text: tempSelectedTime!.format(Get.context!),
-                        style: AppFontStyle.styleGrayLexendDeca13_700),
-                  ],
-                ),
-              ),
-            ),
+            // if(isFromAppointment)Padding(
+            //   padding: EdgeInsetsDirectional.fromSTEB(0,
+            //       AppSizes.height_0_5,
+            //       AppSizes.height_1,
+            //       AppSizes.height_1),
+            //   child: RichText(
+            //     textAlign: TextAlign.center,
+            //     text: TextSpan(
+            //       children: <TextSpan>[
+            //         TextSpan(
+            //             text: '${'txtYourAppointmentWith'.tr} ',
+            //             style:AppFontStyle.styleGrayLexendDeca13_400),
+            //         TextSpan(
+            //             text: successDescription??'',
+            //             style: AppFontStyle.styleGrayLexendDeca13_700),
+            //         TextSpan(
+            //             text: ' ${'txtHasBeenOn'.tr} ',
+            //             style: AppFontStyle.styleGrayLexendDeca13_400),
+            //         TextSpan(
+            //             text: '${
+            //             DateFormat.EEEE('en_US').format(tempStartDate!)
+            //           }, ',
+            //             style: AppFontStyle.styleGrayLexendDeca13_700),
+            //         TextSpan(
+            //             text: DateFormat.MMMMd().format(tempStartDate!),
+            //             style: AppFontStyle.styleGrayLexendDeca13_700),
+            //         TextSpan(
+            //             text: ' at ',
+            //             style: AppFontStyle.styleGrayLexendDeca13_400),
+            //         TextSpan(
+            //             text: tempSelectedTime!.format(Get.context!),
+            //             style: AppFontStyle.styleGrayLexendDeca13_700),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             if(!isFromAppointment)Container(
               width: AppSizes.fullWidth,
               margin:  EdgeInsets.symmetric(horizontal: AppSizes.width_5),

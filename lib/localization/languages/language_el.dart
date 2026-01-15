@@ -288,4 +288,5 @@ final Map<String, String> elGR = {
   'txtProfileIsUpdatedSuccessfully': "Το προφίλ ενημερώνεται με επιτυχία!",
   'txtProfileIsAddedSuccessfully': "Το προφίλ προστίθεται με επιτυχία!",
   'txtCheckYourInternetConnectivity': "Παρακαλώ ελέγξτε τη σύνδεσή σας στο Διαδίκτυο",
+
 };

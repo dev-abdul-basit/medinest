@@ -42,6 +42,8 @@ class AddOrEditAppointmentLogic extends GetxController {
   String? minutesChoose;
 
   TextEditingController commentController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+
 
   bool isEdit = false;
   bool isReSchedule = false;
@@ -69,6 +71,8 @@ class AddOrEditAppointmentLogic extends GetxController {
 
   dynamic args = Get.arguments;
   AppointmentTable? appointmentData;
+
+
 
   @override
   Future<void> onInit() async {
@@ -98,30 +102,32 @@ class AddOrEditAppointmentLogic extends GetxController {
         appointmentHistoryTable = args[3];
       }
       if (isEdit) {
-        pickedSoundUri = appointmentData?.mDeviceSoundUri ?? '';
-        startDate = DateTime.parse(appointmentData!.appointmentDate!);
-        pickedSoundType = appointmentData?.mSoundType ?? '';
-        pickedSoundTitle = appointmentData?.mSoundTitle ?? '';
-        selectedFamilyMembers = familyMembersList
-            .where((element) =>
-                element.fId == appointmentData!.bookedForFamilyMemberId)
-            .toList()
-            .first;
-        selectedDoctorItem = doctorsList
-            .where((element) => element.dId == appointmentData!.doctorId)
-            .toList()
-            .first;
-        isShowProgress = false;
-        Debug.printLog(":: ::: ::: ${appointmentData!.reminderBeforeTime}");
-        minutesChoose = (appointmentData?.reminderBeforeTime == null ||
-                appointmentData?.reminderBeforeTime == 'null')
-            ? null
-            : appointmentData!.reminderBeforeTime;
+        // pickedSoundUri = appointmentData?.mDeviceSoundUri ?? '';
+        // startDate = DateTime.parse(appointmentData!.appointmentDate!);
+        // pickedSoundType = appointmentData?.mSoundType ?? '';
+        // pickedSoundTitle = appointmentData?.mSoundTitle ?? '';
+        // selectedFamilyMembers = familyMembersList
+        //     .where((element) =>
+        //         element.fId == appointmentData!.bookedForFamilyMemberId)
+        //     .toList()
+        //     .first;
+        // selectedDoctorItem = doctorsList
+        //     .where((element) => element.dId == appointmentData!.doctorId)
+        //     .toList()
+        //     .first;
+        // isShowProgress = false;
+        // Debug.printLog(":: ::: ::: ${appointmentData!.reminderBeforeTime}");
+        // minutesChoose = (appointmentData?.reminderBeforeTime == null ||
+        //         appointmentData?.reminderBeforeTime == 'null')
+        //     ? null
+        //     : appointmentData!.reminderBeforeTime;
+        titleController.text = appointmentData?.mSoundTitle ?? '';
         commentController.text = appointmentData?.description ?? '';
-        tempSelectedTime =
-            parseTimeList(appointmentData!.appointmentTime!).first;
+        // tempSelectedTime =
+        //     parseTimeList(appointmentData!.appointmentTime!).first;
       }
       update([
+        Constant.idAppointmentTitle,
         Constant.addAppointment,
         Constant.idUserNameInput,
         Constant.idSelectMinutesBeforeTime,
@@ -151,9 +157,11 @@ class AddOrEditAppointmentLogic extends GetxController {
     return selectedTimeList;
   }
 
+
   @override
   void onClose() {
-    // TODO: implement onClose
+    titleController.dispose();
+    commentController.dispose();
     super.onClose();
   }
 
@@ -377,9 +385,11 @@ class AddOrEditAppointmentLogic extends GetxController {
     selectedFamilyMembers = null;
     isShowProgress = false;
     minutesChoose = null;
+    titleController.text = '';
     commentController.text = '';
     tempSelectedTime = null;
     update([
+      Constant.idAppointmentTitle,
       Constant.idUserNameInput,
       Constant.idUserNameInput,
       Constant.idSelectUnit,
@@ -404,159 +414,206 @@ class AddOrEditAppointmentLogic extends GetxController {
   submitData(BuildContext context) async {
     isShowProgress = true;
     update([Constant.idProVersionProgress]);
-    if (selectedFamilyMembers == null) {
-      Utils.showToast(context, 'toastSelectBookingForMember'.tr);
-      isShowProgress = false;
-      update([Constant.idProVersionProgress]);
-      return false;
-    }
-    if (selectedDoctorItem == null) {
-      Utils.showToast(context, 'txtSelectDoctor'.tr);
-      isShowProgress = false;
-      update([Constant.idProVersionProgress]);
-      return false;
-    }
-    if (startDate == null) {
-      Utils.showToast(context, 'txtSelectDate'.tr);
-      isShowProgress = false;
-      update([Constant.idProVersionProgress]);
-      return false;
-    }
-    if (tempSelectedTime == null) {
-      Utils.showToast(context, 'toastSelectTime'.tr);
-      isShowProgress = false;
-      update([Constant.idProVersionProgress]);
-      return false;
-    }
-    // if (minutesChoose == null) {
-    //   Utils.showToast(context, 'toastSelectBeforeTime'.tr);
+    // if (selectedFamilyMembers == null) {
+    //   Utils.showToast(context, 'toastSelectBookingForMember'.tr);
     //   isShowProgress = false;
     //   update([Constant.idProVersionProgress]);
     //   return false;
     // }
-    // if (commentController.text.trim().isEmpty) {
-    //   Utils.showToast(context, 'toastEnterDescription'.tr);
+    // if (selectedDoctorItem == null) {
+    //   Utils.showToast(context, 'txtSelectDoctor'.tr);
     //   isShowProgress = false;
     //   update([Constant.idProVersionProgress]);
     //   return false;
     // }
-    if (Platform.isAndroid && pickedSoundUri == null) {
-      Utils.showToast(context, 'toastSelectSound'.tr);
-      isShowProgress = false;
-      update([Constant.idProVersionProgress]);
-      return false;
-    }
-    int isFromDevice = pickedSoundType == "Sound" ? 0 : 1;
+    // if (startDate == null) {
+    //   Utils.showToast(context, 'txtSelectDate'.tr);
+    //   isShowProgress = false;
+    //   update([Constant.idProVersionProgress]);
+    //   return false;
+    // }
+    // if (tempSelectedTime == null) {
+    //   Utils.showToast(context, 'toastSelectTime'.tr);
+    //   isShowProgress = false;
+    //   update([Constant.idProVersionProgress]);
+    //   return false;
+    // }
+    // // if (minutesChoose == null) {
+    // //   Utils.showToast(context, 'toastSelectBeforeTime'.tr);
+    // //   isShowProgress = false;
+    // //   update([Constant.idProVersionProgress]);
+    // //   return false;
+    // // }
+    // // if (commentController.text.trim().isEmpty) {
+    // //   Utils.showToast(context, 'toastEnterDescription'.tr);
+    // //   isShowProgress = false;
+    // //   update([Constant.idProVersionProgress]);
+    // //   return false;
+    // // }
+    // if (Platform.isAndroid && pickedSoundUri == null) {
+    //   Utils.showToast(context, 'toastSelectSound'.tr);
+    //   isShowProgress = false;
+    //   update([Constant.idProVersionProgress]);
+    //   return false;
+    // }
+    // int isFromDevice = pickedSoundType == "Sound" ? 0 : 1;
     Utils.unFocusKeyboard();
+    final String title = titleController.text.trim();
+    final String description = commentController.text.trim();
     AppointmentTable appointmentTable = AppointmentTable(
         aId: isEdit ? appointmentData!.aId! : null,
-        bookedForFamilyMemberId: selectedFamilyMembers!.fId!,
-        doctorId: selectedDoctorItem!.dId!,
-        appointmentDate: startDate.toString(),
-        appointmentTime: tempSelectedTime.toString(),
-        mDeviceSoundUri: pickedSoundUri,
-        mSoundTitle: pickedSoundTitle,
-        mSoundType: pickedSoundType,
-        mIsFromDevice: isFromDevice,
-        reminderBeforeTime: minutesChoose,
+        // bookedForFamilyMemberId: selectedFamilyMembers!.fId!,
+        // doctorId: selectedDoctorItem!.dId!,
+        // appointmentDate: startDate.toString(),
+        // appointmentTime: tempSelectedTime.toString(),
+        // mDeviceSoundUri: pickedSoundUri,
+        // mSoundTitle: pickedSoundTitle,
+        // mSoundType: pickedSoundType,
+        // mIsFromDevice: isFromDevice,
+       // reminderBeforeTime: minutesChoose,
+        mSoundTitle: title,
         description: commentController.text.toString(),
         mIsSynced: 0,
         mIsDeleted: 0);
 
-    TimeOfDay appointmentTime =
-        parseTimeList(appointmentTable.appointmentTime!).first;
-    DateTime initialNotificationDateTime;
-    initialNotificationDateTime = DateTime(
-      startDate!.year,
-      startDate!.month,
-      startDate!.day,
-      appointmentTime.hour,
-      appointmentTime.minute,
-    );
-    Debug.printLog("minutesChoose : $minutesChoose");
-    if (minutesChoose != null &&
-        minutesChoose != 'null' &&
-        minutesChoose != 'None') {
-      initialNotificationDateTime = initialNotificationDateTime
-          .subtract(Duration(minutes: int.parse(minutesChoose!)));
-    }
-    Debug.printLog(
-        "insert initialNotificationDateTime res: $initialNotificationDateTime");
-    DateTime now = DateTime.now();
-    if (initialNotificationDateTime.isAfter(now)) {
-      if (isEdit) {
+    try {
+      if (isEdit && appointmentTable.aId != null) {
+        // update existing
         await DataBaseHelper.instance.updateAppointmentData(
           appointmentTable.aId!,
           appointmentTable,
         );
-        if (isReSchedule && appointmentHistoryTable != null) {
-          await DataBaseHelper.instance
-              .insertOrUpdateAppointmentHistoryData(appointmentHistoryTable!);
-          if (await InternetConnectivity.isInternetConnect(Get.context!)) {
-            FireStoreHelper()
-                .addAndUpdateAppointmentHistory(appointmentHistoryTable!);
-          }
-        }
       } else {
+        // insert new
         var result = await DataBaseHelper.instance.insertAppointment(
           appointmentTable,
         );
         appointmentTable.aId = result;
       }
 
+      // Optional: sync to Firestore if available (keeps same flow as before)
       if (await InternetConnectivity.isInternetConnect(Get.context!)) {
         FireStoreHelper().addAndUpdateAppointment(appointmentTable);
       }
 
-      List<AppointmentTable> appointmentDataList = await DataBaseHelper.instance
-          .getAppointmentTableData(result: appointmentTable.aId);
-      List<AppointmentNotificationTable> notificationDataList =
-          await DataBaseHelper.instance
-              .getAppointmentNotificationData(result: appointmentTable.aId);
+      // keep UX similar: stop progress, show success, clear form, update views
+      isShowProgress = false;
+      update([Constant.idProVersionProgress]);
 
-      for (var notification in notificationDataList) {
-        Debug.printLog(
-            "----<>-<>--Get NotificationData res: ${notification.toJson()}----<>-<>--");
-        await flutterLocalNotificationsPlugin.cancel(appointmentTable.aId!);
-      }
+      AddSuccessDialog(
+        successTitle: isEdit ? 'txtYourEntryHasUpdated'.tr : 'txtYourEntryHasCreated'.tr,
+        isFromAppointment: true,
+        successDescription: title.isNotEmpty ? title : description,
+        buttonText: 'txtBackToHome'.tr,
+      ).scaleDialog(Get.context!);
 
-      await DataBaseHelper.instance
-          .deleteAppointmentNotificationData(id: appointmentTable.aId!);
+      // Clear local fields after successful save
+      clearData();
 
-      await NotificationHelper()
-          .scheduleAppointment(appointmentTable: appointmentDataList[0]);
-
-      NotificationHelper().reScheduleAppointmentNotification();
-      // Get.put(HomeController());
-      // Get.find<HomeController>().getDataFromDatabase();
-      // Get.back();
-      Get.find<AppointmentScreenLogic>().getAllFamilyMembers();
+      // Refresh screens that used to rely on appointments
+      Get.find<AppointmentScreenLogic>().getAllFamilyMembers(); // if you still rely on this
       update([Constant.idHome, Constant.idMedicineList]);
-      DateTime? tempStartDate =
-          DateTime.parse(appointmentTable.appointmentDate!);
-      TimeOfDay? tempSelectedTimeTwo = NotificationHelper()
-          .parseTimeList(appointmentTable.appointmentTime!)
-          .first;
+    } catch (e, st) {
+      Debug.printLog("Error saving journal entry: $e\n$st");
+      isShowProgress = false;
+      update([Constant.idProVersionProgress]);
+      Utils.showToast(context, 'toastSomethingWentWrong'.tr);
+    }
+  }
+    // TimeOfDay appointmentTime =
+    //     parseTimeList(appointmentTable.appointmentTime!).first;
+    // DateTime initialNotificationDateTime;
+    // initialNotificationDateTime = DateTime(
+    //   startDate!.year,
+    //   startDate!.month,
+    //   startDate!.day,
+    //   appointmentTime.hour,
+    //   appointmentTime.minute,
+    // );
+    // Debug.printLog("minutesChoose : $minutesChoose");
+    // if (minutesChoose != null &&
+    //     minutesChoose != 'null' &&
+    //     minutesChoose != 'None') {
+    //   initialNotificationDateTime = initialNotificationDateTime
+    //       .subtract(Duration(minutes: int.parse(minutesChoose!)));
+    // }
+    // Debug.printLog(
+    //     "insert initialNotificationDateTime res: $initialNotificationDateTime");
+    // DateTime now = DateTime.now();
+    // if (initialNotificationDateTime.isAfter(now)) {
+    //   if (isEdit) {
+    //     await DataBaseHelper.instance.updateAppointmentData(
+    //       appointmentTable.aId!,
+    //       appointmentTable,
+    //     );
+    //     if (isReSchedule && appointmentHistoryTable != null) {
+    //       await DataBaseHelper.instance
+    //           .insertOrUpdateAppointmentHistoryData(appointmentHistoryTable!);
+    //       if (await InternetConnectivity.isInternetConnect(Get.context!)) {
+    //         FireStoreHelper()
+    //             .addAndUpdateAppointmentHistory(appointmentHistoryTable!);
+    //       }
+    //     }
+    //   } else {
+    //     var result = await DataBaseHelper.instance.insertAppointment(
+    //       appointmentTable,
+    //     );
+    //     appointmentTable.aId = result;
+    //   }
+    //
+    //   if (await InternetConnectivity.isInternetConnect(Get.context!)) {
+    //     FireStoreHelper().addAndUpdateAppointment(appointmentTable);
+    //   }
+      //
+      // List<AppointmentTable> appointmentDataList = await DataBaseHelper.instance
+      //     .getAppointmentTableData(result: appointmentTable.aId);
+      // List<AppointmentNotificationTable> notificationDataList =
+      //     await DataBaseHelper.instance
+      //         .getAppointmentNotificationData(result: appointmentTable.aId);
+      //
+      // for (var notification in notificationDataList) {
+      //   Debug.printLog(
+      //       "----<>-<>--Get NotificationData res: ${notification.toJson()}----<>-<>--");
+      //   await flutterLocalNotificationsPlugin.cancel(appointmentTable.aId!);
+      // }
+      //
+      // await DataBaseHelper.instance
+      //     .deleteAppointmentNotificationData(id: appointmentTable.aId!);
+      //
+      // await NotificationHelper()
+      //     .scheduleAppointment(appointmentTable: appointmentDataList[0]);
+      //
+      // NotificationHelper().reScheduleAppointmentNotification();
+      // // Get.put(HomeController());
+      // // Get.find<HomeController>().getDataFromDatabase();
+      // // Get.back();
+      // Get.find<AppointmentScreenLogic>().getAllFamilyMembers();
+      // update([Constant.idHome, Constant.idMedicineList]);
+      // DateTime? tempStartDate =
+      //     DateTime.parse(appointmentTable.appointmentDate!);
+      // TimeOfDay? tempSelectedTimeTwo = NotificationHelper()
+      //     .parseTimeList(appointmentTable.appointmentTime!)
+      //     .first;
 
       // String description =
       //     '${'txtYourAppointmentWith'.tr} ${selectedDoctorItem!.name!} ${'txtHasBeenOn'.tr} ${DateFormat('d MMM, yyyy').format(tempStartDate)} at ${tempSelectedTimeTwo.format(Get.context!)}';
-      isShowProgress = false;
-      update([Constant.idProVersionProgress]);
-      AddSuccessDialog(
-        successTitle: isEdit
-            ? 'txtYourAppointmentHasUpdated'.tr
-            : 'txtYourAppointmentHasCreated'.tr,
-        isFromAppointment: true,
-        tempStartDate: tempStartDate,
-        tempSelectedTime: tempSelectedTimeTwo,
-        successDescription: selectedDoctorItem!.name!,
-        buttonText: 'txtBackToHome'.tr,
-      ).scaleDialog(Get.context!);
-      clearData();
-    } else {
-      Utils.showToast(context, 'toastSelectDateAndTimeProperly'.tr);
-      isShowProgress = false;
-      update([Constant.idProVersionProgress]);
-    }
-  }
+  //     isShowProgress = false;
+  //     update([Constant.idProVersionProgress]);
+  //     AddSuccessDialog(
+  //       successTitle: isEdit
+  //           ? 'txtYourAppointmentHasUpdated'.tr
+  //           : 'txtYourAppointmentHasCreated'.tr,
+  //       isFromAppointment: true,
+  //       // tempStartDate: tempStartDate,
+  //       // tempSelectedTime: tempSelectedTimeTwo,
+  //       successDescription: selectedDoctorItem!.name!,
+  //       buttonText: 'txtBackToHome'.tr,
+  //     ).scaleDialog(Get.context!);
+  //     clearData();
+  //   } else {
+  //     Utils.showToast(context, 'toastSelectDateAndTimeProperly'.tr);
+  //     isShowProgress = false;
+  //     update([Constant.idProVersionProgress]);
+  //   }
+  // }
 }

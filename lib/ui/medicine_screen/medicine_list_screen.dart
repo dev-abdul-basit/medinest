@@ -68,12 +68,16 @@ class MedicineListScreen extends StatelessWidget {
         builder: (logic) {
           Color? otherColor;
 
+          // if (medicineData.mColorPhotoType == "shadeColor") {
+          //   Color color = Color(int.parse(medicineData.mColorPhoto!));
+          //   String colorString = color.toString();
+          //   String valueString = colorString.split('(0x')[1].split(')')[0];
+          //   int value = int.parse(valueString, radix: 16);
+          //   otherColor = Color(value);
+          // }
+
           if (medicineData.mColorPhotoType == "shadeColor") {
-            Color color = Color(int.parse(medicineData.mColorPhoto!));
-            String colorString = color.toString();
-            String valueString = colorString.split('(0x')[1].split(')')[0];
-            int value = int.parse(valueString, radix: 16);
-            otherColor = Color(value);
+            otherColor = Color(int.parse(medicineData.mColorPhoto!, radix: 16));
           }
           Uint8List? imageData = logic.allShapeList
               .where((element) => element.sId == medicineData.mSelectedShapeId!)

@@ -48,14 +48,14 @@ class AppointmentDetailsDialog {
   Widget _dialog(BuildContext context) {
     final logic = Get.find<AppointmentScreenLogic>();
 
-    List<TimeOfDay> times = NotificationHelper().parseTimeList(appointmentTable.appointmentTime!);
+    // List<TimeOfDay> times = NotificationHelper().parseTimeList(appointmentTable.appointmentTime!);
 
-    DateTime startDate = DateTime.parse(appointmentTable.appointmentDate!);
+    // DateTime startDate = DateTime.parse(appointmentTable.appointmentDate!);
 
-    FamilyMemberTable? familyMemberTable = logic.familyMembersList
-        .where((element) => element!.fId! == appointmentTable.bookedForFamilyMemberId)
-        .toList()
-        .first;
+    // FamilyMemberTable? familyMemberTable = logic.familyMembersList
+    //     .where((element) => element!.fId! == appointmentTable.bookedForFamilyMemberId)
+    //     .toList()
+    //     .first;
 
     return AlertDialog(
       insetPadding: EdgeInsets.zero,
@@ -80,7 +80,7 @@ class AppointmentDetailsDialog {
                           children: [
                             Expanded(
                               child: CommonText(
-                                  text: 'txtAppointmentDetails'.tr,
+                                  text: 'txtJournalDetails'.tr,
                                   textColor: Get.theme.colorScheme.primary,
                                   textAlign: TextAlign.center,
                                   fontSize: AppFontSize.size_18,
@@ -176,15 +176,15 @@ class AppointmentDetailsDialog {
                                   textColor: Get.theme.colorScheme.onSurface,
                                   fontWeight: FontWeight.w300,
                                   fontSize: AppFontSize.size_8),
-                              Container(
-                                constraints: BoxConstraints(maxWidth: AppSizes.fullWidth/2.2),
-                                child: CommonText(
-                                    text: familyMemberTable?.name??'',
-                                    maxLines: 2,
-                                    textColor: Get.theme.colorScheme.onPrimary,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: AppFontSize.size_11),
-                              ),
+                              // Container(
+                              //   constraints: BoxConstraints(maxWidth: AppSizes.fullWidth/2.2),
+                              //   child: CommonText(
+                              //       text: familyMemberTable?.name??'',
+                              //       maxLines: 2,
+                              //       textColor: Get.theme.colorScheme.onPrimary,
+                              //       fontWeight: FontWeight.w600,
+                              //       fontSize: AppFontSize.size_11),
+                              // ),
                               SizedBox(
                                 height: AppSizes.height_2,
                               ),
@@ -195,67 +195,67 @@ class AppointmentDetailsDialog {
                       SizedBox(
                         height: AppSizes.height_2_5,
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          DetailItem(
-                            subtitle: 'txtDate'.tr,
-                            title: DateFormat('dd-MM-yyyy').format(startDate),
-                            icon: Assets.iconsIcCalendar,
-                          ),
-                          DetailItem(
-                            subtitle: 'txtTime'.tr,
-                            title: times.first.format(Get.context!),
-                            icon: Assets.iconsIcWatch,
-                            // titleWidget: InputChip(
-                            //   padding: EdgeInsets.zero,
-                            //
-                            //   // labelPadding: EdgeInsets.zero,
-                            //   shape: const RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.all(Radius.circular(50))),
-                            //   label: CommonText(
-                            //       text: times.first.format(Get.context!),
-                            //       textColor: Get.theme.colorScheme.inverseSurface,
-                            //       fontWeight: FontWeight.w600,
-                            //       fontSize: AppFontSize.size_10),
-                            //   onSelected: (bool selected) {},
-                            //   backgroundColor: Get.theme.colorScheme.onSecondary,
-                            // ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: AppSizes.height_2_5,
-                      ),
-                      if (appointmentTable.reminderBeforeTime != null &&
-                          appointmentTable.reminderBeforeTime != 'None' &&
-                          appointmentTable.reminderBeforeTime != 'null')
-                        DetailItem(
-                          subtitle: 'txtRemindBeforeTime'.tr,
-                          title:
-                              '${'txtBefore'.tr} ${appointmentTable.reminderBeforeTime}min',
-                          icon: Assets.iconsIcWatchBefore,
-                        ),
-                      SizedBox(
-                        height: AppSizes.height_2_5,
-                      ),
-                      if (doctorDetails.hospitalName != null &&
-                          doctorDetails.hospitalName!.isNotEmpty)
-                        DetailItem(
-                          subtitle: 'txtHospitalName'.tr,
-                          title: '${doctorDetails.hospitalName}',
-                          icon: Assets.iconsIcHospital,
-                        ),
-                      SizedBox(
-                        height: AppSizes.height_2_5,
-                      ),
-                      if (doctorDetails.hospitalAddress != null &&
-                          doctorDetails.hospitalAddress!.isNotEmpty)
-                        DetailItem(
-                          subtitle: 'txtHospitalAddress'.tr,
-                          title: '${doctorDetails.hospitalAddress}',
-                          icon: Assets.iconsIcLocation,
-                        ),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     DetailItem(
+                      //       subtitle: 'txtDate'.tr,
+                      //       title: DateFormat('dd-MM-yyyy').format(startDate),
+                      //       icon: Assets.iconsIcCalendar,
+                      //     ),
+                      //     DetailItem(
+                      //       subtitle: 'txtTime'.tr,
+                      //       title: times.first.format(Get.context!),
+                      //       icon: Assets.iconsIcWatch,
+                      //       // titleWidget: InputChip(
+                      //       //   padding: EdgeInsets.zero,
+                      //       //
+                      //       //   // labelPadding: EdgeInsets.zero,
+                      //       //   shape: const RoundedRectangleBorder(
+                      //       //       borderRadius: BorderRadius.all(Radius.circular(50))),
+                      //       //   label: CommonText(
+                      //       //       text: times.first.format(Get.context!),
+                      //       //       textColor: Get.theme.colorScheme.inverseSurface,
+                      //       //       fontWeight: FontWeight.w600,
+                      //       //       fontSize: AppFontSize.size_10),
+                      //       //   onSelected: (bool selected) {},
+                      //       //   backgroundColor: Get.theme.colorScheme.onSecondary,
+                      //       // ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // SizedBox(
+                      //   height: AppSizes.height_2_5,
+                      // ),
+                      // if (appointmentTable.reminderBeforeTime != null &&
+                      //     appointmentTable.reminderBeforeTime != 'None' &&
+                      //     appointmentTable.reminderBeforeTime != 'null')
+                      //   DetailItem(
+                      //     subtitle: 'txtRemindBeforeTime'.tr,
+                      //     title:
+                      //         '${'txtBefore'.tr} ${appointmentTable.reminderBeforeTime}min',
+                      //     icon: Assets.iconsIcWatchBefore,
+                      //   ),
+                      // SizedBox(
+                      //   height: AppSizes.height_2_5,
+                      // ),
+                      // if (doctorDetails.hospitalName != null &&
+                      //     doctorDetails.hospitalName!.isNotEmpty)
+                      //   DetailItem(
+                      //     subtitle: 'txtHospitalName'.tr,
+                      //     title: '${doctorDetails.hospitalName}',
+                      //     icon: Assets.iconsIcHospital,
+                      //   ),
+                      // SizedBox(
+                      //   height: AppSizes.height_2_5,
+                      // ),
+                      // if (doctorDetails.hospitalAddress != null &&
+                      //     doctorDetails.hospitalAddress!.isNotEmpty)
+                      //   DetailItem(
+                      //     subtitle: 'txtHospitalAddress'.tr,
+                      //     title: '${doctorDetails.hospitalAddress}',
+                      //     icon: Assets.iconsIcLocation,
+                      //   ),
                       SizedBox(
                         height: AppSizes.height_2_5,
                       ),

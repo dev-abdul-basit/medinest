@@ -286,4 +286,5 @@ final Map<String, String> deDE = {
   'txtProfileIsUpdatedSuccessfully': "Das Profil wird erfolgreich aktualisiert!",
   'txtProfileIsAddedSuccessfully': "Profil wird erfolgreich hinzugefügt!",
   'txtCheckYourInternetConnectivity': "Bitte überprüfen Sie Ihre Internetverbindung",
+
 };

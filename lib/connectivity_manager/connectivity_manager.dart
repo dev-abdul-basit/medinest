@@ -25,12 +25,12 @@ class InternetConnectivity {
     return _connectivity;
   }
 
-  static Future<ConnectivityResult> getStatus() {
+  static Future<List<ConnectivityResult>> getStatus() {
     return _connectivity!.checkConnectivity();
   }
 
   static Future<bool> isInternetConnect([BuildContext? context]) async {
-    ConnectivityResult result = await getStatus();
+    List<ConnectivityResult> result = await getStatus();
 
     if (result == ConnectivityResult.none) {
       // ignore: use_build_context_synchronously

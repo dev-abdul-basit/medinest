@@ -134,14 +134,14 @@ class Constant {
 
   static const String shareLink = "Add your app url here";
 
-  static const emailPath = 'Add Your Contact Email Address here';
+  static const emailPath = 'info@developermatic.com';
 
   // static String privacyPolicyURL = "Add your privacy policy link here";
-  static String privacyPolicyURL = "Add your privacy policy link here";
+  static String privacyPolicyURL = "https://developermatic.com/apps/medinest/privacy/";
 
-  static String aboutUsURL = "Add your About Us Url link here";
+  static String aboutUsURL = "https://developermatic.com/apps/medinest/about/";
   /// Terms & condition URL
-  static const termsAndConditionURL = "Add your terms and condition link here";
+  static const termsAndConditionURL = "https://developermatic.com/apps/medinest/terms/";
 
   static String googlePlayIdentifier = "Add your google Play Identifier here";
 

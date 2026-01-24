@@ -39,6 +39,7 @@ class DropdownWithPrefix extends StatelessWidget {
             child: DropdownButton<String>(
               isDense: true,
               isExpanded: true,
+              dropdownColor: Get.theme.colorScheme.surfaceVariant,
               hint: Text(hintText,
                   style: TextStyle(
                     fontSize: AppFontSize.size_11,

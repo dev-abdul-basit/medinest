@@ -76,25 +76,10 @@ class ProVersionScreen extends StatelessWidget {
                                     fontSize: AppFontSize.size_12),
                               ],
                             ),
-                            SizedBox(height: AppSizes.width_3),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(width: AppSizes.width_7),
-                                Image.asset(
-                                  Assets.iconsIcDoneSubscription,
-                                  color: Get.theme.colorScheme.onPrimary,
-                                  height: AppSizes.height_2_5,
-                                ),
-                                SizedBox(width: AppSizes.width_3),
-                                CommonText(
-                                    text: 'txtAddUnlimitedAppointment'.tr,
-                                    textColor: Get.theme.colorScheme.onPrimary,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: AppFontSize.size_12),
-                              ],
+                            SizedBox(height: AppSizes.width_5
                             ),
-                            SizedBox(height: AppSizes.width_5),
+
+
                             _accessAllFeatureButtonWidget(),
                           ],
                         ),
@@ -209,75 +194,75 @@ _accessAllFeatureButtonWidget() {
               ],
             ),
           ),
-          InkWell(
-            onTap: () {
-              logic.onChangePlanSelection(Constant.boolValueFalse);
-            },
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Container(
-                  width: AppSizes.fullWidth / 2.5,
-                  height: AppSizes.height_15,
-                  margin: EdgeInsets.symmetric(vertical: AppSizes.width_3_5),
-                  decoration: BoxDecoration(
-                    color: Get.theme.colorScheme.background,
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        width: (!logic.isMonthlySelected) ? 3 : 1,
-                        color: (!logic.isMonthlySelected)
-                            ? AppColor.colorSecondaryLight
-                            : AppColor.txtColor999),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CommonText(
-                          text: 'txtYearly'.tr,
-                          textColor: !logic.isMonthlySelected
-                              ? Get.theme.colorScheme.onSecondary
-                              : Get.theme.colorScheme.onPrimary,
-                          fontWeight: !logic.isMonthlySelected
-                              ? FontWeight.w700
-                              : FontWeight.w400,
-                          fontSize: AppFontSize.size_12),
-                      SizedBox(height: AppSizes.height_0_5),
-                      CommonText(
-                          text:
-                              "${logic.products.isEmpty ? 0 : logic.products.first.price} / Year",
-                          textColor: !logic.isMonthlySelected
-                              ? Get.theme.colorScheme.onSecondary
-                              : Get.theme.colorScheme.onPrimary,
-                          fontWeight: FontWeight.w400,
-                          fontSize: AppFontSize.size_11),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  child: Container(
-                    height: AppSizes.height_3_5,
-                    width: AppSizes.height_14,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: (!logic.isMonthlySelected)
-                            ? Get.theme.colorScheme.onSecondary
-                            : Get.theme.colorScheme.onSurface,
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                            color: (!logic.isMonthlySelected)
-                                ? Get.theme.colorScheme.onSecondary
-                                : Get.theme.colorScheme.onSurface)),
-                    child: CommonText(
-                        text: '${'txtSave'.tr} 10%',
-                        textColor: Get.theme.colorScheme.background,
-                        fontWeight: FontWeight.w400,
-                        fontSize: AppFontSize.size_10),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     logic.onChangePlanSelection(Constant.boolValueFalse);
+          //   },
+          //   child: Stack(
+          //     alignment: Alignment.topCenter,
+          //     children: [
+          //       Container(
+          //         width: AppSizes.fullWidth / 2.5,
+          //         height: AppSizes.height_15,
+          //         margin: EdgeInsets.symmetric(vertical: AppSizes.width_3_5),
+          //         decoration: BoxDecoration(
+          //           color: Get.theme.colorScheme.background,
+          //           borderRadius: BorderRadius.circular(15),
+          //           border: Border.all(
+          //               width: (!logic.isMonthlySelected) ? 3 : 1,
+          //               color: (!logic.isMonthlySelected)
+          //                   ? AppColor.colorSecondaryLight
+          //                   : AppColor.txtColor999),
+          //         ),
+          //         child: Column(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             CommonText(
+          //                 text: 'txtYearly'.tr,
+          //                 textColor: !logic.isMonthlySelected
+          //                     ? Get.theme.colorScheme.onSecondary
+          //                     : Get.theme.colorScheme.onPrimary,
+          //                 fontWeight: !logic.isMonthlySelected
+          //                     ? FontWeight.w700
+          //                     : FontWeight.w400,
+          //                 fontSize: AppFontSize.size_12),
+          //             SizedBox(height: AppSizes.height_0_5),
+          //             CommonText(
+          //                 text:
+          //                     "${logic.products.isEmpty ? 0 : logic.products.first.price} / Year",
+          //                 textColor: !logic.isMonthlySelected
+          //                     ? Get.theme.colorScheme.onSecondary
+          //                     : Get.theme.colorScheme.onPrimary,
+          //                 fontWeight: FontWeight.w400,
+          //                 fontSize: AppFontSize.size_11),
+          //           ],
+          //         ),
+          //       ),
+          //       Positioned(
+          //         top: 0,
+          //         child: Container(
+          //           height: AppSizes.height_3_5,
+          //           width: AppSizes.height_14,
+          //           alignment: Alignment.center,
+          //           decoration: BoxDecoration(
+          //               color: (!logic.isMonthlySelected)
+          //                   ? Get.theme.colorScheme.onSecondary
+          //                   : Get.theme.colorScheme.onSurface,
+          //               borderRadius: BorderRadius.circular(15),
+          //               border: Border.all(
+          //                   color: (!logic.isMonthlySelected)
+          //                       ? Get.theme.colorScheme.onSecondary
+          //                       : Get.theme.colorScheme.onSurface)),
+          //           child: CommonText(
+          //               text: '${'txtSave'.tr} 10%',
+          //               textColor: Get.theme.colorScheme.background,
+          //               fontWeight: FontWeight.w400,
+          //               fontSize: AppFontSize.size_10),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       );
     },

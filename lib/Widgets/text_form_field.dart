@@ -210,7 +210,7 @@ class CommonTextFormFieldWithSuffix extends StatelessWidget {
       textCapitalization: TextCapitalization.sentences,
       cursorColor: Get.theme.colorScheme.primary,
       style: TextStyle(
-        fontSize: AppFontSize.size_12,
+        fontSize: AppFontSize.size_14,
         fontWeight: FontWeight.w400,
         color: Get.theme.colorScheme.primary,
         fontFamily: Constant.fontFamilyNunitoSans,
@@ -241,7 +241,7 @@ class CommonTextFormFieldWithSuffix extends StatelessWidget {
           hintText: hintText,
           counterText: '',
           hintStyle: TextStyle(
-            fontSize: AppFontSize.size_11,
+            fontSize: AppFontSize.size_12,
             fontWeight: FontWeight.w500,
             color: Get.theme.colorScheme.surface,
             fontFamily: Constant.fontFamilyNunitoSans,

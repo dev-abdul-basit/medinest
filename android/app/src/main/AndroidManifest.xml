@@ -35,7 +35,7 @@
         android:turnScreenOn="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:label="MediNest">
         <activity
             android:name="com.mednest.pill.reminder.MainActivity"
@@ -88,6 +88,6 @@
         </receiver>
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:value="ca-app-pub-3548515470103930~5934528856" />
     </application>
 </manifest>

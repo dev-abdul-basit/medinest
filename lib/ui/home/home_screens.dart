@@ -410,14 +410,7 @@ class NavigationDrawer extends StatelessWidget {
                               icon: Assets.iconsIcDoctor,
                               text: "txtAddDoctor".tr,
                             ),
-                            drawerItem(
-                              onTap: () {
-                                closeDrawer(context);
-                                logic.goToAddAppointment(context);
-                              },
-                              icon: Assets.iconsIcAppoinment,
-                              text: "txtAddJournal".tr,
-                            ),
+
                             drawerItem(
                               onTap: () {
                                 closeDrawer(context);

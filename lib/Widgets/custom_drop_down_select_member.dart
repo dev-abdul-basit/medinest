@@ -42,6 +42,7 @@ class DropdownWithPrefixSelectMember extends StatelessWidget {
             child: DropdownButton<FamilyMemberTable>(
               isDense: true,
               isExpanded: true,
+              dropdownColor: Get.theme.colorScheme.surfaceVariant,
               hint: CommonText(textColor: Get.theme.colorScheme.surface ,text: hintText??
                  '${'txtBookingFor'.tr} *', fontSize: AppFontSize.size_11,fontWeight: FontWeight.w400,),
               icon: suffix ?? Padding(

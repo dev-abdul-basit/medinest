@@ -85,7 +85,7 @@ class Utils {
   static Future<void> urlLauncher(String value) async {
     var url = Uri.parse(value);
     if (await canLaunchUrl(url)) {
-      launchUrl(url, mode: LaunchMode.externalApplication);
+      launchUrl(url, mode: LaunchMode.inAppBrowserView);
     } else {
       throw "Cannot load the page";
     }

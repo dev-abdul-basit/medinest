@@ -36,10 +36,6 @@ import 'package:sizer/sizer.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-// Platform  Firebase App Id
-// android   1:969115537915:android:5e1bdb424b0f7d19d47b5e
-// ios       1:969115537915:ios:b3a7f912b94c5e26d47b5e
-
 int id = 0;
 DateTime? currentBackPressTime;
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -173,17 +169,7 @@ Future<void> notificationTapBackground(
           );
         }
 
-        //   await NotificationHelper().scheduleAppointmentNotification(
-        //       result: appointmentNotificationTable.anId!,
-        //       currentNotificationDateTime: scheduledDate,
-        //       notificationPayload: appointmentNotificationTable.toRawJson(),
-        //       appointmentNotificationTable: appointmentNotificationTable);
-        // }
-        // else if (notificationResponse.actionId == reScheduleId) {
-        //   acceptAppointment(
-        //       isReSchedule: true,
-        //       appointmentNotificationTable: appointmentNotificationTable);
-        // }
+
       }
     }
     if (notificationResponse.input?.isNotEmpty ?? false) {
@@ -368,26 +354,7 @@ void main() async {
         ),
       ];
 
-  /// Note: permissions aren't requested here just to demonstrate that can be
-  /// done later
-  // final DarwinInitializationSettings initializationSettingsDarwin =
-  //     DarwinInitializationSettings(
-  //   requestAlertPermission: false,
-  //   requestBadgePermission: false,
-  //   requestSoundPermission: false,
-  //   onDidReceiveLocalNotification:
-  //       (int id, String? title, String? body, String? payload) async {
-  //     didReceiveLocalNotificationStream.add(
-  //       ReceivedNotification(
-  //         id: id,
-  //         title: title,
-  //         body: body,
-  //         payload: payload,
-  //       ),
-  //     );
-  //   },
-  //   notificationCategories: darwinNotificationCategories,
-  // );
+
   final LinuxInitializationSettings initializationSettingsLinux =
       LinuxInitializationSettings(
         defaultActionName: 'Open notification',
@@ -455,15 +422,6 @@ Future<void> _configureLocalTimeZone() async {
   tz.setLocalLocation(tz.getLocation(timeZoneName));
 }
 
-// Future<void> _configureLocalTimeZone() async {
-//   if (kIsWeb || Platform.isLinux) {
-//     return;
-//   }
-//   tz.initializeTimeZones();
-//   final TimezoneInfo timeZoneName = await FlutterTimezone.getLocalTimezone();
-//   tz.setLocalLocation(tz.getLocation(timeZoneName.toString()));
-// }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -518,7 +476,7 @@ class MyApp extends StatelessWidget {
                           ? isUserProfileAdded
                                 ? AppRoutes.home
                                 : AppRoutes.addOrEditProfile
-                          : AppRoutes.signIn
+                          : AppRoutes.getStarted
                     : AppRoutes.getStarted
               : AppRoutes.introduction,
         );

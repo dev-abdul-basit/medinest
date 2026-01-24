@@ -15,8 +15,7 @@ import 'package:medinest/ui/doctors_screen/doctors_screen_binding.dart';
 import 'package:medinest/ui/doctors_screen/doctors_screen_view.dart';
 import 'package:medinest/ui/family_member_screen/family_member_screen_binding.dart';
 import 'package:medinest/ui/family_member_screen/family_member_screen_view.dart';
-import 'package:medinest/ui/forgot_password_screen/forgot_password_screen_binding.dart';
-import 'package:medinest/ui/forgot_password_screen/forgot_password_screen_view.dart';
+
 import 'package:medinest/ui/full_screen_appointment_notification/full_screen_appointment_notification_binding.dart';
 import 'package:medinest/ui/full_screen_appointment_notification/full_screen_appointment_notification_view.dart';
 import 'package:medinest/ui/full_screen_notification/full_screen_notification_binding.dart';
@@ -33,10 +32,6 @@ import 'package:medinest/ui/pro_version/pro_version_binding.dart';
 import 'package:medinest/ui/pro_version/pro_version_screen.dart';
 import 'package:medinest/ui/setting/setting_screen_binding.dart';
 import 'package:medinest/ui/setting/setting_screen_view.dart';
-import 'package:medinest/ui/sign_in/sign_in_binding.dart';
-import 'package:medinest/ui/sign_in/sign_in_screens.dart';
-import 'package:medinest/ui/sign_up/sign_up_binding.dart';
-import 'package:medinest/ui/sign_up/sign_up_view.dart';
 
 import 'app_routes.dart';
 
@@ -47,21 +42,13 @@ class AppPages {
       page: () => HomeScreen(),
       binding: HomeBinding(),
     ),
-    GetPage(
-      name: AppRoutes.signIn,
-      page: () => SignInScreen(),
-      binding: SignInBinding(),
-    ),
+
     GetPage(
       name: AppRoutes.add,
       page: () => AddMedicineScreen(),
       binding: AddMedicineBinding(),
     ),
-    GetPage(
-      name: AppRoutes.signUp,
-      page: () => const SignUpPage(),
-      binding: SignUpBinding(),
-    ),
+
     GetPage(
       name: AppRoutes.fullScreenNotification,
       page: () =>  FullScreenNotificationPage(),
@@ -92,11 +79,7 @@ class AppPages {
       page: () => const GetStartedScreenPage(),
       binding: GetStartedScreenBinding(),
     ),
-    GetPage(
-      name: AppRoutes.forgotPassword,
-      page: () => const ForgotPasswordScreenPage(),
-      binding: ForgotPasswordScreenBinding(),
-    ),
+
     GetPage(
       name: AppRoutes.addOrEditProfile,
       page: () => const AddOrEditProfileScreenPage(),

@@ -30,91 +30,10 @@ class AddOrEditDoctorScreenPage extends StatelessWidget {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  Stack(
-                    children: [
-                      GetBuilder<AddOrEditDoctorScreenLogic>(
-                          id: Constant.idProfilePhoto,
-                          builder: (logic) {
-                            return Container(
-                              width: AppSizes.height_20,
-                              height: AppSizes.height_20,
-                              padding:  EdgeInsets.all(logic.profileUrl != null?0:50),
-                              margin: const EdgeInsets.all(25),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: logic.pickedNewFile != null
-                                      ? DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: FileImage(
-                                          File(logic.pickedNewFile!.path)))
-                                      : null,
-                                  color: Get.theme.colorScheme.primary),
-                              child: logic.profileUrl != null
-                                  ? CachedNetworkImage(
-                                imageUrl: logic.profileUrl!,
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover),
-                                      ),
-                                    ),
-                                placeholder: (context, url) =>
-                                    Image.asset(
-                                      Assets.iconsIcUserName,
-                                      color: Colors.white,
-                                    ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                      Assets.iconsIcUserName,
-                                      color: Colors.white,
-                                    ),
-                              )
-                                  : logic.pickedNewFile != null?const SizedBox():Image.asset(
-                                Assets.iconsIcUserName,
-                                color: Colors.white,
-                              ),
-                            );
-                          }),
-                      PositionedDirectional(
-                        bottom: 1,
-                        end: 1,
-                        child: InkWell(
-                          onTap: () => logic.openImagePickerDialog(),
-                          child: Container(
-                            width: AppSizes.height_5_5,
-                            height: AppSizes.height_5_5,
-                            padding: const EdgeInsets.all(11),
-                            margin: const EdgeInsets.all(26),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Get.theme.colorScheme.background,
-                                    width: 4),
-                                shape: BoxShape.circle,
-                                color: Get.theme.colorScheme.onSecondary),
-                            child: Image.asset(Assets.iconsIcEditPhoto,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
+
+                  SizedBox(
+                    height: AppSizes.height_2_5,
                   ),
-                  // Container(
-                  //   width: AppSizes.height_20,
-                  //   height: AppSizes.height_20,
-                  //   padding: const EdgeInsets.all(50),
-                  //   margin: const EdgeInsets.all(25),
-                  //   decoration: BoxDecoration(
-                  //       shape: BoxShape.circle,
-                  //       color: Get.theme.colorScheme.primary),
-                  //   child: GetBuilder<AddOrEditDoctorScreenLogic>(
-                  //       id: Constant.idSelectGender,
-                  //       builder: (logic) {
-                  //         return Image.asset(Constant.genderIconList[Constant.genderList.indexOf(logic.selectedGender??Constant.genderList[0])]);
-                  //       }),
-                  // ),
                   Form(
                     key: logic.formKey,
                     child: Padding(

@@ -157,7 +157,7 @@ class ItemPerson extends StatelessWidget {
                               textColor: Get.theme.colorScheme.primary,
                               fontWeight: FontWeight.w600,
                               maxLines: 2,
-                              fontSize: AppFontSize.size_14),
+                              fontSize: AppFontSize.size_16),
                         ),
                         if ((familyMember?.email != null &&
                             familyMember!.email!.isNotEmpty) ||
@@ -169,7 +169,7 @@ class ItemPerson extends StatelessWidget {
                               maxLines: 1,
                               textColor: Get.theme.colorScheme.onSurface,
                               fontWeight: FontWeight.w300,
-                              fontSize: AppFontSize.size_10),
+                              fontSize: AppFontSize.size_12),
                         if ((familyMember?.phoneNumber != null &&
                             familyMember!.phoneNumber!.isNotEmpty) ||
                             (doctor?.phoneNumber != null &&
@@ -179,7 +179,7 @@ class ItemPerson extends StatelessWidget {
                               '${'txtPhone'.tr}: ${familyMember?.phoneNumber ?? doctor?.phoneNumber ?? ''}',
                               textColor: Get.theme.colorScheme.onSurface,
                               fontWeight: FontWeight.w300,
-                              fontSize: AppFontSize.size_10),
+                              fontSize: AppFontSize.size_12),
                       ],
                     ),
                   ),

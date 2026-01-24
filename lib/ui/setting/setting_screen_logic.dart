@@ -9,8 +9,9 @@ import 'package:medinest/database/helper/database_helper.dart';
 import 'package:medinest/generated/assets.dart';
 import 'package:medinest/main.dart';
 import 'package:medinest/routes/app_routes.dart';
+import 'package:medinest/ui/get_started_screen/get_started_screen_logic.dart';
 import 'package:medinest/ui/home/home_controller.dart';
-import 'package:medinest/ui/sign_in/sign_in_controller.dart';
+
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/preference.dart';
 import 'package:medinest/utils/sizer_utils.dart';
@@ -58,7 +59,7 @@ class SettingScreenLogic extends GetxController {
       await Get.find<HomeController>().syncDataToFirebase();
       final FirebaseAuth auth = FirebaseAuth.instance;
       await auth.signOut();
-      await Get.put<SignInController>(SignInController()).logoutGoogle();
+      await Get.put<GetStartedScreenLogic>(GetStartedScreenLogic()).logoutGoogle();
       Preference.shared.setIsUserLogin(false);
       Preference.shared.setProfileAdded(false);
       await DataBaseHelper.instance.deleteAppointmentNotificationData();
@@ -72,7 +73,7 @@ class SettingScreenLogic extends GetxController {
       await DataBaseHelper.instance.deleteUser();
       await flutterLocalNotificationsPlugin.cancelAll();
       Get.deleteAll(force: true);
-      Get.offAllNamed(AppRoutes.signIn);
+      Get.offAllNamed(AppRoutes.getStarted);
       Utils.showToast(context, "toastLogOut".tr);
     } catch (e) {
       Utils.showToast(context, e.toString());
@@ -93,7 +94,7 @@ class SettingScreenLogic extends GetxController {
     final Uri params = Uri(
         scheme: 'mailto',
         path: Constant.emailPath,
-        query: 'subject=Feedback Pill Mode');
+        query: 'subject=Feedback MediNest');
 
     var value = params.toString();
     var url = Uri.parse(value);

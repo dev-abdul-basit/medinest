@@ -28,8 +28,8 @@ import 'package:medinest/main.dart';
 import 'package:medinest/notification/notification_helper.dart';
 import 'package:medinest/routes/app_routes.dart';
 import 'package:medinest/ui/appointment_screen/appointment_screen_logic.dart';
+import 'package:medinest/ui/get_started_screen/get_started_screen_logic.dart';
 import 'package:medinest/ui/medicine_screen/medicine_screen_logic.dart';
-import 'package:medinest/ui/sign_in/sign_in_controller.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
 import 'package:medinest/utils/enums.dart';
@@ -269,7 +269,7 @@ class HomeController extends GetxController
       try {
         await syncDataToFirebase();
         await _auth.signOut();
-        await Get.put<SignInController>(SignInController()).logoutGoogle();
+        await Get.put<GetStartedScreenLogic>(GetStartedScreenLogic()).logoutGoogle();
         Preference.shared.setIsUserLogin(false);
         Preference.shared.setProfileAdded(false);
         await DataBaseHelper.instance.deleteAppointmentNotificationData();

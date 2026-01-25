@@ -52,7 +52,7 @@ platform :android do
   # Lane to build the Android App (AAB)
   desc "Build the Android App (AAB)"
   lane :build_android do
-    gradle(task: "clean bundleRelease")
+    gradle(task: "bundleRelease")
   end
 
 

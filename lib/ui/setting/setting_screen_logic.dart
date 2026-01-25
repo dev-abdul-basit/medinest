@@ -21,12 +21,13 @@ import 'package:url_launcher/url_launcher.dart';
 class SettingScreenLogic extends GetxController {
   bool isDarkTheme = !Utils.isLightTheme();
   final InAppReview inAppReview = InAppReview.instance;
+
   onThemeChange(bool value) {
     isDarkTheme = value;
-    Preference.shared.setAppTheme(isDarkTheme ? Constant.appThemeDark : Constant.appThemeLight);
-    Get.changeThemeMode(
-      isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+    Preference.shared.setAppTheme(
+      isDarkTheme ? Constant.appThemeDark : Constant.appThemeLight,
     );
+    Get.changeThemeMode(isDarkTheme ? ThemeMode.dark : ThemeMode.light);
     Future.delayed(const Duration(milliseconds: 200), () {
       update([Constant.idSetting]);
       Get.find<HomeController>().update([Constant.idHome]);
@@ -35,31 +36,41 @@ class SettingScreenLogic extends GetxController {
   }
 
   goToProfile() {
-    Get.toNamed(AppRoutes.addOrEditProfile, parameters: {Constant.idIsEditProfile: "true"});
+    Get.toNamed(
+      AppRoutes.addOrEditProfile,
+      parameters: {Constant.idIsEditProfile: "true"},
+    );
   }
 
   onTapSingOut() {
     return showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: Get.context!,
-        builder: (context) => DeleteConformation(
-            title: 'txtQLogOut'.tr,
-            description: 'txtLogOutDescription'.tr,
-            buttonText : 'txtLogOut'.tr,
-            image:Utils.isLightTheme()? Assets.iconsIcLogoutImg:Assets.iconsIcLogoutImgDark,
-            imageHeight: AppSizes.height_21,
-            imageWidth: AppSizes.height_21,
-            onTapDelete: () {
-              singOut(context);
-            }));
+      backgroundColor: Colors.transparent,
+      context: Get.context!,
+      builder: (context) => DeleteConformation(
+        title: 'txtQLogOut'.tr,
+        description: 'txtLogOutDescription'.tr,
+        buttonText: 'txtLogOut'.tr,
+        image: Utils.isLightTheme()
+            ? Assets.iconsIcLogoutImg
+            : Assets.iconsIcLogoutImgDark,
+        imageHeight: AppSizes.height_21,
+        imageWidth: AppSizes.height_21,
+        onTapDelete: () {
+          singOut(context);
+        },
+      ),
+    );
     // Get.dialog(const SignOutDialog(), useSafeArea: false);
   }
+
   singOut(context) async {
     try {
       await Get.find<HomeController>().syncDataToFirebase();
       final FirebaseAuth auth = FirebaseAuth.instance;
       await auth.signOut();
-      await Get.put<GetStartedScreenLogic>(GetStartedScreenLogic()).logoutGoogle();
+      await Get.put<GetStartedScreenLogic>(
+        GetStartedScreenLogic(),
+      ).logoutGoogle();
       Preference.shared.setIsUserLogin(false);
       Preference.shared.setProfileAdded(false);
       await DataBaseHelper.instance.deleteAppointmentNotificationData();
@@ -76,12 +87,18 @@ class SettingScreenLogic extends GetxController {
       Get.offAllNamed(AppRoutes.getStarted);
       Utils.showToast(context, "toastLogOut".tr);
     } catch (e) {
+      debugPrint(e.toString());
       Utils.showToast(context, e.toString());
     }
   }
+
   goToChangeLanguage() {
-    Get.toNamed(AppRoutes.changeLanguage, parameters: {Constant.idIsEditProfile: "true"});
+    Get.toNamed(
+      AppRoutes.changeLanguage,
+      parameters: {Constant.idIsEditProfile: "true"},
+    );
   }
+
   onClickRateMyApp() async {
     if (Platform.isIOS) {
       inAppReview.openStoreListing(appStoreId: Constant.appStoreIdentifier);
@@ -92,9 +109,10 @@ class SettingScreenLogic extends GetxController {
 
   onClickFeedback() async {
     final Uri params = Uri(
-        scheme: 'mailto',
-        path: Constant.emailPath,
-        query: 'subject=Feedback MediNest');
+      scheme: 'mailto',
+      path: Constant.emailPath,
+      query: 'subject=Feedback MediNest',
+    );
 
     var value = params.toString();
     var url = Uri.parse(value);

@@ -284,9 +284,12 @@ class HomeController extends GetxController
         await flutterLocalNotificationsPlugin.cancelAll();
         Get.deleteAll(force: true);
 
-        Get.offAllNamed(AppRoutes.signIn);
+        Get.offAllNamed(AppRoutes.getStarted);
         Utils.showToast(context, "toastLogOut".tr);
+        debugPrint('Home:Logout Success');
       } catch (e) {
+        debugPrint('Home:Logout Fail');
+        debugPrint(e.toString());
         Utils.showToast(context, e.toString());
       }
     } else {

@@ -44,7 +44,7 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
   bool shouldSaveShow = false;
 
   bool isNoEndDate = false;
-  TimeOfDay? tempSelectedTime;
+
 
   List<Ringtone> ringtones = [];
   static AudioPlayer audioPlayer = AudioPlayer();
@@ -540,10 +540,10 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
       Utils.showToast(context, 'txtSelectMember'.tr);
       return false;
     }
-    if (selectedDoctorItem == null) {
-      Utils.showToast(context, 'txtSelectDoctor'.tr);
-      return false;
-    }
+    // if (selectedDoctorItem == null) {
+    //   Utils.showToast(context, 'txtSelectDoctor'.tr);
+    //   return false;
+    // }
 
     // Construct the mDosage string using dosageController and dosageChoose
     String dosage = dosageController.text.trim();
@@ -588,7 +588,7 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
         mIsFromDevice: isFromDevice,
         mIsActive: isUserActive ? 1 : 0,
         mSoundTitle: pickedSoundTitle,
-        mDoctorId: selectedDoctorItem!.dId,
+        mDoctorId: selectedDoctorItem?.dId,
         mFamilyMemberId: selectedFamilyMembers!.fId,
         mIsSynced: 0,
         mIsDeleted: 0);
@@ -680,10 +680,10 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
       Utils.showToast(context, 'txtSelectMember'.tr);
       return false;
     }
-    if (selectedDoctorItem == null) {
-      Utils.showToast(context, 'txtSelectDoctor'.tr);
-      return false;
-    }
+    // if (selectedDoctorItem == null) {
+    //   Utils.showToast(context, 'txtSelectDoctor'.tr);
+    //   return false;
+    // }
 
     // Construct the mDosage string using dosageController and dosageChoose
     String dosage = dosageController.text.trim();
@@ -729,7 +729,7 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
         mIsFromDevice: isFromDevice,
         mIsActive: isUserActive ? 1 : 0,
         mSoundTitle: pickedSoundTitle,
-        mDoctorId: selectedDoctorItem!.dId,
+        mDoctorId: selectedDoctorItem?.dId,
         mFamilyMemberId: selectedFamilyMembers!.fId,
         mIsSynced: 0,
         mIsDeleted: 0);
@@ -860,7 +860,8 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
 
     if (pickedS != null && pickedS != selectedTime) {
       selectedTime = pickedS;
-      tempSelectedTime = selectedTime;
+      selectedTimeList.add(selectedTime); // Directly add to list
+     // tempSelectedTime = selectedTime;
       update([Constant.idSelectedTime]);
     }
   }
@@ -907,13 +908,7 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
     update([Constant.idShapeList]);
   }
 
-  addTimeToList(BuildContext context) {
-    if (tempSelectedTime != null) {
-      selectedTimeList.add(tempSelectedTime!);
-      tempSelectedTime = null;
-      update([Constant.idSelectedTime]);
-    }
-  }
+
 
   void deleteTimeFormList(int index) {
     selectedTimeList.removeAt(index);

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:medinest/Widgets/common_button_one.dart';
 import 'package:medinest/Widgets/common_text.dart';
 import 'package:medinest/generated/assets.dart';
-import 'package:medinest/ui/add_or_edit_appointment/add_or_edit_appointment_logic.dart';
+import 'package:medinest/ui/add_or_edit_appointment/add_or_edit_journal_logic.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/sizer_utils.dart';
 
@@ -30,7 +30,7 @@ class SelectSoundAppointmentScreenPage extends StatelessWidget {
                   textColor: Get.theme.colorScheme.primary,
                   fontWeight: FontWeight.w600,
                   fontSize: AppFontSize.size_17),
-              GetBuilder<AddOrEditAppointmentLogic>(
+              GetBuilder<AddOrEditJournalLogic>(
                   id: Constant.idSelectAlertSound,
                   builder: (logic) {
                     return InkWell(
@@ -130,7 +130,7 @@ class SelectSoundAppointmentScreenPage extends StatelessWidget {
                       backgroundColor: Get.theme.colorScheme.background,
                       text: 'txtCancel'.tr),
                   CommonButtonOne(onTap: (){
-                    Get.find<AddOrEditAppointmentLogic>().saveSound();
+                    Get.find<AddOrEditJournalLogic>().saveSound();
                   }, text: 'txtSave'.tr),
                 ],
               ),
@@ -146,7 +146,7 @@ class SelectSoundAppointmentScreenPage extends StatelessWidget {
 
 
   static Widget buildSoundList() {
-    return GetBuilder<AddOrEditAppointmentLogic>(
+    return GetBuilder<AddOrEditJournalLogic>(
         id: Constant.idListOfSounds,
         builder: (logic) {
           return ListView.builder(

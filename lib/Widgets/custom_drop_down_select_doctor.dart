@@ -42,7 +42,7 @@ class DropdownWithPrefixSelectDoctor extends StatelessWidget {
               isDense: true,
               isExpanded: true,
               dropdownColor: Get.theme.colorScheme.surfaceVariant,
-              hint: CommonText(textColor: Get.theme.colorScheme.surface ,text: '${'txtSelectDoctor'.tr} *', fontSize: AppFontSize.size_11,fontWeight: FontWeight.w400,),
+              hint: CommonText(textColor: Get.theme.colorScheme.surface ,text: 'txtSelectDoctor'.tr, fontSize: AppFontSize.size_11,fontWeight: FontWeight.w400,),
               icon: suffix ?? Padding(
                 padding:  EdgeInsets.symmetric(vertical: 2, horizontal: AppSizes.width_3),
                 child: Image.asset(Assets.iconsIcDropdown,

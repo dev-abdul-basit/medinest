@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class AppointmentNotificationTable {
+class JournalNotificationTable {
   int? anId;
   int? appointmentId;
   int? bookedForFamilyMemberId;
@@ -17,7 +17,7 @@ class AppointmentNotificationTable {
   String? description;
   int? mIsSynced;
 
-  AppointmentNotificationTable({
+  JournalNotificationTable({
     this.anId,
     this.appointmentId,
     this.bookedForFamilyMemberId,
@@ -35,13 +35,13 @@ class AppointmentNotificationTable {
     this.mIsSynced,
   });
 
-  factory AppointmentNotificationTable.fromRawJson(String str) =>
-      AppointmentNotificationTable.fromJson(json.decode(str));
+  factory JournalNotificationTable.fromRawJson(String str) =>
+      JournalNotificationTable.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory AppointmentNotificationTable.fromJson(Map<String, dynamic> json) =>
-      AppointmentNotificationTable(
+  factory JournalNotificationTable.fromJson(Map<String, dynamic> json) =>
+      JournalNotificationTable(
         anId: json["anId"],
         appointmentId: json["AppointmentId"],
         bookedForFamilyMemberId: json["BookedForFamilyMemberId"],

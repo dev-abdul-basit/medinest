@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:medinest/Widgets/common_text.dart';
 import 'package:medinest/generated/assets.dart';
 import 'package:medinest/google_ads/custom_ad.dart';
-import 'package:medinest/ui/appointment_screen/appointment_screen_view.dart';
+import 'package:medinest/ui/appointment_screen/journal_screen_view.dart';
 import 'package:medinest/ui/home/home_controller.dart';
 import 'package:medinest/ui/medicine_screen/medicine_screen_view.dart';
 import 'package:medinest/utils/constant.dart';
@@ -145,7 +145,7 @@ class HomeScreen extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         children: const [
                           MedicineScreenPage(),
-                          AppointmentScreenPage(),
+                          JournalScreenPage(),
                         ],
                       ),
                     ),
@@ -169,7 +169,7 @@ class HomeScreen extends StatelessWidget {
 
                 /// TAB 1 → JOURNAL
                 if (logic.selectedTabIndex == 1) {
-                  logic.goToAddAppointment(context);
+                  logic.goToAddJournal(context);
                   return;
                 }
               },

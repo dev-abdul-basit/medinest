@@ -7,13 +7,13 @@ import 'package:medinest/Widgets/update_medicin_history.dart';
 import 'package:medinest/connectivity_manager/connectivity_manager.dart';
 import 'package:medinest/database/helper/database_helper.dart';
 import 'package:medinest/database/helper/firestore_helper.dart';
-import 'package:medinest/database/tables/appointment_history_table.dart';
-import 'package:medinest/database/tables/appointment_table.dart';
+import 'package:medinest/database/tables/journal_history_table.dart';
+import 'package:medinest/database/tables/journal_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/generated/assets.dart';
 import 'package:medinest/routes/app_routes.dart';
-import 'package:medinest/ui/appointment_screen/appointment_screen_logic.dart';
+import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
 import 'package:medinest/utils/preference.dart';
@@ -23,12 +23,12 @@ import 'package:medinest/utils/utils.dart';
 class AppointmentHistoryScreenLogic extends GetxController {
   List<FamilyMemberTable?> familyMembersList =
       List<FamilyMemberTable?>.empty(growable: true);
-  List<AppointmentHistoryTable?> appointmentHistoryTableList =
-      List<AppointmentHistoryTable?>.empty(growable: true);
-  List<AppointmentHistoryTable?> filteredAppointmentHistoryTableList =
-      List<AppointmentHistoryTable?>.empty(growable: true);
-  List<AppointmentTable?> appointmentTableList =
-      List<AppointmentTable?>.empty(growable: true);
+  List<JournalHistoryTable?> appointmentHistoryTableList =
+      List<JournalHistoryTable?>.empty(growable: true);
+  List<JournalHistoryTable?> filteredAppointmentHistoryTableList =
+      List<JournalHistoryTable?>.empty(growable: true);
+  List<JournalTable?> appointmentTableList =
+      List<JournalTable?>.empty(growable: true);
   List<DoctorsTable?> doctorsList = List<DoctorsTable?>.empty(growable: true);
   DateTime currantDate = DateTime.now();
 
@@ -52,14 +52,14 @@ class AppointmentHistoryScreenLogic extends GetxController {
   }
 
   void goToAddAppointment(BuildContext context) {
-    int length = Get.find<AppointmentScreenLogic>()
-        .appointmentList
+    int length = Get.find<JournalScreenLogic>()
+        .journalList
         .where((element) => element!.mIsDeleted != 1)
         .toList()
         .length;
     if (Preference.shared.getIsPurchase() || length < 10) {
-      Get.toNamed(AppRoutes.addOrEditAppointment)!.then(
-          (value) => Get.find<AppointmentScreenLogic>().getAllFamilyMembers());
+      Get.toNamed(AppRoutes.addOrEditJournal)!.then(
+          (value) => Get.find<JournalScreenLogic>().getAllFamilyMembers());
     } else {
       showModalBottomSheet(
           isScrollControlled: true,
@@ -101,7 +101,7 @@ class AppointmentHistoryScreenLogic extends GetxController {
     ]);
   }
 
-  editHistory(AppointmentHistoryTable appointmentHistoryTable) {
+  editHistory(JournalHistoryTable appointmentHistoryTable) {
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: Get.context!,
@@ -118,7 +118,7 @@ class AppointmentHistoryScreenLogic extends GetxController {
   }
 
   updateHistory(
-      {required AppointmentHistoryTable appointmentHistoryTable,
+      {required JournalHistoryTable appointmentHistoryTable,
       required bool isAccept}) async {
     appointmentHistoryTable.isAccept = isAccept ? 1 : 0;
     appointmentHistoryTable.isReSchedule = isAccept ? 0 : 1;
@@ -144,10 +144,10 @@ class AppointmentHistoryScreenLogic extends GetxController {
           .getAppointmentTableData(
               result: appointmentHistoryTable.appointmentId!)
           .then((value) {
-        AppointmentTable appointmentTable = value.first;
+        JournalTable appointmentTable = value.first;
         // Get.offAllNamed(AppRoutes.home);
         Future.delayed(const Duration(milliseconds: 500), () {
-          Get.toNamed(AppRoutes.addOrEditAppointment, arguments: [
+          Get.toNamed(AppRoutes.addOrEditJournal, arguments: [
             true,
             appointmentTable,
             true,

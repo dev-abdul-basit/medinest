@@ -15,8 +15,8 @@ import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:medinest/connectivity_manager/connectivity_manager.dart';
 import 'package:medinest/database/helper/database_helper.dart';
 import 'package:medinest/database/helper/firestore_helper.dart';
-import 'package:medinest/database/tables/appointment_history_table.dart';
-import 'package:medinest/database/tables/appointment_notification_table.dart';
+import 'package:medinest/database/tables/journal_history_table.dart';
+import 'package:medinest/database/tables/journal_notification_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/database/tables/medicine_history_table.dart';
 import 'package:medinest/database/tables/notification_table.dart';
@@ -136,8 +136,8 @@ Future<void> notificationTapBackground(
           takeMedicine(isSkipped: true, notificationTable: notificationTable);
         }
       } else if (notificationResponse.payload!.contains('AppointmentId')) {
-        AppointmentNotificationTable? appointmentNotificationTable =
-            AppointmentNotificationTable.fromRawJson(
+        JournalNotificationTable? appointmentNotificationTable =
+            JournalNotificationTable.fromRawJson(
               notificationResponse.payload!,
             );
         if (notificationResponse.actionId == acceptId) {
@@ -224,7 +224,7 @@ Future<void> takeMedicine({
 
 Future<void> acceptAppointment({
   required bool isReSchedule,
-  required AppointmentNotificationTable appointmentNotificationTable,
+  required JournalNotificationTable appointmentNotificationTable,
 }) async {
   List<FamilyMemberTable?> familyMembersList = List<FamilyMemberTable?>.empty(
     growable: true,
@@ -238,7 +238,7 @@ Future<void> acceptAppointment({
       )
       .toList()
       .first;
-  AppointmentHistoryTable appointmentHistoryTableData = AppointmentHistoryTable(
+  JournalHistoryTable appointmentHistoryTableData = JournalHistoryTable(
     ahId: null,
     doctorId: appointmentNotificationTable.doctorId!,
     acceptTime: DateTime.now().toIso8601String(),

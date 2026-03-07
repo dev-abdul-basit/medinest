@@ -11,21 +11,21 @@ import 'package:medinest/Widgets/select_sound_appointment_screen_view.dart';
 import 'package:medinest/connectivity_manager/connectivity_manager.dart';
 import 'package:medinest/database/helper/database_helper.dart';
 import 'package:medinest/database/helper/firestore_helper.dart';
-import 'package:medinest/database/tables/appointment_history_table.dart';
-import 'package:medinest/database/tables/appointment_notification_table.dart';
-import 'package:medinest/database/tables/appointment_table.dart';
+import 'package:medinest/database/tables/journal_history_table.dart';
+import 'package:medinest/database/tables/journal_notification_table.dart';
+import 'package:medinest/database/tables/journal_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/main.dart';
 import 'package:medinest/notification/notification_helper.dart';
 import 'package:medinest/routes/app_routes.dart';
-import 'package:medinest/ui/appointment_screen/appointment_screen_logic.dart';
+import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
 import 'package:medinest/utils/ringtone_service.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
 import 'package:medinest/utils/utils.dart';
 
-class AddOrEditAppointmentLogic extends GetxController {
+class AddOrEditJournalLogic extends GetxController {
   bool isShowProgress = false;
   final formKey = GlobalKey<FormState>();
 
@@ -47,7 +47,7 @@ class AddOrEditAppointmentLogic extends GetxController {
 
   bool isEdit = false;
   bool isReSchedule = false;
-  AppointmentHistoryTable? appointmentHistoryTable;
+  JournalHistoryTable? appointmentHistoryTable;
 
   List<Ringtone> ringtones = [];
   static AudioPlayer audioPlayer = AudioPlayer();
@@ -70,7 +70,7 @@ class AddOrEditAppointmentLogic extends GetxController {
   String? pickedTempSoundUri;
 
   dynamic args = Get.arguments;
-  AppointmentTable? appointmentData;
+  JournalTable? appointmentData;
 
 
 
@@ -106,11 +106,11 @@ class AddOrEditAppointmentLogic extends GetxController {
         // startDate = DateTime.parse(appointmentData!.appointmentDate!);
         // pickedSoundType = appointmentData?.mSoundType ?? '';
         // pickedSoundTitle = appointmentData?.mSoundTitle ?? '';
-        // selectedFamilyMembers = familyMembersList
-        //     .where((element) =>
-        //         element.fId == appointmentData!.bookedForFamilyMemberId)
-        //     .toList()
-        //     .first;
+        selectedFamilyMembers = familyMembersList
+            .where((element) =>
+                element.fId == appointmentData!.bookedForFamilyMemberId)
+            .toList()
+            .first;
         // selectedDoctorItem = doctorsList
         //     .where((element) => element.dId == appointmentData!.doctorId)
         //     .toList()
@@ -167,14 +167,14 @@ class AddOrEditAppointmentLogic extends GetxController {
 
   Future<void> getAllFamilyMembers() async {
     familyMembersList = await DataBaseHelper.instance.getFamilyMemberData();
-    // selectedFamilyMembers = familyMembersList[0];
+     selectedFamilyMembers = familyMembersList[0];
     Debug.printLog(":: ::: ::: $familyMembersList");
     update([Constant.idSelectMember]);
   }
 
   Future<void> getAllDoctors() async {
     doctorsList = await DataBaseHelper.instance.getDoctorsData(isList: true);
-    // selectedDoctorItem = doctorsList[0];
+     //selectedDoctorItem = doctorsList[0];
     Debug.printLog(":: ::: ::: $doctorsList");
     update([Constant.idSelectDoctor]);
   }
@@ -460,9 +460,9 @@ class AddOrEditAppointmentLogic extends GetxController {
     Utils.unFocusKeyboard();
     final String title = titleController.text.trim();
     final String description = commentController.text.trim();
-    AppointmentTable appointmentTable = AppointmentTable(
+    JournalTable journalTable = JournalTable(
         aId: isEdit ? appointmentData!.aId! : null,
-        // bookedForFamilyMemberId: selectedFamilyMembers!.fId!,
+         bookedForFamilyMemberId: selectedFamilyMembers!.fId!,
         // doctorId: selectedDoctorItem!.dId!,
         // appointmentDate: startDate.toString(),
         // appointmentTime: tempSelectedTime.toString(),
@@ -477,23 +477,23 @@ class AddOrEditAppointmentLogic extends GetxController {
         mIsDeleted: 0);
 
     try {
-      if (isEdit && appointmentTable.aId != null) {
+      if (isEdit && journalTable.aId != null) {
         // update existing
         await DataBaseHelper.instance.updateAppointmentData(
-          appointmentTable.aId!,
-          appointmentTable,
+          journalTable.aId!,
+          journalTable,
         );
       } else {
         // insert new
         var result = await DataBaseHelper.instance.insertAppointment(
-          appointmentTable,
+          journalTable,
         );
-        appointmentTable.aId = result;
+        journalTable.aId = result;
       }
 
       // Optional: sync to Firestore if available (keeps same flow as before)
       if (await InternetConnectivity.isInternetConnect(Get.context!)) {
-        FireStoreHelper().addAndUpdateAppointment(appointmentTable);
+        FireStoreHelper().addAndUpdateAppointment(journalTable);
       }
 
       // keep UX similar: stop progress, show success, clear form, update views
@@ -511,7 +511,7 @@ class AddOrEditAppointmentLogic extends GetxController {
       clearData();
 
       // Refresh screens that used to rely on appointments
-      Get.find<AppointmentScreenLogic>().getAllFamilyMembers(); // if you still rely on this
+      Get.find<JournalScreenLogic>().getAllFamilyMembers(); // if you still rely on this
       update([Constant.idHome, Constant.idMedicineList]);
     } catch (e, st) {
       Debug.printLog("Error saving journal entry: $e\n$st");

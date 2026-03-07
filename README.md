@@ -1,45 +1,52 @@
 # Medinest
 
-Medinest is a Flutter-based medication reminder and personal health journaling application designed for reliable daily use. It helps users manage pills, track health notes, and coordinate care involving doctors and family members, with strong offline support and cloud synchronization.
+Medinest is a Flutter-based medication reminder and personal journaling app, designed to help users
+reliably manage pills, record notes, and coordinate care with doctors and family members. It offers
+strong offline support with cloud synchronization to ensure data is always accessible and secure.
 
-Built with Flutter 3, GetX, Firebase, and Sqflite, Medinest is architected for scalability, performance, and long-term maintainability.
+Built with Flutter 3, GetX, Firebase, and Sqflite, Medinest is designed for scalability,
+performance, and maintainability.
+
 ## Core Features
 
-Medinest focuses on practical medication adherence and lightweight health tracking.
-
-Medication management allows users to create pill reminders with precise schedules and custom alert sounds. Reminders can be associated with the user, a doctor, or a family member, enabling shared care scenarios.
-
-Health journaling provides a simple way to log notes related to medication intake, symptoms, or daily health observations.
-
-Doctor and family profiles allow structured organization of reminders and records, suitable for caregivers managing multiple dependents.
-
-Offline-first behavior is achieved through Sqflite, with Firebase used for authentication, cloud sync, notifications, and backups.
-
-Monetization is supported through Google AdMob and in-app subscriptions, with purchase handling implemented via the official Flutter in_app_purchase APIs.
+- **Medication Management**: Create pill reminders with precise schedules and custom alert sounds.
+  Reminders can be associated with the user, a doctor, or a family member for shared care scenarios.
+- **Personal Journaling**: Log notes related to medication intake, symptoms, or general daily health
+  observations.
+- **Doctor & Family Profiles**: Organize reminders and records for multiple dependents or caregivers
+  in a structured way.
+- **Offline-first & Cloud Sync**: Core functionality works offline via Sqflite, with Firebase
+  handling authentication, cloud sync, notifications, and backups.
+- **Monetization**: AdMob and in-app subscriptions integrated using official Flutter APIs.
 
 ## Tech Stack
 
-Flutter (Dart) – Cross-platform UI and application logic
-
-GetX – State management, routing, and dependency injection
-
-Firebase – Auth, Firestore, Storage, Cloud Messaging, App Check
-
-Sqflite – Local persistent storage for offline access
-
-Flutter Local Notifications – Time-critical medication alerts
-
-Google Mobile Ads – AdMob integration
-
-In-App Purchases – Subscription handling
-
-Dio – Networking
-
-Timezone & Flutter Timezone – Accurate scheduled notifications
+- **Flutter (Dart)** – Cross-platform UI and application logic
+- **GetX** – State management, routing, and dependency injection
+- **Firebase** – Auth, Firestore, Storage, Cloud Messaging, App Check
+- **Sqflite** – Local persistent storage for offline access
+- **Flutter Local Notifications** – Time-critical medication alerts
+- **Google Mobile Ads** – AdMob integration
+- **In-App Purchases** – Subscription handling
+- **Dio** – Networking
+- **Timezone & Flutter Timezone** – Accurate scheduled notifications
 
 ## Architecture Overview
-The project follows a modular, feature-oriented structure with clear separation between UI, controllers, services, and data layers.
 
-GetX is used consistently for state management and navigation to minimize boilerplate and improve testability.
+Medinest follows a modular, feature-oriented structure with clear separation between UI,
+controllers, services, and data layers.
 
-Local data is treated as the source of truth, with Firebase acting as a synchronization and backup layer rather than a hard dependency for core functionality.
+- **GetX** is used consistently for state management and navigation to reduce boilerplate and
+  improve testability.
+- **Local data** acts as the source of truth, while Firebase serves as a synchronization and backup
+  layer without being required for core functionality.
+
+## Screenshots
+![Preview](1.png)
+![Preview](2.png)
+![Preview](3.png)
+![Preview](4.png)
+![Preview](5.png)
+![Preview](6.png)
+![Preview](7.png)
+![Preview](8.png)

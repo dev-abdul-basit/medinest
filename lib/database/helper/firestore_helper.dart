@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:medinest/connectivity_manager/connectivity_manager.dart';
 import 'package:medinest/database/helper/database_helper.dart';
-import 'package:medinest/database/tables/appointment_history_table.dart';
-import 'package:medinest/database/tables/appointment_table.dart';
+import 'package:medinest/database/tables/journal_history_table.dart';
+import 'package:medinest/database/tables/journal_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/database/tables/medicine_history_table.dart';
@@ -74,7 +74,7 @@ class FireStoreHelper {
     final allData = data.docs.map((doc) => doc.data()).toList();
     for (var element in allData) {
       await DataBaseHelper.instance
-          .insertOrUpdateAppointment(AppointmentTable.fromJson(element));
+          .insertOrUpdateAppointment(JournalTable.fromJson(element));
     }
   }
 
@@ -100,7 +100,7 @@ class FireStoreHelper {
     final allData = data.docs.map((doc) => doc.data()).toList();
     for (var element in allData) {
       await DataBaseHelper.instance.insertOrUpdateAppointmentHistoryData(
-          AppointmentHistoryTable.fromJson(element));
+          JournalHistoryTable.fromJson(element));
     }
   }
 
@@ -306,7 +306,7 @@ class FireStoreHelper {
   }
 
   updateAppointmentBatchByAid(
-  List<AppointmentTable> appointmentDataList) async {
+  List<JournalTable> appointmentDataList) async {
     final batch = MyApp.firebaseFirestore.batch();
     for (var appointmentData in appointmentDataList) {
       var doc = _getDataBaseTable(usersTable)
@@ -329,7 +329,7 @@ class FireStoreHelper {
   }
 
   updateAppointmentHistoryBatchByAHid(
-      List<AppointmentHistoryTable> appointmentHistoryDataList) async {
+      List<JournalHistoryTable> appointmentHistoryDataList) async {
     final batch = MyApp.firebaseFirestore.batch();
     for (var appointmentHistoryData in appointmentHistoryDataList) {
       var doc = _getDataBaseTable(usersTable)
@@ -411,7 +411,7 @@ class FireStoreHelper {
     batch.commit();
   }
 
-  addAndUpdateAppointment(AppointmentTable appointmentData) async {
+  addAndUpdateAppointment(JournalTable appointmentData) async {
     var doc = _getDataBaseTable(usersTable)
         .doc(Utils.getFirebaseUid())
         .collection(DataBaseHelper().appointmentTable)
@@ -540,7 +540,7 @@ class FireStoreHelper {
   }
 
   addAndUpdateAppointmentHistory(
-      AppointmentHistoryTable historyTableData) async {
+      JournalHistoryTable historyTableData) async {
     var doc = _getDataBaseTable(usersTable)
         .doc(Utils.getFirebaseUid())
         .collection(DataBaseHelper().appointmentHistoryTable)

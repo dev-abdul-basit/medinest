@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:medinest/connectivity_manager/connectivity_manager.dart';
 import 'package:medinest/database/helper/database_helper.dart';
 import 'package:medinest/database/helper/firestore_helper.dart';
-import 'package:medinest/database/tables/appointment_notification_table.dart';
+import 'package:medinest/database/tables/journal_notification_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/database/tables/notification_table.dart';
 import 'package:medinest/main.dart';
@@ -84,7 +84,7 @@ class FamilyMemberScreenLogic extends GetxController {
       FireStoreHelper().updateAppointmentBatchByFId(familyMember.fId!);
     }
 
-    List<AppointmentNotificationTable> appointmentNotificationList =
+    List<JournalNotificationTable> appointmentNotificationList =
         await DataBaseHelper.instance
             .getAppointmentNotificationData(fId: familyMember.fId);
     for (var notification in appointmentNotificationList) {

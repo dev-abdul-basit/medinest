@@ -7,8 +7,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:medinest/database/helper/database_helper.dart';
-import 'package:medinest/database/tables/appointment_notification_table.dart';
-import 'package:medinest/database/tables/appointment_table.dart';
+import 'package:medinest/database/tables/journal_notification_table.dart';
+import 'package:medinest/database/tables/journal_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/database/tables/medicine_table.dart';
@@ -63,7 +63,7 @@ class NotificationHelper {
   }
 
   reScheduleAppointmentNotification() async {
-    List<AppointmentNotificationTable>
+    List<JournalNotificationTable>
         firstTempAppointmentNotificationDataList =
         await DataBaseHelper.instance.getAppointmentNotificationData();
     for (var tempNotificationData in firstTempAppointmentNotificationDataList) {
@@ -73,7 +73,7 @@ class NotificationHelper {
     Debug.printLog(
         "getLastNotificationTimeStamp===>> ${Preference.shared.getLastNotificationTimeStamp()}");
 
-    List<AppointmentNotificationTable> tempAppointmentNotificationDataList =
+    List<JournalNotificationTable> tempAppointmentNotificationDataList =
         await DataBaseHelper.instance.getAppointmentNotificationData(
             startForm: DateTime.now().millisecondsSinceEpoch,
             limit: Platform.isAndroid ? 100 : 15);

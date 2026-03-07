@@ -6,7 +6,7 @@ import 'package:medinest/Widgets/common_button.dart';
 import 'package:medinest/Widgets/common_text.dart';
 import 'package:medinest/generated/assets.dart';
 import 'package:medinest/routes/app_routes.dart';
-import 'package:medinest/ui/appointment_screen/appointment_screen_logic.dart';
+import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
 import 'package:medinest/ui/home/home_controller.dart';
 import 'package:medinest/ui/medicine_screen/medicine_screen_logic.dart';
 import 'package:medinest/utils/constant.dart';
@@ -147,7 +147,7 @@ class AddSuccessDialog{
               onTap: () {
                 if (isMemberOrDoctor) {
                   Future.delayed(const Duration(milliseconds: 100),(){
-                    Get.find<AppointmentScreenLogic>().getAllFamilyMembers();
+                    Get.find<JournalScreenLogic>().getAllFamilyMembers();
                   });
                   Get.back();
                   Get.back();
@@ -160,12 +160,12 @@ class AddSuccessDialog{
                         'Get.find<HomeController>().selectedTabIndex : ${Get.find<HomeController>().selectedTabIndex}');
                     Get.find<HomeController>().onTabSelected(
                         Get.find<HomeController>().selectedTabIndex);
-                    Get.find<AppointmentScreenLogic>().onTabSelected(
-                        Get.find<AppointmentScreenLogic>().selectedTabIndex);
+                    Get.find<JournalScreenLogic>().onTabSelected(
+                        Get.find<JournalScreenLogic>().selectedTabIndex);
 
                     Get.find<MedicineScreenLogic>().onTabSelected(
                         Get.find<MedicineScreenLogic>().selectedTabIndex);
-                    Get.find<AppointmentScreenLogic>().update([
+                    Get.find<JournalScreenLogic>().update([
                       Constant.idHome,
                       Constant.idAppointmentList,
                       Constant.idAppointmentScreenTab

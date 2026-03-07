@@ -5,12 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:medinest/Widgets/common_button_one.dart';
 import 'package:medinest/Widgets/common_details_item.dart';
 import 'package:medinest/Widgets/common_text.dart';
-import 'package:medinest/database/tables/appointment_table.dart';
+import 'package:medinest/database/tables/journal_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/generated/assets.dart';
 import 'package:medinest/notification/notification_helper.dart';
-import 'package:medinest/ui/appointment_screen/appointment_screen_logic.dart';
+import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/sizer_utils.dart';
 
@@ -18,7 +18,7 @@ class AppointmentDetailsDialog {
   final Function() onTapEdit;
   final Function() onTapDelete;
   final DoctorsTable doctorDetails;
-  final AppointmentTable appointmentTable;
+  final JournalTable appointmentTable;
   final int familyMemberId;
 
   AppointmentDetailsDialog({
@@ -46,7 +46,7 @@ class AppointmentDetailsDialog {
   }
 
   Widget _dialog(BuildContext context) {
-    final logic = Get.find<AppointmentScreenLogic>();
+    final logic = Get.find<JournalScreenLogic>();
 
     // List<TimeOfDay> times = NotificationHelper().parseTimeList(appointmentTable.appointmentTime!);
 

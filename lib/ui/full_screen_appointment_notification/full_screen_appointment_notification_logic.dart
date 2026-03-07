@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:medinest/connectivity_manager/connectivity_manager.dart';
 import 'package:medinest/database/helper/database_helper.dart';
 import 'package:medinest/database/helper/firestore_helper.dart';
-import 'package:medinest/database/tables/appointment_history_table.dart';
-import 'package:medinest/database/tables/appointment_notification_table.dart';
-import 'package:medinest/database/tables/appointment_table.dart';
+import 'package:medinest/database/tables/journal_history_table.dart';
+import 'package:medinest/database/tables/journal_notification_table.dart';
+import 'package:medinest/database/tables/journal_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/main.dart';
@@ -21,7 +21,7 @@ class FullScreenAppointmentNotificationLogic extends GetxController {
   var data = Get.arguments;
 
   String payload = '';
-  AppointmentNotificationTable? appointmentNotificationTable;
+  JournalNotificationTable? appointmentNotificationTable;
 
   List<FamilyMemberTable?> familyMembersList =
       List<FamilyMemberTable?>.empty(growable: true);
@@ -41,7 +41,7 @@ class FullScreenAppointmentNotificationLogic extends GetxController {
     if (data != null) {
       payload = data[0];
       appointmentNotificationTable =
-          AppointmentNotificationTable.fromRawJson(payload);
+          JournalNotificationTable.fromRawJson(payload);
       // print('notificationTable: ${notificationTable?.toJson().toString()}');
       update();
       getAllFamilyMembers();
@@ -173,8 +173,8 @@ class FullScreenAppointmentNotificationLogic extends GetxController {
             appointmentNotificationTable!.bookedForFamilyMemberId!)
         .toList()
         .first;
-    AppointmentHistoryTable appointmentHistoryTableData =
-        AppointmentHistoryTable(
+    JournalHistoryTable appointmentHistoryTableData =
+        JournalHistoryTable(
             ahId: null,
             doctorId: appointmentNotificationTable!.doctorId!,
             acceptTime: DateTime.now().toIso8601String(),
@@ -190,14 +190,14 @@ class FullScreenAppointmentNotificationLogic extends GetxController {
           .getAppointmentTableData(
               result: appointmentHistoryTableData.appointmentId!)
           .then((value) async {
-        AppointmentTable appointmentTable = value.first;
+        JournalTable appointmentTable = value.first;
         isShowProgress = false;
         update([Constant.notificationAlert]);
         await flutterLocalNotificationsPlugin
             .cancel(appointmentNotificationTable!.anId!);
         Get.offAllNamed(AppRoutes.home);
         Future.delayed(const Duration(milliseconds: 100), () {
-          Get.toNamed(AppRoutes.addOrEditAppointment, arguments: [
+          Get.toNamed(AppRoutes.addOrEditJournal, arguments: [
             true,
             appointmentTable,
             true,

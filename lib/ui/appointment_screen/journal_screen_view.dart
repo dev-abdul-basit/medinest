@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medinest/Widgets/common_text.dart';
-import 'package:medinest/ui/appointment_screen/appointment_list_screen.dart';
+import 'package:medinest/ui/appointment_screen/journal_list_screen.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/sizer_utils.dart';
 
-import 'appointment_screen_logic.dart';
+import 'journal_screen_logic.dart';
 
-class AppointmentScreenPage extends StatelessWidget {
-  const AppointmentScreenPage({super.key});
+class JournalScreenPage extends StatelessWidget {
+  const JournalScreenPage({super.key});
 
   @override
   Widget build(BuildContext context) {
 
-    return GetBuilder<AppointmentScreenLogic>(
+    return GetBuilder<JournalScreenLogic>(
         id: Constant.idAppointmentScreenTab,
         builder: (logic) {
           return DefaultTabController(
@@ -64,7 +64,7 @@ class AppointmentScreenPage extends StatelessWidget {
                           .where((element) => element!.mIsDeleted != 1)
                           .toList()
                           .length,
-                          (index) => AppointmentListScreen(
+                          (index) => JournalListScreen(
                         familyMemberId: logic.familyMembersList
                             .where((element) => element!.mIsDeleted != 1)
                             .toList()[index]!

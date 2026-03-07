@@ -291,5 +291,7 @@ final Map<String, String> enUS = {
   'txtFromCamera': "From Camera",
   'txtPickImage': "Pick Image",
   'txtCheckYourInternetConnectivity': "Please check your internet connectivity",
+  'txtYourEntryHasCreated':"Journal Added",
+  'txtYourEntryHasUpdated':"Journal Updated",
 
 };

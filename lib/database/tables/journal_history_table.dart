@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class AppointmentHistoryTable {
+class JournalHistoryTable {
   int? ahId;
   int? doctorId;
   String? acceptTime;
@@ -11,7 +11,7 @@ class AppointmentHistoryTable {
   int? appointmentForId;
   int? isReSchedule;
 
-  AppointmentHistoryTable({
+  JournalHistoryTable({
     this.ahId,
     this.doctorId,
     this.acceptTime,
@@ -23,12 +23,12 @@ class AppointmentHistoryTable {
     this.isReSchedule,
   });
 
-  factory AppointmentHistoryTable.fromRawJson(String str) =>
-      AppointmentHistoryTable.fromJson(json.decode(str));
+  factory JournalHistoryTable.fromRawJson(String str) =>
+      JournalHistoryTable.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory AppointmentHistoryTable.fromJson(Map<String, dynamic> json) => AppointmentHistoryTable(
+  factory JournalHistoryTable.fromJson(Map<String, dynamic> json) => JournalHistoryTable(
     ahId: json["ahId"],
     doctorId: json["doctorId"],
     acceptTime: json["acceptTime"],

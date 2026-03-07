@@ -1,8 +1,8 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:medinest/ui/add_medicine/add_medicine_binding.dart';
 import 'package:medinest/ui/add_medicine/add_medicine_screens.dart';
-import 'package:medinest/ui/add_or_edit_appointment/add_or_edit_appointment_binding.dart';
-import 'package:medinest/ui/add_or_edit_appointment/add_or_edit_appointment_view.dart';
+import 'package:medinest/ui/add_or_edit_appointment/add_or_edit_journal_binding.dart';
+import 'package:medinest/ui/add_or_edit_appointment/add_or_edit_journal_view.dart';
 import 'package:medinest/ui/add_or_edit_doctor_screen/add_or_edit_doctor_screen_binding.dart';
 import 'package:medinest/ui/add_or_edit_doctor_screen/add_or_edit_doctor_screen_view.dart';
 import 'package:medinest/ui/add_or_edit_family_member_screen/add_or_edit_family_member_screen_binding.dart';
@@ -106,7 +106,7 @@ class AppPages {
       binding: AddOrEditDoctorScreenBinding(),
     ),
     GetPage(
-      name: AppRoutes.addOrEditAppointment,
+      name: AppRoutes.addOrEditJournal,
       page: () => AddOrEditAppointmentPage(),
       binding: AddOrEditAppointmentBinding(),
     ),

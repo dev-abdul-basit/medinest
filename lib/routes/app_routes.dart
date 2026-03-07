@@ -19,7 +19,7 @@ class AppRoutes {
   static const String addOrEditDoctor = '/addOrEditDoctor';
   static const String familyMember = '/familyMember';
   static const String doctorsScreen = '/doctorsScreen';
-  static const String addOrEditAppointment = '/addOrEditAppointment';
+  static const String addOrEditJournal = '/addOrEditAppointment';
   static const String setting = '/setting';
   static const String changeLanguage = '/changeLanguage';
 }

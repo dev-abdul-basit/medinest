@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:medinest/Widgets/common_text.dart';
 import 'package:medinest/Widgets/date_timeline.dart';
 import 'package:medinest/Widgets/no_history_widget.dart';
-import 'package:medinest/database/tables/appointment_history_table.dart';
+import 'package:medinest/database/tables/journal_history_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/generated/assets.dart';
 import 'package:medinest/utils/constant.dart';
@@ -104,7 +104,7 @@ class AppointmentHistoryScreenPage extends StatelessWidget {
     );
   }
 
-  appointment({AppointmentHistoryTable? appointmentHistoryTable}) {
+  appointment({JournalHistoryTable? appointmentHistoryTable}) {
     return GetBuilder<AppointmentHistoryScreenLogic>(builder: (logic) {
       DoctorsTable doctorDetails = logic.doctorsList
           .where((element) =>

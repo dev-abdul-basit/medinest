@@ -214,22 +214,22 @@ class AddMedicineScreen extends StatelessWidget {
                                 child: _settingItem(
                                   icon: Assets.iconsIcWatch,
                                   text: '${"txtSetTime".tr} *',
-                                  defaultText: logic.tempSelectedTime?.format(context),
+                                  defaultText: '',
                                   onTap: () => logic.selectTime(context),
                                 ),
                               );
                             }),
-                        SizedBox(
-                          width: AppSizes.width_2,
-                        ),
-                        InkWell(
-                          onTap: () => Get.find<AddMedicineController>().addTimeToList(context),
-                          child: Image.asset(
-                            Assets.iconsIcPlus,
-                            gaplessPlayback: true,
-                            height: AppSizes.width_10,
-                          ),
-                        ),
+                        // SizedBox(
+                        //   width: AppSizes.width_2,
+                        // ),
+                        // InkWell(
+                        //   onTap: () => Get.find<AddMedicineController>().addTimeToList(context),
+                        //   child: Image.asset(
+                        //     Assets.iconsIcPlus,
+                        //     gaplessPlayback: true,
+                        //     height: AppSizes.width_10,
+                        //   ),
+                        // ),
                       ],
                     ),
                     SizedBox(
@@ -353,6 +353,7 @@ class AddMedicineScreen extends StatelessWidget {
                                     padding:  EdgeInsetsDirectional.only(start: AppSizes.width_5,end: AppSizes.width_4),
                                     child: Image.asset(Assets.iconsIcDoctorName, width: AppSizes.width_5_5, height: AppSizes.width_5_5),
                                   ),
+
                                   doctorsListItems: logic.doctorsList.reversed.toList(),
                                   selectedDoctorItem: logic.selectedDoctorItem,
                                   onChangedDoctor: (value) {

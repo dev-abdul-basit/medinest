@@ -2,9 +2,9 @@ import 'dart:io' as io;
 
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
-import 'package:medinest/database/tables/appointment_history_table.dart';
-import 'package:medinest/database/tables/appointment_notification_table.dart';
-import 'package:medinest/database/tables/appointment_table.dart';
+import 'package:medinest/database/tables/journal_history_table.dart';
+import 'package:medinest/database/tables/journal_notification_table.dart';
+import 'package:medinest/database/tables/journal_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/database/tables/medicine_history_table.dart';
@@ -249,7 +249,7 @@ class DataBaseHelper {
   }
 
   Future<int> insertAppointmentHistoryData(
-    AppointmentHistoryTable historyTableData,
+    JournalHistoryTable historyTableData,
   ) async {
     var dbClient = await db;
 
@@ -271,7 +271,7 @@ class DataBaseHelper {
     return result;
   }
 
-  Future<int> insertAppointment(AppointmentTable appointmentData) async {
+  Future<int> insertAppointment(JournalTable appointmentData) async {
     var dbClient = await db;
 
     var result = await dbClient.insert(
@@ -307,7 +307,7 @@ class DataBaseHelper {
   }
 
   Future<int> insertOrUpdateAppointment(
-    AppointmentTable appointmentData,
+    JournalTable appointmentData,
   ) async {
     var dbClient = await db;
     var result = await dbClient.insert(
@@ -358,7 +358,7 @@ class DataBaseHelper {
   }
 
   Future<int> insertOrUpdateAppointmentNotificationData(
-    AppointmentNotificationTable notificationData,
+    JournalNotificationTable notificationData,
   ) async {
     var dbClient = await db;
     List<Map<String, Object?>> dataList = await dbClient.query(
@@ -412,7 +412,7 @@ class DataBaseHelper {
   }
 
   Future<int> insertOrUpdateAppointmentHistoryData(
-    AppointmentHistoryTable historyData,
+    JournalHistoryTable historyData,
   ) async {
     var dbClient = await db;
     List<Map<String, Object?>> dataList = await dbClient.query(
@@ -531,7 +531,7 @@ class DataBaseHelper {
     return medicineDataList;
   }
 
-  Future<List<AppointmentTable>> getAppointmentTableData({
+  Future<List<JournalTable>> getAppointmentTableData({
     int? result, // <-- keep this (aId filter)
     bool isNotSynced = false,
   }) async {
@@ -553,7 +553,7 @@ class DataBaseHelper {
       maps = await dbClient.query(appointmentTable);
     }
 
-    return maps.map((row) => AppointmentTable.fromJson(row)).toList();
+    return maps.map((row) => JournalTable.fromJson(row)).toList();
   }
 
   // Future<List<AppointmentTable>> getAppointmentTableData(
@@ -611,12 +611,12 @@ class DataBaseHelper {
     return historyTableDataList;
   }
 
-  Future<List<AppointmentHistoryTable>> getAppointmentHistoryData({
+  Future<List<JournalHistoryTable>> getAppointmentHistoryData({
     int? result,
     bool isNotSynced = false,
   }) async {
     var dbClient = await db;
-    List<AppointmentHistoryTable> historyTableDataList = [];
+    List<JournalHistoryTable> historyTableDataList = [];
     List<Map<String, dynamic>> maps = result != null
         ? await dbClient.query(
             appointmentHistoryTable,
@@ -636,7 +636,7 @@ class DataBaseHelper {
     );
     if (maps.isNotEmpty) {
       for (var answer in maps) {
-        var historyTableData = AppointmentHistoryTable.fromJson(answer);
+        var historyTableData = JournalHistoryTable.fromJson(answer);
         historyTableDataList.add(historyTableData);
       }
     }
@@ -741,7 +741,7 @@ class DataBaseHelper {
 
   Future<int?> updateAppointmentData(
     int id,
-    AppointmentTable appointmentData,
+    JournalTable appointmentData,
   ) async {
     var dbClient = await db;
     var result = await dbClient.update(
@@ -823,7 +823,7 @@ class DataBaseHelper {
   }
 
   Future<int?> updateAppointmentHistoryTableData(
-    AppointmentHistoryTable historyTableData,
+    JournalHistoryTable historyTableData,
   ) async {
     var dbClient = await db;
     Debug.printLog("updateAppointment result: ${historyTableData.toJson()}");
@@ -1009,14 +1009,14 @@ class DataBaseHelper {
     return notificationDataList;
   }
 
-  Future<List<AppointmentNotificationTable>> getAppointmentNotificationData({
+  Future<List<JournalNotificationTable>> getAppointmentNotificationData({
     int? result,
     int? startForm,
     int? limit,
     int? fId,
   }) async {
     var dbClient = await db;
-    List<AppointmentNotificationTable> notificationDataList = [];
+    List<JournalNotificationTable> notificationDataList = [];
     List<Map<String, dynamic>> maps = result != null
         ? await dbClient.query(
             appointmentNotificationTable,
@@ -1040,7 +1040,7 @@ class DataBaseHelper {
         : await dbClient.query(appointmentNotificationTable);
     if (maps.isNotEmpty) {
       for (var answer in maps) {
-        var notificationData = AppointmentNotificationTable.fromJson(answer);
+        var notificationData = JournalNotificationTable.fromJson(answer);
         notificationDataList.add(notificationData);
       }
     }

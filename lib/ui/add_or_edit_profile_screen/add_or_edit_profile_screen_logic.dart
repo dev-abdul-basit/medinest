@@ -12,7 +12,7 @@ import 'package:medinest/database/helper/firestore_helper.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/database/tables/user_table.dart';
 import 'package:medinest/routes/app_routes.dart';
-import 'package:medinest/ui/appointment_screen/appointment_screen_logic.dart';
+import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
 import 'package:medinest/ui/home/home_binding.dart';
 import 'package:medinest/ui/home/home_controller.dart';
 import 'package:medinest/ui/medicine_screen/medicine_screen_logic.dart';
@@ -199,11 +199,11 @@ class AddOrEditProfileScreenLogic extends GetxController {
           Preference.shared.setProfileAdded(true);
           Utils.showToast(Get.context!, 'txtProfileIsUpdatedSuccessfully'.tr);
           Get.find<MedicineScreenLogic>().getAllFamilyMembers();
-          Get.find<AppointmentScreenLogic>().getAllFamilyMembers();
+          Get.find<JournalScreenLogic>().getAllFamilyMembers();
           Get.find<HomeController>().getUserData();
           Get.find<HomeController>()
               .onTabSelected(Get.find<HomeController>().selectedTabIndex);
-          Get.find<AppointmentScreenLogic>().update([
+          Get.find<JournalScreenLogic>().update([
             Constant.idHome,
             Constant.idAppointmentList,
             Constant.idAppointmentScreenTab

@@ -28,7 +28,7 @@ class CommonButton extends StatelessWidget {
         ),
         child: CommonText(
             text: text,
-            textColor: Get.theme.colorScheme.error,
+            textColor: Get.theme.colorScheme.inversePrimary,
             textAlign: TextAlign.center,
             fontSize: AppFontSize.size_14,
             fontWeight: FontWeight.w600),

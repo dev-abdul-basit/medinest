@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:medinest/connectivity_manager/connectivity_manager.dart';
 import 'package:medinest/database/helper/database_helper.dart';
 import 'package:medinest/database/helper/firestore_helper.dart';
-import 'package:medinest/database/tables/appointment_history_table.dart';
-import 'package:medinest/database/tables/appointment_notification_table.dart';
-import 'package:medinest/database/tables/appointment_table.dart';
+import 'package:medinest/database/tables/journal_history_table.dart';
+import 'package:medinest/database/tables/journal_notification_table.dart';
+import 'package:medinest/database/tables/journal_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/main.dart';
@@ -15,16 +15,16 @@ import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
 import 'package:medinest/utils/utils.dart';
 
-class AppointmentScreenLogic extends GetxController
+class JournalScreenLogic extends GetxController
     with GetTickerProviderStateMixin {
   int selectedTabIndex = 0;
   List<FamilyMemberTable?> familyMembersList =
       List<FamilyMemberTable?>.empty(growable: true);
   List<DoctorsTable?> doctorsList = List<DoctorsTable?>.empty(growable: true);
-  List<AppointmentTable?> appointmentList =
-      List<AppointmentTable?>.empty(growable: true);
-  List<AppointmentHistoryTable?> appointmentHistoryTableList =
-      List<AppointmentHistoryTable?>.empty(growable: true);
+  List<JournalTable?> journalList =
+      List<JournalTable?>.empty(growable: true);
+  List<JournalHistoryTable?> journalHistoryTableList =
+      List<JournalHistoryTable?>.empty(growable: true);
   TabController? appointmentTabController;
 
   @override
@@ -62,16 +62,16 @@ class AppointmentScreenLogic extends GetxController
             .toList()
             .length,
         vsync: this);
-    appointmentHistoryTableList =
+    journalHistoryTableList =
         await DataBaseHelper.instance.getAppointmentHistoryData();
-    appointmentList = await DataBaseHelper.instance.getAppointmentTableData();
+    journalList = await DataBaseHelper.instance.getAppointmentTableData();
     Debug.printLog(
-        ":: appointmentHistoryTableList.isNotEmpty1 ::: ${appointmentHistoryTableList.isNotEmpty}");
-    for (var appointmentTable in appointmentList) {
-      if (appointmentHistoryTableList.isNotEmpty) {
-        List<AppointmentHistoryTable?> tempAppointmentHistoryTableList =
-            List<AppointmentHistoryTable?>.empty(growable: true);
-        tempAppointmentHistoryTableList = appointmentHistoryTableList
+        ":: appointmentHistoryTableList.isNotEmpty1 ::: ${journalHistoryTableList.isNotEmpty}");
+    for (var appointmentTable in journalList) {
+      if (journalHistoryTableList.isNotEmpty) {
+        List<JournalHistoryTable?> tempAppointmentHistoryTableList =
+            List<JournalHistoryTable?>.empty(growable: true);
+        tempAppointmentHistoryTableList = journalHistoryTableList
             .where(
                 (element) => element!.appointmentId! == appointmentTable!.aId)
             .toList()
@@ -100,13 +100,13 @@ class AppointmentScreenLogic extends GetxController
     Get.forceAppUpdate();
   }
 
-  void gotoEditAppointment(AppointmentTable appointmentTable) {
-    Get.toNamed(AppRoutes.addOrEditAppointment,
+  void gotoEditAppointment(JournalTable appointmentTable) {
+    Get.toNamed(AppRoutes.addOrEditJournal,
             arguments: [true, appointmentTable, false, null])!
         .then((value) => getAllFamilyMembers());
   }
 
-  Future<void> deleteAppointment(AppointmentTable appointmentTable) async {
+  Future<void> deleteAppointment(JournalTable appointmentTable) async {
     appointmentTable.mIsDeleted = 1;
     appointmentTable.mIsSynced = 0;
     await DataBaseHelper.instance.updateAppointmentData(
@@ -120,7 +120,7 @@ class AppointmentScreenLogic extends GetxController
 
     // DataBaseHelper().deleteAppointment(appointmentTable.aId!);
     // FireStoreHelper().deleteAppointment(appointmentTable.aId!);
-    List<AppointmentNotificationTable> notificationDataList =
+    List<JournalNotificationTable> notificationDataList =
         await DataBaseHelper.instance
             .getAppointmentNotificationData(result: appointmentTable.aId!);
     for (var notification in notificationDataList) {
@@ -130,7 +130,7 @@ class AppointmentScreenLogic extends GetxController
     await DataBaseHelper.instance
         .deleteAppointmentNotificationData(id: appointmentTable.aId!);
     Utils.showToast(
-        Get.context!, 'txtYouHaveSuccessfullyDeletedAppointment'.tr);
+        Get.context!, 'txtYouHaveSuccessfullyDeletedJournal'.tr);
     getAllFamilyMembers();
     Get.back();
   }

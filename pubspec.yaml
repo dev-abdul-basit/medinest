@@ -2,7 +2,7 @@ name: medinest
 description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.2+5
+version: 1.0.7+10
 
 environment:
   sdk: ^3.8.1
@@ -59,6 +59,7 @@ dev_dependencies:
   change_app_package_name: ^1.5.0
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
 
 dependency_overrides:
   flutter_inappwebview: ^6.0.0
@@ -79,6 +80,53 @@ flutter_launcher_icons:
     image_path: "assets/img_icon.png"
     background_color: "#ffffff"
     theme_color: "#ffffff"
+flutter_native_splash:
+  # Background color for all platforms (except Android 12+)
+  # This is REQUIRED if you don't use background_image
+  color: "#1976D2"  # Your blue color - change to your preference
+
+  # The splash screen image (your app icon or custom splash image)
+  # Should be sized for 4x pixel density (e.g., 512x512 or larger)
+  image: assets/sp_icon.png
+
+  # Optional: Dark mode variant
+  # color_dark: "#042a49"
+  # image_dark: assets/splash_dark.png
+
+  # Optional: Branding image at bottom (like a logo or text)
+  # branding: assets/branding.png
+  # branding_mode: bottom
+
+  # Android 12+ specific configuration (IMPORTANT!)
+  android_12:
+    # Background color for Android 12+
+    color: "#1976D2"  # Match your main color
+
+    # Center splash image for Android 12+
+    # If not specified, launcher icon is used
+    # With icon_background_color: 960×960 px (fit within circle 640px diameter)
+    # Without icon_background_color: 1152×1152 px (fit within circle 768px diameter)
+    # image: assets/splashscreen.png
+
+    # Optional: Background color behind the icon (creates a circle)
+    icon_background_color: "#FFFFFF"
+
+    # Optional: Dark mode for Android 12+
+    # color_dark: "#042a49"
+    # image_dark: assets/splash_dark.png
+    # icon_background_color_dark: "#000000"
+
+  # Platform-specific settings
+  android: true
+  ios: true
+  web: false  # Set to true if you want web splash
+
+  # Fullscreen (hides notification bar on Android, iOS hides by default)
+  fullscreen: true
+
+  # Image positioning
+  android_gravity: center
+  ios_content_mode: center
 
 
 flutter:

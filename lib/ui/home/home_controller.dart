@@ -13,8 +13,8 @@ import 'package:medinest/Widgets/common_subscribe_dialog.dart';
 import 'package:medinest/connectivity_manager/connectivity_manager.dart';
 import 'package:medinest/database/helper/database_helper.dart';
 import 'package:medinest/database/helper/firestore_helper.dart';
-import 'package:medinest/database/tables/appointment_history_table.dart';
-import 'package:medinest/database/tables/appointment_table.dart';
+import 'package:medinest/database/tables/journal_history_table.dart';
+import 'package:medinest/database/tables/journal_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/database/tables/medicine_history_table.dart';
@@ -27,7 +27,7 @@ import 'package:medinest/in_app_purchase/in_app_purchase_helper.dart';
 import 'package:medinest/main.dart';
 import 'package:medinest/notification/notification_helper.dart';
 import 'package:medinest/routes/app_routes.dart';
-import 'package:medinest/ui/appointment_screen/appointment_screen_logic.dart';
+import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
 import 'package:medinest/ui/get_started_screen/get_started_screen_logic.dart';
 import 'package:medinest/ui/medicine_screen/medicine_screen_logic.dart';
 import 'package:medinest/utils/constant.dart';
@@ -349,7 +349,7 @@ class HomeController extends GetxController
       await DataBaseHelper.instance.updateAllMedicineHistoryDataToSync();
     }
 
-    List<AppointmentTable> appointmentDataList =
+    List<JournalTable> appointmentDataList =
         await DataBaseHelper.instance.getAppointmentTableData(isNotSynced: true);
     if (appointmentDataList.isNotEmpty) {
       appointmentDataList = appointmentDataList.map((e) {
@@ -361,7 +361,7 @@ class HomeController extends GetxController
       await DataBaseHelper.instance.updateAllAppointmentDataToSync();
     }
 
-    List<AppointmentHistoryTable> appointmentHistoryDataList =
+    List<JournalHistoryTable> appointmentHistoryDataList =
         await DataBaseHelper.instance.getAppointmentHistoryData(isNotSynced: true);
     if (appointmentHistoryDataList.isNotEmpty) {
       appointmentHistoryDataList = appointmentHistoryDataList.map((e) {
@@ -515,9 +515,9 @@ class HomeController extends GetxController
     }
   }
 
-  void goToAddAppointment(BuildContext context) {
-    int length = Get.find<AppointmentScreenLogic>()
-        .appointmentList
+  void goToAddJournal(BuildContext context) {
+    int length = Get.find<JournalScreenLogic>()
+        .journalList
         .where((element) => element!.mIsDeleted != 1)
         .toList()
         .length;
@@ -525,12 +525,12 @@ class HomeController extends GetxController
       if (!Preference.shared.getIsPurchase()) {
         Debug.printLog('showAd 1:');
         showAd();
-        Get.toNamed(AppRoutes.addOrEditAppointment)!.then((value) =>
-            Get.find<AppointmentScreenLogic>().getAllFamilyMembers());
+        Get.toNamed(AppRoutes.addOrEditJournal)!.then((value) =>
+            Get.find<JournalScreenLogic>().getAllFamilyMembers());
       } else {
         Debug.printLog('showAd 2:');
-        Get.toNamed(AppRoutes.addOrEditAppointment)!.then((value) =>
-            Get.find<AppointmentScreenLogic>().getAllFamilyMembers());
+        Get.toNamed(AppRoutes.addOrEditJournal)!.then((value) =>
+            Get.find<JournalScreenLogic>().getAllFamilyMembers());
       }
     } else {
       showModalBottomSheet(
@@ -585,7 +585,7 @@ class HomeController extends GetxController
       }
     }
 
-    List<AppointmentTable> appointmentDataList =
+    List<JournalTable> appointmentDataList =
         await DataBaseHelper.instance.getAppointmentTableData();
     // for (var appointmentTable in appointmentDataList) {
     //   if (isFromLogin) {
@@ -618,7 +618,7 @@ class HomeController extends GetxController
     }
     Get.toNamed(AppRoutes.familyMember)!.then((value) {
       Get.find<MedicineScreenLogic>().getAllFamilyMembers();
-      Get.find<AppointmentScreenLogic>().getAllFamilyMembers();
+      Get.find<JournalScreenLogic>().getAllFamilyMembers();
     });
   }
 
@@ -635,7 +635,7 @@ class HomeController extends GetxController
     }
     Get.toNamed(AppRoutes.historyScreen)!.then((value) {
       Get.find<MedicineScreenLogic>().getAllFamilyMembers();
-      Get.find<AppointmentScreenLogic>().getAllFamilyMembers();
+      Get.find<JournalScreenLogic>().getAllFamilyMembers();
     });
   }
 }

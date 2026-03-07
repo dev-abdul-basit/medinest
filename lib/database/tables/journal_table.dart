@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-class AppointmentTable {
+class JournalTable {
   int? aId;
-  // int? bookedForFamilyMemberId;
+   int? bookedForFamilyMemberId;
   // int? doctorId;
   // String? appointmentDate;
   // String? appointmentTime;
@@ -18,9 +18,9 @@ class AppointmentTable {
   // int? isReSchedule;
   // int? isAccept;
 
-  AppointmentTable({
+  JournalTable({
     this.aId,
-    // this.bookedForFamilyMemberId,
+     this.bookedForFamilyMemberId,
     // this.doctorId,
     // this.appointmentDate,
     // this.appointmentTime,
@@ -37,15 +37,15 @@ class AppointmentTable {
     //this.isAccept,
   });
 
-  factory AppointmentTable.fromRawJson(String str) =>
-      AppointmentTable.fromJson(json.decode(str));
+  factory JournalTable.fromRawJson(String str) =>
+      JournalTable.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory AppointmentTable.fromJson(Map<String, dynamic> json) =>
-      AppointmentTable(
+  factory JournalTable.fromJson(Map<String, dynamic> json) =>
+      JournalTable(
         aId: json["aId"],
-        // bookedForFamilyMemberId: json["BookedForFamilyMemberId"],
+         bookedForFamilyMemberId: json["BookedForFamilyMemberId"],
         // doctorId: json["DoctorId"],
         // appointmentDate: json["AppointmentDate"],
         // appointmentTime: json["AppointmentTime"],
@@ -61,7 +61,7 @@ class AppointmentTable {
 
   Map<String, dynamic> toJson() => {
     "aId": aId,
-    // "BookedForFamilyMemberId": bookedForFamilyMemberId,
+     "BookedForFamilyMemberId": bookedForFamilyMemberId,
     // "DoctorId": doctorId,
     // "AppointmentDate": appointmentDate,
     // "AppointmentTime": appointmentTime,

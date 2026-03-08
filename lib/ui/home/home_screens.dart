@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medinest/Widgets/common_text.dart';
@@ -66,9 +67,11 @@ class HomeScreen extends StatelessWidget {
                             child: TabBar(
                               controller: logic.mainTabController,
                               onTap: logic.onTabSelected,
-                              dividerColor: Get.theme.colorScheme.onBackground,
+                              dividerColor:
+                                  Get.theme.colorScheme.onBackground,
                               indicatorWeight: 0,
-                              indicatorPadding: const EdgeInsets.symmetric(
+                              indicatorPadding:
+                                  const EdgeInsets.symmetric(
                                 horizontal: 5,
                                 vertical: 5,
                               ),
@@ -90,17 +93,22 @@ class HomeScreen extends StatelessWidget {
                                       vertical: 5,
                                     ),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius:
+                                          BorderRadius.circular(20),
                                       border: Border.all(
                                         width: 2,
-                                        color: Get.theme.colorScheme.primary,
+                                        color:
+                                            Get.theme.colorScheme.primary,
                                       ),
                                     ),
                                     child: CommonText(
                                       text: 'txtMedicine'.tr,
-                                      textColor: logic.selectedTabIndex == 0
-                                          ? Get.theme.colorScheme.background
-                                          : Get.theme.colorScheme.primary,
+                                      textColor:
+                                          logic.selectedTabIndex == 0
+                                              ? Get.theme.colorScheme
+                                                  .background
+                                              : Get.theme.colorScheme
+                                                  .primary,
                                       textAlign: TextAlign.center,
                                       fontSize: AppFontSize.size_12,
                                       fontWeight: FontWeight.w700,
@@ -115,18 +123,23 @@ class HomeScreen extends StatelessWidget {
                                       vertical: 5,
                                     ),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius:
+                                          BorderRadius.circular(20),
                                       border: Border.all(
                                         width: 2,
-                                        color: Get.theme.colorScheme.primary,
+                                        color:
+                                            Get.theme.colorScheme.primary,
                                       ),
                                     ),
                                     child: CommonText(
                                       text: 'txtJournal'.tr,
                                       maxLines: 1,
-                                      textColor: logic.selectedTabIndex == 1
-                                          ? Get.theme.colorScheme.background
-                                          : Get.theme.colorScheme.primary,
+                                      textColor:
+                                          logic.selectedTabIndex == 1
+                                              ? Get.theme.colorScheme
+                                                  .background
+                                              : Get.theme.colorScheme
+                                                  .primary,
                                       textAlign: TextAlign.center,
                                       fontSize: AppFontSize.size_12,
                                       fontWeight: FontWeight.w700,
@@ -161,13 +174,10 @@ class HomeScreen extends StatelessWidget {
                 color: Get.theme.colorScheme.background,
               ),
               onPressed: () {
-                /// TAB 0 → MEDICINE
                 if (logic.selectedTabIndex == 0) {
                   logic.gotoAddMedicine(context);
                   return;
                 }
-
-                /// TAB 1 → JOURNAL
                 if (logic.selectedTabIndex == 1) {
                   logic.goToAddJournal(context);
                   return;
@@ -179,59 +189,11 @@ class HomeScreen extends StatelessWidget {
       },
     );
   }
-
-  // @override
-  // void onTopBarClick(EnumTopBar name, {bool value = true}) {
-  //   if (name == EnumTopBar.topBarBack) {
-  //     Get.back();
-  //   }
-  // }
 }
 
-drawerItem({
-  Function()? onTap,
-  String? text,
-  String? icon,
-  Widget? trailing,
-  double? margin,
-  double? vPadding,
-  double? hPadding,
-}) {
-  return InkWell(
-    onTap: onTap,
-    child: Row(
-      children: [
-        Container(
-          width: AppSizes.height_5_5,
-          height: AppSizes.height_5_5,
-          padding: const EdgeInsets.all(11),
-          margin: EdgeInsets.symmetric(
-            vertical: AppSizes.height_1_6,
-            horizontal: AppSizes.width_3,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
-            color: Get.theme.colorScheme.primary,
-          ),
-          child: Image.asset(
-            icon!,
-            color: Get.context!.theme.colorScheme.inverseSurface,
-          ),
-        ),
-        // Icon(icon, color: Get.context!.theme.primaryColor),
-        Expanded(
-          child: CommonText(
-            text: text!,
-            textColor: Get.theme.colorScheme.onPrimary,
-            fontWeight: FontWeight.w600,
-            fontSize: AppFontSize.size_12,
-          ),
-        ),
-        if (trailing != null) ...{trailing},
-      ],
-    ),
-  );
-}
+// ─────────────────────────────────────────────────────────────
+// Navigation Drawer
+// ─────────────────────────────────────────────────────────────
 
 class NavigationDrawer extends StatelessWidget {
   const NavigationDrawer({super.key});
@@ -241,6 +203,12 @@ class NavigationDrawer extends StatelessWidget {
     return GetBuilder<HomeController>(
       id: Constant.idDrawerSheet,
       builder: (logic) {
+        final genderIdx = Constant.genderList.indexOf(
+          logic.userData?.gender ?? Constant.genderList[0],
+        );
+        final genderIcon =
+            Constant.genderIconList[genderIdx < 0 ? 0 : genderIdx];
+
         return PopScope(
           canPop: true,
           onPopInvoked: (didPop) => Scaffold.of(context).closeDrawer(),
@@ -250,221 +218,89 @@ class NavigationDrawer extends StatelessWidget {
               width: AppSizes.fullWidth - 50,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadiusDirectional.only(
-                  topEnd: Radius.circular(40),
+                  topEnd: Radius.circular(28),
+                  bottomEnd: Radius.circular(28),
                 ),
               ),
               backgroundColor: Get.theme.colorScheme.background,
               child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsetsDirectional.only(
-                      start: AppSizes.width_5,
-                      top: 22.0,
-                      bottom: 22.0,
-                      end: AppSizes.width_6,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: AppSizes.height_8,
-                          height: AppSizes.height_8,
-                          // padding: const EdgeInsets.all(18),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Get.theme.colorScheme.primary,
-                          ),
-                          child: logic.userData?.profileImage != null
-                              ? CachedNetworkImage(
-                                  imageUrl: logic.userData!.profileImage!,
-                                  imageBuilder: (context, imageProvider) =>
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                  placeholder: (context, url) => Padding(
-                                    padding: const EdgeInsets.all(18),
-                                    child: Image.asset(
-                                      Constant.genderIconList[Constant
-                                          .genderList
-                                          .indexOf(
-                                            logic.userData?.gender ??
-                                                Constant.genderList[0],
-                                          )],
-                                    ),
-                                  ),
-                                  errorWidget: (context, url, error) => Padding(
-                                    padding: const EdgeInsets.all(18),
-                                    child: Image.asset(
-                                      Constant.genderIconList[Constant
-                                          .genderList
-                                          .indexOf(
-                                            logic.userData?.gender ??
-                                                Constant.genderList[0],
-                                          )],
-                                    ),
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(18),
-                                  child: Image.asset(
-                                    Constant.genderIconList[Constant.genderList
-                                        .indexOf(
-                                          logic.userData?.gender ??
-                                              Constant.genderList[0],
-                                        )],
-                                  ),
-                                ),
-                          // child: Image.asset(Constant.genderIconList[Constant.genderList.indexOf(logic.userData?.gender??Constant.genderList[0])]),
+                children: [
+                  // ── Profile header ──────────────────────────────
+                  _DrawerHeader(logic: logic, genderIcon: genderIcon),
 
-                          // Image.asset(logic.userData != null && logic.userData!.gender == Constant.genderList[0]
-                          //     ? Assets.imagesImgUserMale
-                          //     : Assets.iconsIcUserFemale)
-                        ),
-                        SizedBox(width: AppFontSize.size_10),
-                        SizedBox(
-                          height: AppSizes.height_8,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CommonText(
-                                text: 'txtWelcomeBack'.tr,
-                                textColor: Get.theme.colorScheme.onSurface,
-                                fontWeight: FontWeight.w300,
-                                fontSize: AppFontSize.size_10,
-                              ),
-                              Container(
-                                constraints: BoxConstraints(
-                                  maxWidth: AppSizes.fullWidth / 2.1,
-                                ),
-                                child: CommonText(
-                                  text: logic.userData != null
-                                      ? logic.userData!.name!
-                                      : '',
-                                  maxLines: 1,
-                                  textColor: Get.theme.colorScheme.onSecondary,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: AppFontSize.size_18,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // const Spacer(),
-                        /*Padding(
-                            padding: const EdgeInsets.all(7),
-                            child: InkWell(
-                              onTap: () => Scaffold.of(context).closeDrawer(),
-                              child: Image.asset(
-                                Assets.iconsIcCloseDark,
-                                color: Get.theme.colorScheme.tertiary,
-                                height: AppSizes.height_1_7,
-                                width: AppSizes.height_1_7,
-                              ),
-                            ),
-                          ),*/
-                      ],
-                    ),
-                  ),
+                  // ── Nav items ────────────────────────────────────
                   Expanded(
                     child: SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.only(
-                          start: AppSizes.width_3,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            drawerItem(
-                              onTap: () => Scaffold.of(context).closeDrawer(),
-                              icon: Assets.iconsIcHome,
-                              text: "txtHomepage".tr,
-                            ),
-                            drawerItem(
-                              onTap: () {
-                                closeDrawer(context);
-                                logic.gotoAddMedicine(context);
-                              },
-                              icon: Assets.iconsIcMedicine,
-                              text: "txtAddMedicine".tr,
-                            ),
-                            drawerItem(
-                              onTap: () {
-                                closeDrawer(context);
-                                logic.gotoFamilyMember();
-                              },
-                              icon: Assets.iconsIcFamilyMember,
-                              text: "txtAddFamilyMember".tr,
-                            ),
-                            drawerItem(
-                              onTap: () {
-                                closeDrawer(context);
-                                logic.gotoDoctorScreen();
-                              },
-                              icon: Assets.iconsIcDoctor,
-                              text: "txtAddDoctor".tr,
-                            ),
-
-                            drawerItem(
-                              onTap: () {
-                                closeDrawer(context);
-                                logic.gotoHistoryScreen();
-                              },
-                              icon: Assets.iconsIcHistory,
-                              text: "txtHistory".tr,
-                            ),
-                            drawerItem(
-                              onTap: () => logic.goToProfile(context),
-                              icon: Assets.iconsIcProfile,
-                              text: "txtProfile".tr,
-                            ),
-                            drawerItem(
-                              onTap: () {
-                                closeDrawer(context);
-                                logic.goToSetting(context);
-                              },
-                              icon: Assets.iconsIcSetting,
-                              text: "txtSettings".tr,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 1,
-                    color: Get.theme.colorScheme.surface.withOpacity(0.5),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(22.0),
-                    child: InkWell(
-                      onTap: () {
-                        logic.onTapSingOut(context);
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 6),
+                      child: Column(
                         children: [
-                          Image.asset(
-                            Assets.iconsIcLogoutDrower,
-                            width: AppSizes.width_5,
-                            height: AppSizes.width_5,
-                            color: Get.theme.colorScheme.onSecondary,
+                          _DrawerItem(
+                            icon: Assets.iconsIcHome,
+                            label: 'txtHomepage'.tr,
+                            onTap: () =>
+                                Scaffold.of(context).closeDrawer(),
                           ),
-                          SizedBox(width: AppSizes.width_3),
-                          CommonText(
-                            text: 'txtLogOut'.tr,
-                            textColor: Get.theme.colorScheme.onSecondary,
-                            fontWeight: FontWeight.w500,
-                            fontSize: AppFontSize.size_12,
+                          _DrawerItem(
+                            icon: Assets.iconsIcMedicine,
+                            label: 'txtAddMedicine'.tr,
+                            onTap: () {
+                              _close(context);
+                              logic.gotoAddMedicine(context);
+                            },
+                          ),
+                          _DrawerItem(
+                            icon: Assets.iconsIcFamilyMember,
+                            label: 'txtAddFamilyMember'.tr,
+                            onTap: () {
+                              _close(context);
+                              logic.gotoFamilyMember();
+                            },
+                          ),
+                          _DrawerItem(
+                            icon: Assets.iconsIcDoctor,
+                            label: 'txtAddDoctor'.tr,
+                            onTap: () {
+                              _close(context);
+                              logic.gotoDoctorScreen();
+                            },
+                          ),
+                          _DrawerItem(
+                            icon: Assets.iconsIcHistory,
+                            label: 'txtHistory'.tr,
+                            onTap: () {
+                              _close(context);
+                              logic.gotoHistoryScreen();
+                            },
+                          ),
+                          _DrawerItem(
+                            icon: Assets.iconsIcProfile,
+                            label: 'txtProfile'.tr,
+                            onTap: () => logic.goToProfile(context),
+                          ),
+                          _DrawerItem(
+                            icon: Assets.iconsIcSetting,
+                            label: 'txtSettings'.tr,
+                            onTap: () {
+                              _close(context);
+                              logic.goToSetting(context);
+                            },
                           ),
                         ],
                       ),
+                    ),
+                  ),
+
+                  // ── Logout ───────────────────────────────────────
+                  Divider(
+                    height: 1,
+                    color: Get.theme.colorScheme.surface
+                        .withValues(alpha: 0.5),
+                  ),
+                  SafeArea(
+                    top: false,
+                    child: _LogoutRow(
+                      onTap: () => logic.onTapSingOut(context),
                     ),
                   ),
                 ],
@@ -476,7 +312,245 @@ class NavigationDrawer extends StatelessWidget {
     );
   }
 
-  closeDrawer(BuildContext context) {
-    Scaffold.of(context).closeDrawer();
+  void _close(BuildContext context) =>
+      Scaffold.of(context).closeDrawer();
+}
+
+// ─────────────────────────────────────────────────────────────
+// Drawer header — avatar + name
+// ─────────────────────────────────────────────────────────────
+
+class _DrawerHeader extends StatelessWidget {
+  final HomeController logic;
+  final String genderIcon;
+
+  const _DrawerHeader({required this.logic, required this.genderIcon});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Get.theme;
+    final primary = theme.colorScheme.primary;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(20, 26, 20, 22),
+      decoration: BoxDecoration(
+        color: primary.withValues(alpha: 0.07),
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(28),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Avatar with ring
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: primary, width: 2),
+              boxShadow: [
+                BoxShadow(
+                  color: primary.withValues(alpha: 0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.all(2.5),
+            child: ClipOval(
+              child: logic.userData?.profileImage != null
+                  ? CachedNetworkImage(
+                      imageUrl: logic.userData!.profileImage!,
+                      fit: BoxFit.cover,
+                      placeholder: (_, __) =>
+                          _AvatarFallback(genderIcon: genderIcon),
+                      errorWidget: (_, __, ___) =>
+                          _AvatarFallback(genderIcon: genderIcon),
+                    )
+                  : _AvatarFallback(genderIcon: genderIcon),
+            ),
+          ),
+
+          const SizedBox(width: 14),
+
+          // Welcome + name
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'txtWelcomeBack'.tr,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: theme.colorScheme.onSurface
+                        .withValues(alpha: 0.5),
+                    fontFamily: Constant.fontFamilyLexendDeca,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  logic.userData?.name ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSecondary,
+                    fontFamily: Constant.fontFamilyLexendDeca,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Single nav row
+// ─────────────────────────────────────────────────────────────
+
+class _DrawerItem extends StatelessWidget {
+  final String icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _DrawerItem({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Get.theme;
+    final primary = theme.colorScheme.primary;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 4),
+          child: Row(
+            children: [
+              // Icon bubble
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                padding: const EdgeInsets.all(9),
+                child: Image.asset(icon, color: primary),
+              ),
+
+              const SizedBox(width: 14),
+
+              // Label
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: theme.colorScheme.onPrimary,
+                    fontFamily: Constant.fontFamilyLexendDeca,
+                  ),
+                ),
+              ),
+
+              // Chevron
+              Icon(
+                CupertinoIcons.chevron_right,
+                size: 14,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Logout row
+// ─────────────────────────────────────────────────────────────
+
+class _LogoutRow extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _LogoutRow({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    const red = Color(0xFFFF3B30);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(18, 14, 18, 18),
+          child: Row(
+            children: [
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: red.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                padding: const EdgeInsets.all(9),
+                child: Image.asset(
+                  Assets.iconsIcLogoutDrower,
+                  color: red,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Text(
+                'txtLogOut'.tr,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: red,
+                  fontFamily: Constant.fontFamilyLexendDeca,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Avatar fallback (gender icon on errorContainer bg)
+// ─────────────────────────────────────────────────────────────
+
+class _AvatarFallback extends StatelessWidget {
+  final String genderIcon;
+
+  const _AvatarFallback({required this.genderIcon});
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: Get.theme.colorScheme.errorContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(9),
+        child: Image.asset(genderIcon, fit: BoxFit.contain),
+      ),
+    );
   }
 }

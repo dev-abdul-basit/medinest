@@ -42,11 +42,11 @@ controllers, services, and data layers.
   layer without being required for core functionality.
 
 ## Screenshots
-![Preview](1.png)
-![Preview](2.png)
-![Preview](3.png)
-![Preview](4.png)
-![Preview](5.png)
-![Preview](6.png)
-![Preview](7.png)
-![Preview](8.png)
+![Preview](media/1.png)
+![Preview](media/2.png)
+![Preview](media/3.png)
+![Preview](media/4.png)
+![Preview](media/5.png)
+![Preview](media/6.png)
+![Preview](media/7.png)
+![Preview](media/8.png)

@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+android/app/medinest-app-fastlane-key.json
+android/app/google-services.json
+android/app/upload-keystore.jks

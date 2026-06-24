@@ -27,9 +27,9 @@ class FullScreenNotificationPage extends StatelessWidget {
     return Screenshot(
       controller: screenshotController,
       child: Container(
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(Assets.imagesMedicineBackground),
+              image: AssetImage(Assets.images.medicineBackground.path),
               fit: BoxFit.cover),
         ),
         child: Scaffold(
@@ -113,7 +113,7 @@ class FullScreenNotificationPage extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Image.asset(Assets.iconsIcDosage,
+                                  Image.asset(Assets.icons.icDosage.path,
                                       color: Colors.white,
                                       height: AppSizes.width_5,
                                       width: AppSizes.width_5),
@@ -176,7 +176,7 @@ class FullScreenNotificationPage extends StatelessWidget {
                                   SizedBox(width: AppSizes.height_1),
                                   DropdownButton<int>(
                                     isExpanded: false,
-                                    icon: Image.asset(Assets.iconsIcDropdown,
+                                    icon: Image.asset(Assets.icons.icDropdown.path,
                                         color: Get
                                             .theme.colorScheme.inverseSurface,
                                         width: AppSizes.width_5,
@@ -220,7 +220,7 @@ class FullScreenNotificationPage extends StatelessWidget {
                           left: 0,
                           right: 0,
                           top: 30,
-                          child: Lottie.asset(Assets.animationAlarmClock,
+                          child: Lottie.asset(Assets.animation.alarmClock,
                               width: AppSizes.height_28,
                               height: AppSizes.height_28)),
                       Positioned(
@@ -248,7 +248,7 @@ class FullScreenNotificationPage extends StatelessWidget {
                               }
                             });
                           },
-                          child: Image.asset(Assets.iconsIcShare,
+                          child: Image.asset(Assets.icons.icShare.path,
                               height: AppSizes.width_11,
                               width: AppSizes.width_11),
                         ),

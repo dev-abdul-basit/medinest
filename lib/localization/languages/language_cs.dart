@@ -288,4 +288,144 @@ final Map<String, String> csCZ = {
   'txtProfileIsUpdatedSuccessfully': "Profil je úspěšně aktualizován!",
   'txtProfileIsAddedSuccessfully': "Profil je přidán úspěšně!",
   'txtCheckYourInternetConnectivity': "Zkontrolujte prosím své internetové připojení",
+
+  // F01 — paywall copy rewrite (English fallback — translate)
+  'txtPaywallTitleMedicines': "Unlock unlimited medicines",
+  'txtPaywallBodyMedicines': "You're using all 10 free medicines. Upgrade to Premium for unlimited medicines, unlimited reminders, and an ad-free experience.",
+  'txtPaywallTitleAppointments': "Unlock unlimited appointments",
+  'txtPaywallBodyAppointments': "You're using all 10 free appointments. Upgrade to Premium for unlimited appointments, unlimited journals, and an ad-free experience.",
+  'txtPaywallCtaUpgrade': "Upgrade",
+  'txtPaywallCtaSubtext': "Cancel anytime. No charge until you confirm.",
+
+  // F03 — reminder action microcopy (English fallback — translate)
+  'txtSnoozeForFiveMinutes': "Snooze for 5 min",
+
+  // F08 — adherence card (English fallback — translate)
+  'txtAdherenceTodayLabel': "Today",
+  'txtAdherenceDosesTakenOf': "doses taken",
+  'txtAdherenceStreakSingular': "1 day streak",
+  'txtAdherenceStreakPlural': "day streak",
+  'txtAdherenceCardHide': "Hide",
+  'txtAdherenceWeekTitle': "Last 14 days",
+  'txtAdherenceLegendOnTrack': "On track",
+  'txtAdherenceLegendPartial': "Partial",
+  'txtAdherenceLegendMissed': "Missed",
+
+  // F11 — caregiver mode (English fallback — translate)
+  'txtCaregiverModeSettingTitle': "Caregiver mode",
+  'txtCaregiverModeSettingSubtitle': "Show family-member features more prominently.",
+
+  // F12 — per-region IAP pricing (English fallback — translate)
+  'txtProPerMonth': "per month",
+  'txtProPerYear': "per year",
+  'txtProLoadingPrice': "Loading price…",
+
+  // F13 — ProVersion copy refresh (English fallback — translate)
+  'txtMostPopular': "Most Popular",
+
+  // F07 — onboarding (first-medicine) + deferred sign-in [en fallback]
+  'txtSelfProfileName': "Me",
+  'txtSetDosage': "Set dosage",
+  'txtDosageSheetTitle': "How much per dose?",
+  'txtUnit': "Unit",
+  'txtSignInBackupTitle': "Sign in to back up & sync",
+  'txtDone': "Done",
+  'txtNoData': "Nothing here yet",
+  'txtAdvancedOptions': "Advanced options",
+  'txtMealAfter': "After meal",
+  'txtMealBefore': "Before meal",
+  'txtMealAny': "Any time",
+  'txtNoTimesYet': "No times added yet",
+  'txtToday': "Today",
+  'txtDosesToday': "doses today",
+  'txtAllDoneToday': "All caught up today 🎉",
+  'txtNoDosesToday': "No doses scheduled today",
+  'txtNext': "Next",
+  'txtTomorrow': "Tomorrow",
+  'txtYou': "You",
+  'txtTapToCompleteProfile': "Tap to complete your profile",
+  'txtGetStartedTitle': "Welcome to MediNest",
+  'txtGetStartedSubtitle': "Stay on top of every dose — for you and your family.",
+  'txtContinueWithoutAccount': "Get started",
+  'txtOrSignInToSync': "or sign in to back up & sync your data",
+  'txtOnboardJournalTitle': "Keep a simple\nhealth journal",
+  'txtFirstMedTitle': "Set up your first reminder",
+  'txtFirstMedSubtitle': "Never miss a dose. This takes about 30 seconds.",
+  'txtFirstMedNameLabel': "What medicine is it?",
+  'txtFirstMedNamePlaceholder': "e.g. Vitamin D",
+  'txtFirstMedNameError': "Please enter a medicine name",
+  'txtFirstMedHowOften': "How often?",
+  'txtFirstMedFrequencyOnce': "Once a day",
+  'txtFirstMedFrequencyTwice': "Twice a day",
+  'txtFirstMedFrequencyThrice': "3 times a day",
+  'txtFirstMedNextReminder': "Next reminder",
+  'txtFirstMedMoreOptions': "More options (dose, color, time…)",
+  'txtFirstMedSaveCta': "Save & remind me",
+  'txtFirstMedLater': "I'll add it later",
+  'txtFirstMedTooltipTitle': "You're all set!",
+  'txtFirstMedTooltipBody': "Your reminder is scheduled. We'll notify you when it's time.",
+  'txtPleaseWait': "Please wait…",
+
+  // Missing-key backfill [en fallback]
+  'txtReminders': "Reminders",
+  'txtFamily': "Family",
+  'History': "History",
+  'Enter Title': "Enter Title",
+  'toastInternetConnection': "Please check your internet connection",
+  'toastSomethingWentWrong': "Something went wrong. Please try again.",
+  'toastNotPurchasedProductCannotRestore': "No purchased product to restore.",
+
+  // Family empty-state [en fallback]
+  'txtNoFamilyTitle': "Add your family",
+  'txtAddFamilyHint': "Tap the + button below to add a family member you care for.",
+
+  // Journal empty-state [en fallback]
+  'txtNoJournalTitle': "Start your health journal",
+
+  // Reminders empty-state [en fallback]
+  'txtNoRemindersTitle': "No reminders yet",
+  'txtAddReminderHint': "Tap the + button to schedule your first reminder.",
+
+  // Engagement empty-state [en fallback]
+  'txtNoRemindersSub': "Never miss a dose — add your first medication reminder.",
+  'txtAddReminderCta': "Add a reminder",
+  'txtNoJournalSub': "Track how you feel over time. Jot down your first note.",
+  'txtAddJournalCta': "Add a note",
+  'txtNoFamilySub': "Care for everyone you love, all from one place.",
+
+  // Home header [en fallback]
+  'txtGreetingMorning': "Good morning",
+  'txtGreetingAfternoon': "Good afternoon",
+  'txtGreetingEvening': "Good evening",
+  'txtMedicineTagline': "Stay on top of your medications",
+  'txtJournalTagline': "How are you feeling today?",
+  'txtFamilyTagline': "Care for your loved ones",
+
+  // Avatar picker [en fallback]
+  'txtChooseAvatar': "Choose an avatar",
+
+  // UI refresh 2026-06-16 — journal / family / paywall
+  'txtTitle': "Title",
+  'txtNotes': "Notes",
+  'txtYourFamily': "Your family",
+  'txtManageFamilySub': "Tap a member to view or edit their care details.",
+  'txtPremium': "Premium",
+  'txtPaywallHeroTitle': "Unlock MediNest Premium",
+  'txtPaywallHeroSub': "Everything you need to stay on track — ad-free.",
+  'txtPaywallFeaturesTitle': "What's included",
+  'txtPaywallFeatAdsSub': "A clean, distraction-free experience — no ads.",
+  'txtPaywallFeatMedsSub': "Track unlimited medications and reminders.",
+  'txtPaywallFeatSupportTitle': "Support development",
+  'txtPaywallFeatSupportSub': "Help us keep improving MediNest.",
+
+  'txtWinBackD1Title': "Your reminders are waiting",
+  'txtWinBackD1Body': "Open MediNest to pick up where you left off.",
+  'txtWinBackD2Title': "Start fresh today",
+  'txtWinBackD2Body': "A new streak is one tap away. Your reminders are ready.",
+  'txtPermRescueTitle': "Turn on reminders",
+  'txtPermRescueBody': "MediNest can't remind you to take your medicine without notification access. Turn it on to get your reminders.",
+  'txtNotNow': "Not now",
+  'txtOpenSettings': "Open settings",
+  'txtStreakMilestoneTitle': "You're on a streak! 🔥",
+  'txtStreakMilestoneBody': "days on track. Keep it going!",
 };

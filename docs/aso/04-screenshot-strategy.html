@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Screenshot Strategy — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="README.md">← back to docs index</a>
+  <span class="kicker">ASO</span>
+<h1>Screenshot Strategy</h1>
+<blockquote><p>Conversion lever, not a vanity exercise. Play Store CVR (impressions → installs) is moved more by the first 3 screenshots than by the long description. ASO peers in this category typically see CVR swings of <strong>15–40 %</strong> from a screenshot redesign — bigger than from a title change.</p>
+</blockquote>
+<p>You currently have screenshot files in <code>docs/MediNest/Medinest Playstore grahics/</code>. They are not on the Play listing in their current form yet (or they are — if so, paste the live ones into Play Console screenshots area as reference). This doc is the redesign brief.</p>
+<hr>
+<h2>Hard rules from Play Console</h2>
+<ul><li><strong>Phone screenshots:</strong> min 320 px, max 3 840 px, aspect 9:16 to 16:9, <strong>2 minimum, 8 maximum</strong>. Use 1080×1920 or 1242×2208.</li><li><strong>Tablet screenshots (7" and 10"):</strong> optional but Play boosts visibility on tablets if provided. Often skipped — the work-to-payoff is not great unless tablet usage is high (it isn't, in pill reminder).</li><li><strong>Feature graphic:</strong> 1 024 × 500. Required.</li><li><strong>Format:</strong> PNG or JPEG. Keep under 8 MB each.</li></ul>
+<h2>What converts in this category — observed pattern</h2>
+<p>Studying the SERP for <code>pill reminder</code> (top 10 across en-US, en-IN, ar-SA — verifiable when you do <code>NEXT-STEPS.md</code> step 2):</p>
+<ol><li><strong>Slot 1 (above the fold)</strong> — leader almost always shows a person-in-context image. Hand on phone, "Mom's medicine" caption, calendar metaphor. <strong>Not a UI screenshot.</strong></li><li><strong>Slots 2–3</strong> — single phone, big caption ("Never miss a dose", "Family meds in one app"), one feature visible.</li><li><strong>Slots 4–6</strong> — feature drilldowns. UI front and center, caption secondary.</li><li><strong>Slots 7–8</strong> — social proof ("Trusted by X users", privacy guarantee, awards if any).</li></ol>
+<p>What loses: 3-phone collages. Tiny captions. Generic stock photos. Untranslated screenshots in localized listings.</p>
+<hr>
+<h2>Recommended 8-screenshot set</h2>
+<p>Caption text is what you give the designer verbatim. Visual idea is the layout brief.</p>
+<table><thead><tr><th>#</th><th>Caption (≤8 words, big text)</th><th>Visual idea</th><th>Purpose</th></tr></thead><tbody><tr><td>1</td><td><strong>Never miss your meds.</strong></td><td>Hand holding phone, lockscreen with MediNest reminder visible. Soft natural lighting.</td><td>Hook. Above-the-fold conversion.</td></tr><tr><td>2</td><td><strong>One tap to mark a dose.</strong></td><td>Single phone, the today-view UI, big "Taken" button highlighted.</td><td>Show core action is fast.</td></tr><tr><td>3</td><td><strong>Reminders for the whole family.</strong></td><td>Phone with the family-member switcher visible, two profile avatars (e.g., "Mom" and "You").</td><td>Differentiator — family/multi-profile.</td></tr><tr><td>4</td><td><strong>Save doctor &amp; prescription details.</strong></td><td>Phone showing doctor profile linked to a medicine.</td><td>Differentiator vs Medisafe.</td></tr><tr><td>5</td><td><strong>A journal that goes with your meds.</strong></td><td>Phone showing a journal entry with a medicine attached.</td><td>Differentiator + content for screenshots-text-as-keywords ("journal", "notes").</td></tr><tr><td>6</td><td><strong>11 alert sounds. Pick what wakes you.</strong></td><td>Phone showing the sound picker. Subtle, but claims <code>pill alarm</code> keyword.</td><td>Long-tail + delight.</td></tr><tr><td>7</td><td><strong>Works offline. Syncs when online.</strong></td><td>Phone showing a "Synced" toast or icon.</td><td>Trust + reliability claim.</td></tr><tr><td>8</td><td><strong>Private. No medical advice. No data sold.</strong></td><td>Plain text card, MediNest logo, lock icon.</td><td>Trust. Pre-empts privacy concern reviews.</td></tr></tbody></table>
+<blockquote><p>Captions stay under 8 words because Play renders screenshots small in search results. Long captions become unreadable.</p>
+</blockquote>
+<h2>Color &amp; font notes for the designer</h2>
+<ul><li>Use the app's existing brand color (splash background <code>#1976D2</code>) as the dominant accent. Don't introduce a new palette.</li><li>Caption font: bold, sans-serif, minimum 64 pt at 1080 px width. Reader can read at thumbnail size.</li><li>Background: clean (#F7F9FC or off-white). Avoid noisy gradients — they survive Play's lossy compression poorly.</li><li>Always include the phone bezel (mockup), never raw screen — looks more polished and signals "real app".</li></ul>
+<h2>Localized screenshots — yes, do them</h2>
+<p>Same 8 layouts, captions translated by the same native fluent translator who handles the listing copy. Do not OCR-translate — Play sees them as images so there is no penalty for skipping localization, but conversion in non-English markets jumps dramatically when screenshots are translated. Empirically: 20–60 % CVR lift in MENA / India when shown in-language vs. English-only.</p>
+<p>Priority order matches <code>01-store-listing.md</code>:</p>
+<ol><li>ar-SA (RTL — flip phone bezel layout)</li><li>id-ID</li><li>hi-IN</li><li>ur-PK</li><li>es-419</li><li>pt-BR</li><li>then en-IN if it tests differently from en-US (occasionally yes — different humor/visuals work)</li></ol>
+<h2>Feature graphic</h2>
+<p>Keep the current <code>Medinest Pill Reminder and Health Journal feature graphic.png</code> for v1 unless we A/B test. If redesigning, the brief is:</p>
+<ul><li>Left third: phone with reminder UI</li><li>Middle: app name + 4-word benefit ("Never miss a dose")</li><li>Right third: small icon row — bell, family, doctor, journal</li><li>Avoid the over-stylized 3D phone trend; flat looks more credible in Health &amp; Fitness</li></ul>
+<h2>What to A/B test, and in what order</h2>
+<p>Play Console "Store listing experiments" gives 3 variants per test. Run <strong>one variable at a time</strong> or you can't read the result.</p>
+<ol><li><strong>Test 1</strong> — Screenshot 1 (hero): hand-holding-phone vs current static. Run 2 weeks or until 5k installs per arm.</li><li><strong>Test 2</strong> — Screenshot 2 caption: <code>One tap to mark a dose</code> vs <code>Mark doses in seconds</code> vs <code>Track every pill, every day</code>.</li><li><strong>Test 3</strong> — Title: v1 vs v0.</li><li><strong>Test 4</strong> — Short description: v1 vs alt-A from <code>01-store-listing.md</code>.</li><li><strong>Test 5</strong> — Icon. Only after 1–4 done. Icon tests need ~3× the volume to read.</li></ol>
+<p>Stop reading mid-test. Pick the winner with ≥95 % confidence (Play Console reports it). Do not "feel" the result.</p>
+<h2>What to record in this file as tests complete</h2>
+<p>Append a results table:</p>
+<pre><code class="lang-">| Test | Variants | Winner | Lift | n (installs) | Date |</code></pre>
+<p>This becomes the institutional memory. In a year, when "should we redesign screenshots?" comes up, the answer is in this file.</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>Screenshot Strategy</code></div>
+</div>
+</body>
+</html>

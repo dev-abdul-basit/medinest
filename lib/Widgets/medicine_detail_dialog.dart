@@ -95,7 +95,7 @@ class MedicineDetailsDialog {
                             InkWell(
                               onTap: () => Get.back(),
                               child: Image.asset(
-                                Assets.iconsIcCloseDark,
+                                Assets.icons.icCloseDark.path,
                                 color: Get.theme.colorScheme.tertiary,
                                 height: AppSizes.height_2,
                                 width: AppSizes.height_2,
@@ -158,7 +158,7 @@ class MedicineDetailsDialog {
                           DetailItem(
                             subtitle: 'txtPatientName'.tr,
                             title: familyMemberTable!.name!,
-                            icon: Assets.iconsIcUserName,
+                            icon: Assets.icons.icUserName.path,
                           ),
                         ],
                       ),
@@ -170,7 +170,7 @@ class MedicineDetailsDialog {
                           DetailItem(
                             subtitle: 'txtDosage'.tr,
                             title: '${medicineData.mDosage} ${medicineData.mUnits!.capitalizeFirst}',
-                            iconWidget:Image.asset(Assets.iconsIcDosage,
+                            iconWidget:Image.asset(Assets.icons.icDosage.path,
                                 color: Get.theme.colorScheme.onSurface,
                                 height: AppSizes.width_4_5,
                                 width: AppSizes.width_4_5),
@@ -180,7 +180,7 @@ class MedicineDetailsDialog {
                             subtitle: 'txtStatusDetails'.tr,
                             title: medicineData.mIsActive == 1 ? 'Active' : 'Suspend',
                             textColor: medicineData.mIsActive == 1 ? AppColor.colorGreen : AppColor.colorOrange,
-                            icon: Assets.iconsIcStatus,
+                            icon: Assets.icons.icStatus.path,
                           ),
                         ],
                       ),
@@ -192,7 +192,7 @@ class MedicineDetailsDialog {
                           DetailItem(
                             subtitle: 'txtFrequency'.tr,
                             title: frequency,
-                            icon: Assets.iconsIcFrequency,
+                            icon: Assets.icons.icFrequency.path,
                           ),
                         ],
                       ),
@@ -224,7 +224,7 @@ class MedicineDetailsDialog {
                                 fontWeight: FontWeight.w600)
                           ],
                         ),
-                        icon: Assets.iconsIcCalendar,
+                        icon: Assets.icons.icCalendar.path,
                       ),
                       SizedBox(
                         height: AppSizes.height_2_5,
@@ -251,7 +251,7 @@ class MedicineDetailsDialog {
                             );
                           }),
                         ),
-                        icon: Assets.iconsIcWatch,
+                        icon: Assets.icons.icWatch.path,
                       ),
 
                      

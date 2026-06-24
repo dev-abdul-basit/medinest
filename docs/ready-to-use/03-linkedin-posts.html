@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LinkedIn — Copy-Paste Posts (dev-abdul-basit)</title>
+<style>
+  :root { --fg:#1a1a1a; --muted:#666; --bg:#fff; --box:#f4f4f5; --border:#e5e5e5; --accent:#2563eb; --warn:#b45309; --warnbg:#fffbeb; }
+  * { box-sizing: border-box; }
+  body { font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--fg); background: var(--bg); margin: 0; padding: 32px 16px; }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  h2 { font-size: 20px; margin: 32px 0 12px; padding-top: 16px; border-top: 1px solid var(--border); }
+  h3 { font-size: 16px; margin: 20px 0 8px; color: var(--muted); }
+  p { margin: 0 0 14px; }
+  .lede { color: var(--muted); }
+  .copybox { background: var(--box); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; margin: 8px 0 20px; font: 14px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; word-wrap: break-word; }
+  .meta { font-size: 13px; color: var(--muted); margin: -10px 0 12px; }
+  .warn { background: var(--warnbg); border-left: 4px solid var(--warn); padding: 12px 14px; margin: 16px 0; font-size: 14px; color: #4d3a0a; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--box); font-weight: 600; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  mark { background: #fef3c7; padding: 0 4px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<main>
+
+<p><a href="index.html">&larr; Back to ready-to-use index</a></p>
+
+<h1>LinkedIn &mdash; Copy-Paste Posts <span style="font-weight:400;color:#666;font-size:18px;">(dev-abdul-basit)</span></h1>
+<p class="lede">Adapted to your actual voice (technical hook, arrow-bullet lists, question CTA, hashtag stack). Builds on your existing two Medinest posts &mdash; doesn't replace your headline or About.</p>
+
+<div class="warn">
+  <strong>Placeholder convention:</strong> <mark>[relative]</mark>, <mark>[N medicines]</mark>, and analytics numbers (<mark>__</mark>) are personal details only you have. Fill in before posting.
+</div>
+
+<h2>Profile additions (don't replace your existing About / Headline)</h2>
+
+<h3>Headline &mdash; keep yours</h3>
+<p>Your current headline (<em>Senior Mobile Application Engineer | Flutter | Android (Kotlin) | iOS (SwiftUI) | Clean Architecture | CI/CD | KSA</em>) is right for your audience. Don't dilute it with Medinest. Medinest gets surfaced through Featured + posts, not through the headline.</p>
+
+<h3>About section &mdash; optional one-paragraph addition (place at end)</h3>
+<div class="copybox">Outside of client work I build Medinest — a free Flutter pill reminder &amp; medication journal app, live on Google Play in 50+ languages. It started as a tool to help [relative] manage [N] daily medications and turned into a side product I ship in public. Currently in __k+ users with premium pricing in SAR for the MENA market.</div>
+
+<h3>Featured section &mdash; pin these in this order</h3>
+<ol>
+  <li>Your existing offline-first Medinest post (it's strong — keep pinned)</li>
+  <li>Play Store link to Medinest</li>
+  <li>The new pinned post below (when you publish it)</li>
+  <li>Your portfolio link: abdulbasitkhalid.com</li>
+</ol>
+
+<h3>About the existing launch post (1 month ago)</h3>
+<p>Per your call, leave it as-is. The line "<em>Multi-profile support (family &amp; doctor care)</em>" is now outside MVP scope but it's a low-traffic month-old post &mdash; not worth drawing attention to. Going forward, no doctor-care claims.</p>
+
+<h2>Posting cadence</h2>
+<p>Long post Tue 8:30 am Riyadh local. Short post Thu 9:30 am. Avoid Mon (LinkedIn down-weights to favour hiring posts) and Fri afternoon. Comment on 5 healthtech / Flutter posts/day &mdash; this is the actual distribution lever.</p>
+
+<h2>Week 1 &mdash; Tuesday &mdash; New pinned founder post (~1,800 chars)</h2>
+<p class="meta">Hook is technical, not personal. Caregiving angle appears as evidence in the middle, not the lead.</p>
+
+<div class="copybox">A year of building Medinest taught me 3 things about designing for medication adherence — and almost none of them were technical.
+
+Medinest is a Flutter pill reminder &amp; medication journal I built solo, now live on Google Play in 50+ languages. The original brief was personal: [relative] is on [N] daily medications, and the off-the-shelf reminder apps were failing in three predictable ways.
+
+Here's what those three failures taught me:
+
+→ Louder alarms train the user to swipe faster, not respond faster. The fix was a full-screen reminder that requires a tap to dismiss. Friction as a feature when the goal is trust.
+
+→ A checklist UI feels like a chore. People don't want to "tick boxes" — they want to not have to. The fix was a single "Taken" button on home, no list to navigate.
+
+→ The doctor visit always ends with "and have you been taking your medicine?" — and nobody has a clean answer. The fix isn't a tracker, it's a journal. A note like "switched to evening dose, less nausea" attached to that medicine, visible six months later. That's the feature Medinest gets the most quiet thank-yous for, and the one that's hardest to advertise.
+
+Lessons that compounded across all three:
+
+— Designing for the caregiver matters more than designing for the user. The person who installs the app is rarely the person taking the medicine.
+— Boring features (notes, profile-switching, sound choice) drive far more retention than the cool features (graphs, AI, social).
+— The hardest week was the week I stopped adding features and started removing them.
+
+Currently __k+ users, free, Android-first, premium at 5 SAR/mo for the MENA market.
+
+If you build in healthtech or Flutter, my DMs are open.
+
+#Flutter #Healthcare #MobileDevelopment #ProductDesign #BuildInPublic</div>
+
+<h2>Week 2 &mdash; Tuesday &mdash; Pricing post (~1,300 chars)</h2>
+<div class="copybox">I priced Medinest's premium plan at 5 SAR/month. That's about $1.30. Let me explain why.
+
+Saudi Arabia is Medinest's primary market. Setting prices in SAR — and not auto-converting from USD — has lifted MENA conversion 3× compared to a USD-anchored price.
+
+The trade-off: when 5 SAR auto-converts to USD for a US user, Medinest looks suspiciously cheap next to Medisafe at $4.99/mo.
+
+The fix is Play Console regional pricing — a price tier per region, not a single global one. Most indie devs skip this step because Play Console buries it. It's one of the highest-leverage 30-min jobs in mobile pricing.
+
+A pill reminder for $1.30/mo in Riyadh and $4.99/mo in Chicago isn't pricing chaos. It's purchasing-power parity, which is what every category leader does and most solo devs forget.
+
+If you're an indie dev shipping a freemium app and pricing in one currency for the world, you're leaving 30–60% of revenue on the floor.
+
+#Flutter #ProductPricing #IndieDev #KSA #BuildInPublic</div>
+
+<h2>Week 2 &mdash; Thursday &mdash; Short post + image</h2>
+<p class="meta">Image: side-by-side phone mockup of English vs Arabic Medinest listing.</p>
+<div class="copybox">Localized Medinest's Play Store listing into Arabic this week.
+
+→ 3 hours of work
+→ $25 paid to a native-fluent reviewer
+→ Day 1 CVR in MENA: 5× the English-only listing
+
+Localization is still the cheapest growth lever in mobile and most indie devs still skip it.
+
+#Flutter #ASO #KSA #Localization</div>
+
+<h2>Week 3 &mdash; Tuesday &mdash; AI restraint post (~1,800 chars)</h2>
+<div class="copybox">Why I almost added AI to Medinest, and why I pulled back.
+
+Six months ago "AI medication assistant" felt inevitable. Every healthtech investor I bumped into asked when Medinest would have it. Two issues stopped me:
+
+First — regulatory. Even a soft "AI suggests when to take your dose" feature crosses a line that triggers Play Store medical-device policy review. Most apps get through eventually. Some don't. The cost of getting it wrong, for a one-person operation, is the company.
+
+Second — actual user need. I shadowed [N] caregivers in Riyadh for a few hours each. Not one said "I wish my reminder app understood me better." All of them said variants of "I wish my reminder app would just not fail." That's a notification reliability problem, not an AI problem.
+
+What I built instead:
+
+→ Full-screen reminders that require a tap to dismiss
+→ Per-medicine custom sounds (11 of them — sound choice is more product than I thought)
+→ Family-profile reminders that route to the right person
+→ Journal notes pinned to specific medicines, visible at the next doctor visit
+
+The "AI feature" I might ship eventually: an opt-in summary of medication notes for the next doctor visit. Local processing only. No diagnosis, no advice. That's a writing-aid feature, not an AI agent.
+
+If you're building healthtech and an investor asks where your AI story is — be ready with an answer that protects your audience, not your fundraising.
+
+#Flutter #Healthcare #AIEthics #ProductDecisions</div>
+
+<h2>Week 3 &mdash; Thursday &mdash; Short post</h2>
+<div class="copybox">Solo dev, no marketing budget, Medinest in 50+ languages.
+
+The pipeline:
+
+→ Open-source community translations for the in-app strings
+→ Paid native-fluent reviewers ($25–50/locale) for the Play Store listing only
+→ Total cost so far: under $400
+→ Markets covered: 6 within the next month
+
+The internet is full of cheap leverage if you ignore the "AI translation" advice.
+
+#Flutter #ASO #IndieDev</div>
+
+<h2>Week 4 &mdash; Tuesday &mdash; Month 1 review (~2,000 chars)</h2>
+<div class="copybox">30 days of telling Medinest's story on LinkedIn. Numbers, lessons, what changes.
+
+Hard numbers from the month:
+
+→ Followers: __ → __
+→ Profile views from target audience: ~__/wk
+→ DM conversations started: __
+→ Press inquiries: __
+→ Installs attributable to LinkedIn: __ (small. expected. LinkedIn is for trust, not installs.)
+
+What worked:
+
+1. The pricing post (Week 2). Generated more replies than every other post combined. Lesson: indie devs hunger for pricing transparency. I'll write about pricing again.
+
+2. Reply-style commentary on a big healthtech post in Week 3 got more reach than my own post that day. Lesson: I'm still building distribution. Borrow it from people who already have it.
+
+What didn't:
+
+1. The "AI features" post got reach but the wrong reach — investor traffic, not user traffic. Medinest is a freemium consumer app. Investor reach has near-zero value here.
+
+2. Posting from the company page. ~5% of the reach of the same post from my personal profile. Confirmed.
+
+What's next:
+
+→ Doubling down on Flutter-engineering + healthtech-decision posts
+→ First press pitch ships this week
+→ Localized listing for Indonesia next (id-ID)
+
+The job on LinkedIn for an indie consumer app is to look credible enough that someone evaluating you stops at the profile and doesn't keep clicking. Done well, that's all you need from this channel.
+
+#Flutter #BuildInPublic #IndieDev</div>
+
+<h2>Week 4 &mdash; Thursday &mdash; Short post</h2>
+<div class="copybox">Press pitches go out today. Three writers, three angles, three different outlets.
+
+The angle that works: "Solo developer, hard problem, real users, specific story."
+
+The angle that never works: "Disruptive AI-powered next-gen platform."
+
+Pick one.
+
+#IndieDev #Press</div>
+
+<h2>DM template (after Week 2 only)</h2>
+<p class="meta"><strong>First DM never asks for anything.</strong></p>
+<div class="copybox">Hi {Name},
+
+Read your post on {specific thing they wrote about}. The bit on {specific point} matched something I'm seeing with Medinest, a Flutter pill reminder + journal app I'm building solo from Riyadh. {One concrete observation, 1 sentence.}
+
+Not pitching, just curious if you'd be open to a 15-min compare-notes call. Async also fine.
+
+— Abdul</div>
+
+<h2>Press pitch one-liner (DM subject)</h2>
+<div class="copybox">Riyadh-based solo dev ships Flutter pill reminder app in 50+ languages — angle on accessibility / KSA market for [outlet's specific audience]</div>
+
+<h2>Daily comments (5/day, every day)</h2>
+<p>Search for posts on: <code>flutter</code> (you already overlap this), <code>healthtech ux</code>, <code>medication adherence</code>, <code>caregiver tech</code>, <code>aging in place</code>, <code>KSA mobile</code>, <code>vision 2030 health</code>. Reply with one sharp technical observation or a real product lesson. <strong>Never with an app link.</strong></p>
+
+</main>
+</body>
+</html>

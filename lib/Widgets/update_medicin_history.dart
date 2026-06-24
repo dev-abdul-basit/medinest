@@ -40,14 +40,14 @@ class UpdateMedicineHistory extends StatelessWidget {
                 height: AppSizes.height_2,
               ),
               CommonButtonWithImage(
-                icon: isMedicine?Assets.iconsIcTaken:Assets.iconsIcActive,
+                icon: isMedicine?Assets.icons.icTaken.path:Assets.icons.icActive.path,
                   onTap: onTapTaken,
                   text: isMedicine?'txtTaken'.tr:'txtAccept'.tr),
               SizedBox(
                 height: AppSizes.height_2,
               ),
               CommonButtonWithImage(
-                  icon: isMedicine?Assets.iconsIcSuspand:Assets.iconsIcReSchedule,
+                  icon: isMedicine?Assets.icons.icSuspand.path:Assets.icons.icReSchedule.path,
                   onTap: onSkipped,
                   backgroundColor: Get.theme.colorScheme.background,
                   text: isMedicine?'txtSkipped'.tr:'txtReSchedule'.tr),

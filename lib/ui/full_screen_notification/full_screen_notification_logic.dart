@@ -12,6 +12,7 @@ import 'package:medinest/database/tables/shape_table.dart';
 import 'package:medinest/main.dart';
 import 'package:medinest/notification/notification_helper.dart';
 import 'package:medinest/utils/constant.dart';
+import 'package:medinest/utils/preference.dart';
 import 'package:medinest/utils/utils.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -193,6 +194,12 @@ class FullScreenNotificationLogic extends GetxController {
     var result =
         await DataBaseHelper.instance.insertHistoryData(historyTableData);
     historyTableData.hId = result;
+
+    /// F02 — count taken doses for the review-prompt gate.
+    if (!isSkipped) {
+      await Preference.shared
+          .setDosesMarkedTaken(Preference.shared.getDosesMarkedTaken() + 1);
+    }
 
     /// If internet available
     if (await InternetConnectivity.isInternetConnect(Get.context!)) {

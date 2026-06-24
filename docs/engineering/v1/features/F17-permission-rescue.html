@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F17 · Notification Permission Rescue — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F17 · Notification Permission Rescue</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>engagement-system.md §4 A1 (build-order #2, the rescue half)</td></tr><tr><td>Effort</td><td>½ day</td></tr><tr><td>Risk</td><td>low (replaces an existing broken dialog)</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no (<code>permission_handler</code> already in pubspec)</td></tr><tr><td>Premium-gated</td><td>no</td></tr><tr><td>ASO signals moved</td><td>R (activation) — a denied permission silently kills every notification in the system</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>A user who denies notification permission gets zero value from a reminder app and churns invisibly. Today's denial handler is a <strong>broken placeholder</strong>: <code>home_controller.dart</code> <code>showAlertDialog()</code> shows <code>content: const Text("This is my message.")</code> and, on "Ok", re-requests permission in an infinite loop — but on Android 13+ a re-request does nothing once denied, so the user is trapped in a meaningless dialog. This is the highest-leverage activation fix (engagement-system.md §1 Activation, A1): replace it with a real explanation + a deep-link to OS settings, which is the only thing that actually re-enables notifications after a denial.</p>
+<h2>2. What changes for the user</h2>
+<p>When notifications are off on app open, instead of a placeholder loop the user sees:</p>
+<blockquote><p><strong>Turn on reminders</strong> — MediNest can't remind you to take your medicine without notification access. Turn it on to get your reminders.</p>
+</blockquote>
+<p>Two buttons: <strong>Not now</strong> (dismisses — no loop) and <strong>Open settings</strong> (opens the OS app-settings page via <code>openAppSettings()</code>).</p>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/ui/home/home_controller.dart</code></strong> — rewrite <code>showAlertDialog()</code>: real title/body from locale keys, <code>barrierDismissible: true</code>, two actions (dismiss / open settings). Remove the recursive re-show loop. Add <code>import 'package:permission_handler/permission_handler.dart';</code> for <code>openAppSettings()</code>.</li><li><strong>52 locale files</strong> — 4 new keys.</li></ul>
+<p>No change to <code>_requestPermissions()</code> / <code>_isAndroidPermissionGranted()</code> — the OS request flow and the <code>else → showAlertDialog</code> trigger stay as-is; only the dialog content/behavior changes.</p>
+<h2>4. Data model</h2>
+<p>No schema changes, no new <code>Preference</code> keys.</p>
+<h2>5. Locale keys</h2>
+<pre><code class="lang-">'txtPermRescueTitle': "Turn on reminders",
+'txtPermRescueBody': "MediNest can't remind you to take your medicine without notification access. Turn it on to get your reminders.",
+'txtNotNow': "Not now",
+'txtOpenSettings': "Open settings",</code></pre>
+<p>Added to all 52 files with English fallback (same convention as F08/F13/F16).</p>
+<h2>6. Routing</h2>
+<p>No new route — <code>openAppSettings()</code> leaves the app to the OS settings screen.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Add the 4 locale keys to all 52 files.</li><li>Add the <code>permission_handler</code> import to <code>home_controller.dart</code>.</li><li>Replace the body of <code>showAlertDialog()</code> (drop the loop; add real copy + two actions).</li><li><code>flutter analyze</code> the changed file.</li></ol>
+<h2>8. Manual test plan</h2>
+<ul><li><strong>Golden path (Android 13+):</strong> fresh install → OS asks for notification permission → deny → rescue dialog appears with real copy. Tap <strong>Open settings</strong> → OS app settings opens. Enable notifications → return to app → next launch schedules reminders normally (no dialog).</li><li><strong>Not now:</strong> tap <strong>Not now</strong> → dialog dismisses, no loop, app usable.</li><li><strong>Permission already granted:</strong> launch with permission on → no dialog (regression — <code>else</code> branch never runs).</li><li><strong>Regression check:</strong> medicine reminders still schedule when permission is granted (<code>reScheduleNotifications</code> path untouched).</li></ul>
+<h2>9. Rollout</h2>
+<ul><li>No flag. Roll-back: revert <code>home_controller.dart</code> + the locale keys.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>No infinite dialog loop remains.</li><li>"Open settings" reaches the OS settings page on a real device.</li><li>Dialog copy renders in dark mode + RTL.</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Frequency-capping the rescue dialog — it shows whenever reminders are off on launch, which is acceptable for a reminder app whose core value is the notification. Could be revisited if users report annoyance.</li><li>A persistent in-Home banner (vs the launch dialog) — the dialog is the existing surface; not worth a second surface in v1.</li><li>The exact-alarm-permission nuance on Android — unchanged from current behavior.</li></ul>
+<h2>12. Open questions</h2>
+<p>None.</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>F17 · Notification Permission Rescue</code></div>
+</div>
+</body>
+</html>

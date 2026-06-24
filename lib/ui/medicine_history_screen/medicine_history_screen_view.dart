@@ -64,7 +64,7 @@ class MedicineHistoryScreenPage extends StatelessWidget {
                           child: InkWell(
                             onTap: logic.filteredMedicineHistoryTableList.isNotEmpty?logic.onDeleteHistory:null,
                             child: Image.asset(
-                              Assets.iconsIcDeleteHistory,
+                              Assets.icons.icDeleteHistory.path,
                               color: logic.filteredMedicineHistoryTableList.isNotEmpty?Get.theme.colorScheme.secondary:Get.theme.colorScheme.surface,
                               height: AppSizes.width_5_5,
                               width: AppSizes.width_5_5,
@@ -91,7 +91,7 @@ class MedicineHistoryScreenPage extends StatelessWidget {
                     },
                   )
                       : NoHistoryWidget(
-                    image: Assets.imagesImgNoHistory,
+                    image: Assets.images.imgNoHistory.path,
                     text: 'txtHistoryNotFound'.tr,
                     description: 'txtHistoryNotFoundDescription'.tr,
                     buttonText: 'txtCreateMedicineReminder'.tr,
@@ -224,7 +224,7 @@ class MedicineHistoryScreenPage extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                Image.asset(Assets.iconsIcUserName,
+                                Image.asset(Assets.icons.icUserName.path,
                                     color: Color.lerp(
                                         otherColor, Colors.black, 0.60)!,
                                     height: AppSizes.width_4_5,
@@ -249,7 +249,7 @@ class MedicineHistoryScreenPage extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                Image.asset(Assets.iconsIcWatch,
+                                Image.asset(Assets.icons.icWatch.path,
                                     color: Color.lerp(
                                         otherColor, Colors.black, 0.60)!,
                                     height: AppSizes.width_4_5,
@@ -291,8 +291,7 @@ class MedicineHistoryScreenPage extends StatelessWidget {
                             margin: const EdgeInsetsDirectional.fromSTEB(
                                 0, 15, 15, 15),
                             child: Image.asset(
-                              medicineHistoryData.isTaken == 1 ? Assets
-                                  .iconsIcTaken : Assets.iconsIcSuspand,
+                              medicineHistoryData.isTaken == 1 ? Assets.icons.icTaken.path : Assets.icons.icSuspand.path,
                               width: AppSizes.width_6,
                               height: AppSizes.width_6,
                             ),

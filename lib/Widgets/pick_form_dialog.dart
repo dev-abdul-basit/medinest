@@ -39,14 +39,14 @@ class PickFormDialog extends StatelessWidget {
                 height: AppSizes.height_2,
               ),
               CommonButtonWithImage(
-                icon: Assets.iconsIcActive,
+                icon: Assets.icons.icActive.path,
                   onTap: onTapGallery,
                   text: 'txtFromGallery'.tr),
               SizedBox(
                 height: AppSizes.height_2,
               ),
               CommonButtonWithImage(
-                  icon: Assets.iconsIcReSchedule,
+                  icon: Assets.icons.icReSchedule.path,
                   onTap: onTapCamera,
                   backgroundColor: Get.theme.colorScheme.background,
                   text: 'txtFromCamera'.tr),

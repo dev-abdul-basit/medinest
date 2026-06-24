@@ -8,6 +8,7 @@ import 'package:medinest/database/tables/medicine_table.dart';
 import 'package:medinest/database/tables/notification_table.dart';
 import 'package:medinest/database/tables/shape_table.dart';
 import 'package:medinest/main.dart';
+import 'package:medinest/ui/home/home_controller.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
 import 'package:medinest/utils/utils.dart';
@@ -73,6 +74,10 @@ class MedicineScreenLogic extends GetxController
         ":: :::medicineTableList.length ::: ${medicineTableList.where((element) => element!.mFamilyMemberId! == 2 && element.mIsDeleted != 1).toList().length}");
     // selectedTabIndex = 0;
     update([Constant.idMedicineList, Constant.idMedicineScreenTab]);
+    // Keep the home "Today" summary in sync after any add/edit/delete.
+    if (Get.isRegistered<HomeController>()) {
+      Get.find<HomeController>().refreshAdherence();
+    }
     Get.forceAppUpdate();
   }
 

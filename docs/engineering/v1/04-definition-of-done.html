@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Definition of Done (v1) — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1</span>
+<h1>Definition of Done (v1)</h1>
+<p>A v1 feature is <em>done</em> when <strong>all</strong> of these are true. Not most. All.</p>
+<blockquote><p>If a checkbox isn't honestly checkable, the feature is not done. We don't ship "done-ish".</p>
+</blockquote>
+<hr>
+<h2>Code</h2>
+<ul><li>[ ] Implementation conforms to <code>02-architecture-canon.md</code> — no new patterns introduced</li><li>[ ] No new packages added beyond what the spec approved</li><li>[ ] No <code>print(...)</code> in the diff. All logs go through <code>Debug.printLog</code></li><li>[ ] No raw <code>Color(0xFF...)</code> in feature code. All colors via <code>Get.theme.colorScheme.&lt;role&gt;</code></li><li>[ ] No magic-number sizes. All via <code>AppSizes</code> / <code>AppFontSize</code> from <code>sizer_utils.dart</code></li><li>[ ] No hardcoded English strings. All user-visible text via <code>'txtKey'.tr</code></li><li>[ ] All new <code>txt</code> keys present in <code>lib/localization/languages/language_en.dart</code> AND <code>language_ar.dart</code> AND every other locale file (English fallback acceptable as placeholder)</li><li>[ ] Any new <code>Preference</code> key has a typed getter/setter pair (no raw <code>_pref!.read</code> from feature code)</li><li>[ ] No <code>// AI generated</code> or similar markers anywhere</li><li>[ ] <code>analysis_options.yaml</code> lints pass (<code>flutter analyze</code> — Abdul runs)</li></ul>
+<h2>Schema (only if applicable)</h2>
+<ul><li>[ ] DB version in <code>database_helper.dart</code> bumped</li><li>[ ] Migration SQL in the version-bump block, idempotent and tested manually</li><li>[ ] Existing rows migrate without data loss (verify on a device with pre-existing data)</li><li>[ ] Firestore sync still works after schema change</li></ul>
+<h2>UI</h2>
+<ul><li>[ ] Light + Dark themes both render acceptably</li><li>[ ] Real device test on Android ≥9 (low end) and Android ≥13 (newer)</li><li>[ ] Arabic (RTL) renders correctly — text alignment, padding, navigation arrows mirrored</li><li>[ ] No layout overflow on small phones (5.5" / 720×1280)</li><li>[ ] No regression on tablets if the feature surfaces on tablet layouts</li></ul>
+<h2>Notifications (if affected)</h2>
+<ul><li>[ ] Existing pending notifications still fire after the change</li><li>[ ] If notifications were rescheduled: confirm count under cap (Android 400 / iOS 45) via <code>checkPendingNotificationRequests()</code></li><li>[ ] DND / silent / low-battery scenarios manually verified for any notification path the feature touches</li></ul>
+<h2>Premium / Ads (if affected)</h2>
+<ul><li>[ ] <code>Preference.shared.getIsPurchase()</code> correctly suppresses ads / unlocks features</li><li>[ ] <code>Debug.googleAd = false</code> path verified — feature works in dev mode without ad SDK</li><li>[ ] AdMob unit IDs still only in <code>ad_helper.dart</code>. No leakage.</li></ul>
+<h2>Locale &amp; ASO</h2>
+<ul><li>[ ] New strings reviewed for keyword surface area against <code>../../aso/02-keyword-research.md</code> (when applicable — e.g., onboarding, paywall, feature naming)</li><li>[ ] Translation pipeline note added to <code>Implemented</code> block: which keys need native-fluent translation before next release</li></ul>
+<h2>Process</h2>
+<ul><li>[ ] Spec is updated to match what actually shipped (deviations noted in <code>Implemented</code>)</li><li>[ ] Manual test plan run end-to-end by Abdul (not just by Claude)</li><li>[ ] At least <strong>one</strong> regression check on an adjacent feature passed</li><li>[ ] Commit message follows: <code>feat(F0X): &lt;short description&gt;</code> or <code>fix(F0X): ...</code></li><li>[ ] versionCode bumped in <code>pubspec.yaml</code></li><li>[ ] Spec's <code>Implemented</code> block filled in (date, versionCode, commit SHA, deviations)</li></ul>
+<h2>Forbidden in v1 — explicit "do nots"</h2>
+<ul><li>No tests added (we have none; one alone creates inconsistency)</li><li>No CI added</li><li>No new top-level <code>lib/</code> folders</li><li>No package upgrades unless spec explicitly approved</li><li>No silent dependency on a Play Console state Abdul hasn't verified</li></ul>
+<hr>
+<h2>When DoD blocks shipping</h2>
+<p>If a checkbox can't be checked truthfully, you have two options:</p>
+<ol><li><strong>Fix it</strong> — almost always the right answer. Most blockers are 30 minutes of additional work.</li><li><strong>Document the gap and de-scope</strong> — split the spec, mark the missed item as a follow-up F0Xa, ship what's done.</li></ol>
+<p>What you don't do: pretend the box is checked. The DoD is the contract; lying to it makes the contract worthless.</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>Definition of Done (v1)</code></div>
+</div>
+</body>
+</html>

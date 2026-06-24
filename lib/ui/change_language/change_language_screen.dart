@@ -36,7 +36,8 @@ class ChangeLanguageScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: AppSizes.height_2, horizontal: AppSizes.width_4),
+                  margin: EdgeInsets.symmetric(
+                      vertical: AppSizes.height_2, horizontal: AppSizes.width_4),
                   padding: EdgeInsets.symmetric(horizontal: AppSizes.width_2),
                   child: ListView.builder(
                     physics: const ClampingScrollPhysics(),

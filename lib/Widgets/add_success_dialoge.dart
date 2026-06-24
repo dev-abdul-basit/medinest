@@ -61,7 +61,7 @@ class AddSuccessDialog{
               child: Padding(
                 padding:  EdgeInsets.all(AppSizes.height_2_7),
                 child: Image.asset(
-                  Assets.iconsIcClose,
+                  Assets.icons.icClose.path,
                   color: Get.theme.colorScheme.onSurfaceVariant,
                   height: AppSizes.height_2,
                   width: AppSizes.height_2,
@@ -70,11 +70,11 @@ class AddSuccessDialog{
             ),
             Stack(
               children: [
-                Lottie.asset(Assets.animationCelibretion1),
+                Lottie.asset(Assets.animation.celibretion1),
                 Center(
                   heightFactor: 2.5,
                   child: Image.asset(
-                    Assets.imagesImgSuccess,
+                    Assets.images.imgSuccess.path,
                     height: AppSizes.height_18,
                     width: AppSizes.height_18,
                   ),

@@ -51,6 +51,13 @@ class InAppPurchaseHelper {
     }
   }
 
+  /// Localized monthly price label (e.g. "5.00 SAR", "$4.99").
+  /// Null if products haven't loaded yet — callers should treat null as "show CTA without price".
+  String? get monthlyPriceLabel {
+    if (products.isEmpty) return null;
+    return products.last.price;
+  }
+
   ProductDetails? getProductDetail(
     String productID, {
     required bool isMonthlySelected,

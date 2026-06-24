@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tier 2 / Tier 3 — Scope Placeholders — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>Tier 2 / Tier 3 — Scope Placeholders</h1>
+<p>These features from <code>../../../feature-improvements/feature-roadmap.md</code> are <em>not</em> fully spec'd in v1. They will get full specs (in the same template as F01–F12) when they're scheduled, after F01–F12 are mostly done. Listing them here so v1 has forward visibility without committing to designs that will rot before they ship.</p>
+<blockquote><p>Rule: <strong>don't implement from this file.</strong> Each item below must get its own full spec under <code>features/F1X-...md</code> before any code is written.</p>
+</blockquote>
+<hr>
+<h2>Tier 2 (months 3–5)</h2>
+<h3>F13 · Smart Refill Reminder</h3>
+<p><strong>Roadmap:</strong> T2-1 · <strong>Effort:</strong> 1 week · <strong>Schema:</strong> YES (new <code>medicine_table</code> columns: <code>pillsRemaining</code>, <code>refillThresholdDays</code>). <strong>Purpose:</strong> Track pill count, fire a refill notification ~3 days before running out. Claims <code>prescription refill reminder</code> keyword. <strong>Open question:</strong> how does the user input the "starting count"? Wizard at create-time vs. estimate from frequency.</p>
+<h3>F14 · Wear OS Companion</h3>
+<p><strong>Roadmap:</strong> T2-2 · <strong>Effort:</strong> 2–3 weeks · <strong>Schema:</strong> no. <strong>Purpose:</strong> Wear OS app showing next dose, tap-to-mark-taken from the wrist. Apple Watch deferred. <strong>Risk:</strong> Wear OS support in Flutter is non-trivial — likely a separate native module.</p>
+<h3>F15 · Multi-Time-Per-Day in One Entry</h3>
+<p><strong>Roadmap:</strong> T2-3 · <strong>Effort:</strong> 1 week · <strong>Schema:</strong> likely YES (new linkage in <code>notification_table</code>). <strong>Purpose:</strong> Today, multi-dose meds need separate entries. Audit if true and consolidate. <strong>Open question:</strong> does the table model already support multiple notification rows per medicine? Confirm before specifying.</p>
+<h3>F16 · Backup / Restore (clean export-import flow)</h3>
+<p><strong>Roadmap:</strong> T2-4 · <strong>Effort:</strong> 1 week · <strong>Schema:</strong> no. <strong>Purpose:</strong> Surface the existing Firestore sync as an explicit export/import in Settings, with last-backed-up timestamp visible. <strong>Premium consideration:</strong> keep free — this is a trust feature, not a revenue feature.</p>
+<h3>F17 · Home-Screen Widget</h3>
+<p><strong>Roadmap:</strong> T2-5 · <strong>Effort:</strong> 1–2 weeks · <strong>Schema:</strong> no. <strong>Purpose:</strong> Android widget showing next dose. Modest CVR claim, real D7 retention bump. <strong>Risk:</strong> Flutter home-screen widget support requires <code>home_widget</code> package + native channel work.</p>
+<hr>
+<h2>Tier 3 (months 5–8+)</h2>
+<h3>F18 · Real Family Sync (caregiver-patient)</h3>
+<p><strong>Roadmap:</strong> T3-1 · <strong>Effort:</strong> 3–4 weeks · <strong>Schema:</strong> YES (multi-tenant model). <strong>Purpose:</strong> Real-time link between a caregiver's phone and the patient's phone. Caregiver gets a ping when the patient doesn't acknowledge a dose. Premium-only. <strong>Risk:</strong> privacy + permission model is significant. Needs proper threat-model review before spec'ing.</p>
+<h3>F19 · Pharmacy / Prescription Import</h3>
+<p><strong>Roadmap:</strong> T3-2 · <strong>Effort:</strong> 6–8 weeks (partnerships involved) · <strong>Schema:</strong> YES. <strong>Purpose:</strong> Import meds from Walgreens / CVS / regional equivalents. Out of v1 scope.</p>
+<h3>F20 · iOS Launch</h3>
+<p><strong>Roadmap:</strong> T3-3 · <strong>Effort:</strong> Highly variable depending on iOS-specific bugs from current codebase. <strong>Decision rule:</strong> don't ship iOS until Android hits the Day-90 targets in <code>../../aso/05-aso-roadmap-90day.md</code>.</p>
+<hr>
+<h2>When something here graduates to a real spec</h2>
+<ol><li>Pull the row out of this file.</li><li>Create <code>features/F1X-&lt;slug&gt;.md</code> using <code>../03-feature-template.md</code>.</li><li>Update <code>../README.md</code> table — move from "placeholder" to "spec done".</li><li>Re-render HTML.</li></ol>
+<h2>Why we're not spec'ing them now</h2>
+<p>Two reasons:</p>
+<ol><li><strong>Spec rot.</strong> Specs written 6 months in advance get stale. By the time we ship F18, the codebase, AdMob policies, and Health Connect SDK will have all moved.</li><li><strong>Real signal first.</strong> F01–F12 will produce real install / retention / revenue signal. That signal will reorder the priority of T2/T3 features more accurately than today's gut.</li></ol>
+<p>So: focus on shipping v1's first 12. Re-rank the rest in 6 months.</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>Tier 2 / Tier 3 — Scope Placeholders</code></div>
+</div>
+</body>
+</html>

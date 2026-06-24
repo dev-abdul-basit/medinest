@@ -25,6 +25,32 @@ class Constant {
 
   static const notificationStartID = 1000;
 
+  /// F15 — engagement notification budget (see docs/engineering/v1/features/F15).
+  /// Decisions locked in docs/feature-improvements/engagement-system.md §9.
+  /// Quiet hours: no engagement (non-medicine) notification fires in [21:00, 08:00).
+  static const int engagementQuietHourStart = 21; // 21:00 inclusive
+  static const int engagementQuietHourEnd = 8; // 08:00 — fires allowed from here on
+  static const int engagementMaxPerDay = 1;
+  static const int engagementMaxPerWeek = 3;
+  static const int engagementMinGapToReminderMinutes = 90;
+  static const List<int> engagementStreakMilestones = [3, 7, 14, 30, 100];
+
+  /// F16 — win-back (offline resurrection) notifications. Fixed ids sit far
+  /// outside the medicine range (medicine id = nId + notificationStartID).
+  static const int winBackD1NotificationId = 990001;
+  static const int winBackD2NotificationId = 990002;
+  static const int winBackD1AfterDays = 5;
+  static const int winBackD2AfterDays = 14;
+  static const int winBackFireHour = 11; // 11:00 local — outside quiet hours
+  static const String winBackPayload = "winback";
+  static const String engagementNotificationChannelId =
+      "engagement_notification_channel";
+  static const String engagementNotificationChannelName = "MediNest Nudges";
+
+  /// F18 — streak milestone celebration (immediate engagement notification).
+  static const int milestoneNotificationId = 990003;
+  static const String engagementPayload = "engagement";
+
   static const String idAppointmentTitle = 'idAppointmentTitle';
   static const idDosageSelect = 'idDosageSelect';
 
@@ -236,7 +262,7 @@ class Constant {
   ];
 
   static List<String> genderList = const ['Male', 'Female', 'Other'];
-  static List<String> genderIconList = const [Assets.iconsIcUserMale, Assets.iconsIcUserFemale,Assets.iconsIcTransgender];
+  static List<String> genderIconList = [Assets.icons.icUserMale.path, Assets.icons.icUserFemale.path, Assets.icons.icTransgender.path];
   static List<String> bloodGroupList = const ['None','A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'Ab-'];
 
   static Map<int, String> dayData = {1: "Mon", 2: "Tue", 3: "Wed", 4: "Thur", 5: "Fri", 6: "Sat", 7: "Sun"};
@@ -260,6 +286,8 @@ class Constant {
   static const idMedicineList = "idMedicineList";
   static const idAppointmentList = "idAppointmentList";
   static const idAppointmentListItem = "idAppointmentListItem";
+  static const idAdherenceCard = "idAdherenceCard"; // F08
+  static const idFirstMedicine = "idFirstMedicine"; // F07
 
   ///Navigation Arguments
   static const idImageArg = 'idImageArg';

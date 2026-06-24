@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Engineering Handbook · v1 — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1</span>
+<h1>Engineering Handbook · v1</h1>
+<p>Frozen 2026-05-09. Active.</p>
+<h2>Read in this order</h2>
+<ol><li><strong><a href="00-overview.html">00-overview.md</a></strong> — what v1 covers, what it doesn't, how to use this folder</li><li><strong><a href="01-claude-flutter-engineer-role.html">01-claude-flutter-engineer-role.md</a></strong> — the role you (Claude) take when implementing. Read this first when starting an implementation session.</li><li><strong><a href="02-architecture-canon.html">02-architecture-canon.md</a></strong> — the actual conventions in this repo, audited from real code. Implementation must match these patterns; do not invent new ones in v1.</li><li><strong><a href="03-feature-template.html">03-feature-template.md</a></strong> — the structure every feature spec follows.</li><li><strong><a href="04-definition-of-done.html">04-definition-of-done.md</a></strong> — universal DoD checklist for any feature in v1.</li><li><strong><a href="release-cadence.html">release-cadence.md</a></strong> — when and how often we ship (F06).</li><li><strong><a href="release-checklist.html">release-checklist.md</a></strong> — pre-release sanity check (F06).</li><li><strong><a href="features/">features/</a></strong> — per-feature specs, ordered by ship priority.</li></ol>
+<h2>Feature specs in v1</h2>
+<p>In ship order — each one cross-references the corresponding entry in <code>../../feature-improvements/feature-roadmap.md</code>.</p>
+<h3>Quick wins (sprint 1–2, ½–1 day each)</h3>
+<table><thead><tr><th>ID</th><th>Feature</th><th>Roadmap ref</th><th>Status</th></tr></thead><tbody><tr><td>F01</td><td>Paywall copy rewrite</td><td>QW-1</td><td>spec done</td></tr><tr><td>F02</td><td>Review-prompt timing fix</td><td>QW-2</td><td>spec done</td></tr><tr><td>F03</td><td>Reminder action microcopy</td><td>QW-3</td><td>spec done</td></tr><tr><td>F04</td><td>ASO strings on key UI screens</td><td>QW-4</td><td>spec done</td></tr><tr><td>F05</td><td>Privacy policy link verification</td><td>QW-5</td><td>spec done</td></tr><tr><td>F06</td><td>Update-cadence policy</td><td>QW-6</td><td>spec done</td></tr></tbody></table>
+<h3>Tier 1 (sprint 2–10, 1–2 weeks each)</h3>
+<table><thead><tr><th>ID</th><th>Feature</th><th>Roadmap ref</th><th>Status</th></tr></thead><tbody><tr><td>F07</td><td>Onboarding rewrite (first-reminder-set)</td><td>T1-1</td><td>spec done</td></tr><tr><td>F08</td><td>Adherence streak on home</td><td>T1-2</td><td>spec done</td></tr><tr><td>F09</td><td>Health Connect integration</td><td>T1-3</td><td>spec done</td></tr><tr><td>F10</td><td>"Notes for doctor" PDF export</td><td>T1-4</td><td>spec done</td></tr><tr><td>F11</td><td>Caregiver mode toggle</td><td>T1-5</td><td>spec done</td></tr><tr><td>F12</td><td>Per-region IAP pricing</td><td>T1-6</td><td>spec done</td></tr></tbody></table>
+<h3>Tier 2 / Tier 3 — placeholders</h3>
+<p>Spec deferred until earlier work is done. See <strong><a href="features/T2-T3-placeholders.html">features/T2-T3-placeholders.md</a></strong> for scope-only descriptions.</p>
+<h2>Roles</h2>
+<ul><li><strong>Abdul (you)</strong> — product owner, designer, release manager. Reviews specs, approves before code lands, runs Play Console / app builds / device testing.</li><li><strong>Claude (me)</strong> — Flutter engineer per <code>01-claude-flutter-engineer-role.md</code>. Reads the spec, implements, hands back a diff and a manual test plan.</li></ul>
+<h2>Working agreement for implementation sessions</h2>
+<ol><li>Pick <strong>one</strong> feature from the <code>features/</code> list.</li><li>Open the spec file. Read the entire spec before touching code.</li><li>Confirm with Abdul if anything in the spec is ambiguous or contradicts what's now in the codebase (the code is the truth; if the spec is outdated, fix the spec first).</li><li>Implement following the architecture canon. No new patterns in v1.</li><li>Walk Abdul through the diff and manual test plan.</li><li>Abdul builds + tests on device. Bugs found → back to step 4.</li><li>Spec gets a <code>### Implemented</code> block appended at the bottom (date, commit SHA, version code shipped). Move feature row to "shipped" in this README.</li></ol>
+
+  <div class="footer">MediNest growth brain · generated from <code>Engineering Handbook · v1</code></div>
+</div>
+</body>
+</html>

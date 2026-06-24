@@ -13,6 +13,7 @@ import 'package:medinest/database/tables/notification_table.dart';
 import 'package:medinest/database/tables/shape_table.dart';
 import 'package:medinest/database/tables/user_table.dart';
 import 'package:medinest/utils/debug.dart';
+import 'package:medinest/utils/preference.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DataBaseHelper {
@@ -170,7 +171,15 @@ class DataBaseHelper {
             where: "$mIsSynced = ?",
             whereArgs: [0],
           )
-        : await dbClient.query(familyMemberTable);
+        // Default list path (dropdowns, family tab): hide soft-deleted rows so a
+        // deleted member never reappears as a booking-for option. The by-id and
+        // isNotSynced paths above intentionally still return deleted rows (sync
+        // must push deletions; edit/notification lookups need the row).
+        : await dbClient.query(
+            familyMemberTable,
+            where: "$mIsDeleted IS NULL OR $mIsDeleted != ?",
+            whereArgs: [1],
+          );
     if (maps.isNotEmpty) {
       for (var answer in maps) {
         var familyMemberData = FamilyMemberTable.fromJson(answer);
@@ -178,6 +187,61 @@ class DataBaseHelper {
       }
     }
     return familyMemberDataList;
+  }
+
+  /// Get-or-create the implicit "Me" family-member row that owns the current
+  /// user's own medicines & appointments, and persist its id so "self" is never
+  /// tied to a brittle `fId == 1` assumption.
+  ///
+  /// [selfName] is the localized display name (`'txtSelfProfileName'.tr`) — kept
+  /// out of the data layer so this helper has no GetX dependency.
+  ///
+  /// Resolution order:
+  ///   1. The persisted id, if its row still exists and isn't deleted.
+  ///   2. Back-compat for installs created before this id was tracked: adopt a
+  ///      live row matching the self name, else the legacy `fId == 1` row.
+  ///   3. Otherwise insert a fresh self row.
+  Future<int> ensureSelfMember({required String selfName}) async {
+    final int? stored = Preference.shared.getSelfMemberId();
+    if (stored != null) {
+      final existing = await getFamilyMemberData(stored);
+      if (existing.isNotEmpty && existing.first.mIsDeleted != 1) {
+        return stored;
+      }
+    }
+
+    final List<FamilyMemberTable> live = (await getFamilyMemberData())
+        .where((m) => m.mIsDeleted != 1 && m.fId != null)
+        .toList();
+
+    FamilyMemberTable? found;
+    final String target = selfName.trim().toLowerCase();
+    for (final m in live) {
+      if ((m.name ?? '').trim().toLowerCase() == target) {
+        found = m;
+        break;
+      }
+    }
+    found ??= live.cast<FamilyMemberTable?>().firstWhere(
+          (m) => m!.fId == 1,
+          orElse: () => null,
+        );
+
+    if (found != null) {
+      await Preference.shared.setSelfMemberId(found.fId!);
+      return found.fId!;
+    }
+
+    final int id = await insertFamilyMember(
+      FamilyMemberTable(
+        name: selfName,
+        gender: 'Other',
+        mIsSynced: 0,
+        mIsDeleted: 0,
+      ),
+    );
+    await Preference.shared.setSelfMemberId(id);
+    return id;
   }
 
   Future<List<DoctorsTable>> getDoctorsData({
@@ -969,6 +1033,23 @@ class DataBaseHelper {
 
     Debug.printLog("deleteReminder -->>$result");
     return result;
+  }
+
+  /// Wipe ALL local user data (every table). Used only for account isolation —
+  /// when a DIFFERENT account signs in, the local data (which belongs to the
+  /// previous owner and is safe in their own cloud) is cleared before the new
+  /// account's data is pulled. Never call this on a plain sign-out.
+  Future<void> clearAllUserData() async {
+    await deleteAppointmentNotificationData();
+    await deleteAppointment();
+    await deleteAppointmentHistory();
+    await deleteMedicineData();
+    await deleteMedicineHistory();
+    await deleteNotificationData();
+    await deleteFamilyMemberData();
+    await deleteDoctor();
+    await deleteUser();
+    Debug.printLog("clearAllUserData -->> all local user tables cleared");
   }
 
   Future<List<MedicineNotificationTable>> getNotificationData({

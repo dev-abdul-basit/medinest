@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F05 · Privacy Policy Link Verification — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F05 · Privacy Policy Link Verification</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>QW-5</td></tr><tr><td>Effort</td><td>½ day (mostly verification, not coding)</td></tr><tr><td>Risk</td><td>low</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no</td></tr><tr><td>ASO signals moved</td><td>Compliance, ★</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>Required by Google Play. Apps in Health &amp; Fitness without a working privacy policy link in <strong>both</strong> the listing and inside the app are at higher risk of policy review and rating sentiment hits. The current <code>Constant.privacyPolicyURL</code> is set to <code>https://developermatic.com/apps/medinest/privacy/</code> — needs verification that the URL actually serves a real page that meets Play's policy requirements.</p>
+<h2>2. What changes for the user</h2>
+<p>If the URL works: nothing changes for the user. We just verify and document.</p>
+<p>If the URL is dead or the page is incomplete: a working URL is hosted, and the app's Settings → About / Settings → Privacy entry actually navigates there.</p>
+<h2>3. What changes in the code</h2>
+<p>Most likely: <strong>no code changes</strong> if the URL works and the app already opens it correctly.</p>
+<p>If changes are needed:</p>
+<ul><li><strong><code>lib/utils/constant.dart</code></strong> — update <code>Constant.privacyPolicyURL</code> if the live URL has moved</li><li><strong><code>lib/ui/setting/setting_screen_view.dart</code></strong> — verify the privacy link tile correctly fires <code>url_launcher</code>'s <code>launchUrl(...)</code> with the URL</li><li><strong>NEW: page on <code>developermatic.com</code></strong> <em>(if not already live)</em> — Abdul's job, not Claude's</li></ul>
+<h2>4. Data model</h2>
+<p>No schema changes.</p>
+<h2>5. Locale keys</h2>
+<p>Verify existing key (likely <code>txtPrivacyPolicy</code> or similar) renders the right string. No new keys.</p>
+<h2>6. Routing</h2>
+<p>No routing changes.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Open <code>https://developermatic.com/apps/medinest/privacy/</code> in a browser. Verify it loads and shows a real privacy policy.</li><li>Read the policy. It must address (Play's required topics for medical-adjacent apps):</li></ol>
+<ul><li>What data is collected (email, FCM token, medicine names, doctor info, photos if any)</li><li>How it's stored (Firebase Firestore, Firebase Auth, GetStorage local)</li><li>Third parties it's shared with (none / Google / AdMob)</li><li>User rights (request deletion via email)</li><li>Contact email (<code>info@developermatic.com</code> or new one)</li></ul>
+<ol><li>If any of step 2 fails: hand the gap list to Abdul. Implementation pauses until the URL is updated. (This is the "your side" item, not Claude's.)</li><li>Once URL is verified: open <code>lib/ui/setting/setting_screen_view.dart</code> and find the "Privacy Policy" entry. Trace it to a tap handler. Verify it calls <code>launchUrl(Uri.parse(Constant.privacyPolicyURL), mode: LaunchMode.externalApplication)</code> (or equivalent — match existing pattern).</li><li>Run on device. Tap → confirm browser opens with the right URL.</li><li>Repeat for <code>Constant.aboutUsURL</code> and <code>Constant.termsAndConditionURL</code>. Same checklist.</li><li>In Play Console → "App content" → "Privacy policy" → confirm the URL field matches <code>Constant.privacyPolicyURL</code>. Abdul's job.</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path:</strong></p>
+<ol><li>Open Settings.</li><li>Tap Privacy Policy.</li><li><strong>Expected:</strong> browser opens to the policy page. Page loads, shows real content.</li></ol>
+<p><strong>Edge case — offline:</strong></p>
+<ol><li>Airplane mode on. Tap Privacy Policy.</li><li><strong>Expected:</strong> OS-level browser error, app doesn't crash.</li></ol>
+<p><strong>Edge case — multiple browsers:</strong></p>
+<ol><li>With multiple browsers installed, tap. <strong>Expected:</strong> browser chooser appears (or default browser opens). No crash.</li></ol>
+<p><strong>Regression check:</strong></p>
+<p>Tap About Us, Terms &amp; Conditions. Confirm they all open their respective URLs.</p>
+<h2>9. Rollout</h2>
+<ul><li>This is mostly a verification + Play Console field check. Ship a release only if a code change was needed.</li><li>Roll-back: revert the URL constant.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>URL loads and serves a privacy policy that names data collected</li><li>Play Console field matches <code>Constant.privacyPolicyURL</code></li><li>All three URLs (privacy, about, terms) verified</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Drafting the actual privacy policy content (that's a writing job, not a code job)</li><li>Hosting infrastructure changes</li><li>GDPR / DPA documentation beyond what Play Store requires</li></ul>
+<h2>12. Open questions</h2>
+<ol><li>Does the live policy mention AdMob and Firebase by name? If not, it must.</li><li>Is the support contact email a <code>support@</code> address or personal Gmail? Reviewers downgrade trust on personal-email contacts. Migrate to <code>support@developermatic.com</code> if not already.</li></ol>
+<hr>
+<h2>Implemented</h2>
+<ul><li>Date: 2026-05-09</li><li>versionCode shipped: pending</li><li><strong>No code changes needed on Claude's side</strong> for F05.</li><li>Verified:</li><li><code>Constant.privacyPolicyURL</code> = <code>https://developermatic.com/apps/medinest/privacy/</code></li><li><code>Constant.aboutUsURL</code> = <code>https://developermatic.com/apps/medinest/about/</code></li><li><code>Constant.termsAndConditionURL</code> = <code>https://developermatic.com/apps/medinest/terms/</code></li><li>All three are wired via <code>Utils.urlLauncher(...)</code> in <code>lib/ui/setting/setting_screen_view.dart</code> lines 160 / 169 / 178, and <code>urlLauncher</code> opens with <code>LaunchMode.inAppBrowserView</code> (good UX).</li><li><strong>Pending — Abdul's verification (cannot do from code):</strong></li></ul>
+<ol><li>Open each URL in browser. Confirms real privacy policy / about / terms content.</li><li>Privacy policy must list: data collected (medicine names, FCM token, doctor info, photos), storage (Firebase + GetStorage), third parties (Google AdMob), user rights (deletion via email), contact (<code>info@developermatic.com</code>).</li><li>Play Console → "App content" → Privacy policy field — confirm matches <code>Constant.privacyPolicyURL</code>.</li></ol>
+<ul><li><strong>Out-of-scope risk flagged (NOT fixed in F05):</strong></li><li><code>lib/utils/utils.dart::urlLauncher</code> line 90 does <code>throw "Cannot load the page";</code> — string throw, unhandled. If user is offline, the app crashes the action. Would benefit from a <code>try/catch</code> + toast. Suggest opening a separate small spec for this — call it <code>F05a</code> if pursuing.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F05 · Privacy Policy Link Verification</code></div>
+</div>
+</body>
+</html>

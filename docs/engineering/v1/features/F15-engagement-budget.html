@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F15 · Engagement Notification Budget — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F15 · Engagement Notification Budget</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>engagement-system.md §2 (build-order #1)</td></tr><tr><td>Effort</td><td>1 day</td></tr><tr><td>Risk</td><td>low (pure-Dart foundation, unwired on first ship)</td></tr><tr><td>Schema change</td><td>no (uses <code>Preference</code> only)</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no</td></tr><tr><td>ASO signals moved</td><td>R (D7+) — indirect: protects every later engagement notification from causing notification-fatigue churn</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>Medicine reminders are already frequent. Every engagement notification we add later (win-back, streak, adherence tip) stacks on top of them — and the failure mode for a Productivity-category app is: too many notifications → user disables notifications → the reminder backbone dies → silent churn (undetectable, worse than uninstall). See <code>../../feature-improvements/engagement-system.md</code> §1–§2. This feature is the gatekeeper every non-medicine notification must pass before it fires. It ships <strong>before</strong> any notification that uses it, so the guardrail can never be retrofitted under pressure.</p>
+<h2>2. What changes for the user</h2>
+<p>Nothing visible in this slice. This is foundation: a service plus persisted counters. User-facing behavior arrives in F16 (the first consumer). Shipping it unwired is deliberate — it's a safe, commit-able slice with zero behavioral risk.</p>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/services/engagement_service.dart</code></strong> <em>(new)</em> — pure-Dart budget logic, same shape as <code>adherence_service.dart</code> (no GetX, no UI, testable). Exposes <code>canFire(...)</code> and <code>recordFired()</code>.</li><li><strong><code>lib/utils/constant.dart</code></strong> — add engagement-budget constants (quiet hours, caps, spacing, milestone ladder).</li><li><strong><code>lib/utils/preference.dart</code></strong> — add 4 keys + accessors: <code>lastEngagementNotifTs</code>, <code>engagementWeekStartTs</code>, <code>engagementWeekCount</code>, <code>lastOpenTs</code>.</li></ul>
+<p>No changes to <code>notification_helper.dart</code> or <code>main.dart</code> in this slice — wiring is F16.</p>
+<h2>4. Data model</h2>
+<p>No schema changes. New <code>Preference</code> keys (GetStorage, ints, epoch-ms or counts):</p>
+<pre><code class="lang-dart">static const String lastEngagementNotifTs = "LAST_ENGAGEMENT_NOTIF_TS";
+static const String engagementWeekStartTs = "ENGAGEMENT_WEEK_START_TS";
+static const String engagementWeekCount   = "ENGAGEMENT_WEEK_COUNT";
+static const String lastOpenTs            = "LAST_OPEN_TS";
+
+int getLastEngagementNotifTs() =&gt; _pref!.read(lastEngagementNotifTs) ?? 0;
+Future&lt;void&gt; setLastEngagementNotifTs(int v) =&gt; _pref!.write(lastEngagementNotifTs, v);
+
+int getEngagementWeekStartTs() =&gt; _pref!.read(engagementWeekStartTs) ?? 0;
+Future&lt;void&gt; setEngagementWeekStartTs(int v) =&gt; _pref!.write(engagementWeekStartTs, v);
+
+int getEngagementWeekCount() =&gt; _pref!.read(engagementWeekCount) ?? 0;
+Future&lt;void&gt; setEngagementWeekCount(int v) =&gt; _pref!.write(engagementWeekCount, v);
+
+int getLastOpenTs() =&gt; _pref!.read(lastOpenTs) ?? 0;
+Future&lt;void&gt; setLastOpenTs(int v) =&gt; _pref!.write(lastOpenTs, v);</code></pre>
+<p>New <code>Constant</code> values (locked per engagement-system.md §9):</p>
+<pre><code class="lang-dart">static const int engagementQuietHourStart = 21; // 21:00 inclusive
+static const int engagementQuietHourEnd   = 8;  // 08:00 — fires allowed from here
+static const int engagementMaxPerDay      = 1;
+static const int engagementMaxPerWeek     = 3;
+static const int engagementMinGapToReminderMinutes = 90;
+static const List&lt;int&gt; engagementStreakMilestones = [3, 7, 14, 30, 100];</code></pre>
+<h2>5. Locale keys</h2>
+<p><code>n/a</code> — no user-facing strings in this slice. Copy lives with F16+ when notifications actually render.</p>
+<h2>6. Routing</h2>
+<p>No routing changes.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Add the 6 <code>Constant</code> values (section 4).</li><li>Add the 4 <code>Preference</code> keys + accessors (section 4).</li><li>Create <code>lib/services/engagement_service.dart</code>:</li></ol>
+<ul><li><code>enum EngagementKind { resurrection, milestone, journal, adherenceTip }</code> with a priority order (resurrection highest).</li><li><code>EngagementDecision canFire({ required DateTime now, required List&lt;int&gt; upcomingReminderTimestamps, EngagementKind? kind })</code> returning an allow/deny + reason. Pure — caller injects <code>now</code> and the reminder timestamps (from <code>notification_table</code>), so no DB coupling and it's unit-testable like <code>AdherenceService</code>.</li><li>Checks in order: (a) quiet hours via <code>now.hour</code>; (b) within <code>engagementMinGapToReminderMinutes</code> of any <code>upcomingReminderTimestamps</code>; (c) daily cap — <code>lastEngagementNotifTs</code> same calendar day; (d) weekly cap — roll <code>engagementWeekStartTs</code> forward when &gt;7 days old, else compare <code>engagementWeekCount</code> to <code>engagementMaxPerWeek</code>.</li><li><code>Future&lt;void&gt; recordFired(DateTime now)</code> — sets <code>lastEngagementNotifTs</code>, rolls/increments the week window+count.</li></ul>
+<ol><li>Keep all thresholds referencing the <code>Constant</code> values — no magic numbers in the service.</li></ol>
+<p>Each step is commit-able if interrupted.</p>
+<h2>8. Manual test plan</h2>
+<p>No device UI in this slice. Verify by reasoning + a temporary debug harness (a throwaway button calling <code>EngagementService</code> with crafted <code>now</code> values), removed before commit.</p>
+<ul><li><strong>Golden path:</strong> <code>now</code> = 14:00, empty reminder list, no prior fire → <code>canFire</code> allows. Call <code>recordFired</code>. Second call same day → denied (daily cap).</li><li><strong>Quiet hours:</strong> <code>now</code> = 22:30 → denied. <code>now</code> = 07:00 → denied. <code>now</code> = 08:00 → allowed.</li><li><strong>Reminder spacing:</strong> reminder at 14:30, <code>now</code> = 13:30 (60 min gap) → denied; <code>now</code> = 12:30 (120 min) → allowed.</li><li><strong>Weekly cap:</strong> fire on 3 distinct days in a 7-day window → 4th denied even if a new day. After window rolls (&gt;7 days) → allowed again.</li><li><strong>Regression check:</strong> none — no existing code path is touched. Confirm app still builds (<code>flutter analyze</code> on the two changed files + new file).</li></ul>
+<h2>9. Rollout</h2>
+<ul><li>No flag. Unwired foundation — shipping it changes no behavior.</li><li>Roll-back: revert the new file + the two additive edits. Nothing else depends on it yet.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li><code>EngagementService.canFire</code> returns correct allow/deny across all section-8 cases by hand-trace.</li><li>No magic numbers — every threshold reads from <code>Constant</code>.</li><li><code>flutter analyze</code> clean on changed files.</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Wiring into actual notification sends — that's F16.</li><li>Quiet-hours UI / per-user windows — global constant only in v1.</li><li>FCM / server budgeting — phase 2.</li><li>Per-kind separate caps — single shared budget in v1; priority ordering handles contention.</li></ul>
+<h2>12. Open questions</h2>
+<p>None — the four cadence decisions are locked in engagement-system.md §9.</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>F15 · Engagement Notification Budget</code></div>
+</div>
+</body>
+</html>

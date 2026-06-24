@@ -126,7 +126,7 @@ class ColorItem extends StatelessWidget {
         decoration:
         BoxDecoration(color: colorPicker.color, shape: BoxShape.circle),
         child: colorPicker.isSelected?Image.asset(
-          Assets.iconsIcSelectTick,
+          Assets.icons.icSelectTick.path,
         ):const SizedBox(),
     );
   }

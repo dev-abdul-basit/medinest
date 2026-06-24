@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F10 · "Notes for Doctor" PDF Export — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F10 · "Notes for Doctor" PDF Export</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>T1-4</td></tr><tr><td>Effort</td><td>1 week</td></tr><tr><td>Risk</td><td>low–med</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>YES (<code>pdf</code> and <code>printing</code>) — Abdul approval required</td></tr><tr><td>Premium-gated</td><td>yes — premium feature</td></tr><tr><td>ASO signals moved</td><td>$$, ★</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>The <code>01-store-listing.md</code> advertises journal + medicine history together as a feature designed around the doctor visit. We currently let users <em>write</em> journal notes but not <em>export</em> them. Adding a "Send to doctor" PDF export delivers the promise the listing makes. It's also the cleanest premium-gated feature we can ship without locking core reminder functionality — premium pays for "send PDF" with no reduction of free-tier ability to track.</p>
+<h2>2. What changes for the user</h2>
+<ul><li>In <strong>Medicine History</strong> screen: a new "Export PDF" button (top-right). Premium-gated.</li><li>In <strong>Appointment History</strong> screen: same button.</li><li>Tapping it opens a date-range picker (default: last 30 days), then the user selects which family-member's data and which sections to include (medicines / journal / appointments).</li><li>Output: A4 PDF, MediNest-branded, includes a generated cover with patient name + date range, then chronological entries.</li><li>Final action: <code>Share</code> (uses <code>share_plus</code> already in <code>pubspec.yaml</code>) or <code>Save to Files</code>.</li></ul>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>pubspec.yaml</code></strong> — add <code>pdf: ^3.x</code> and <code>printing: ^5.x</code>. Abdul confirms.</li><li><strong>NEW: <code>lib/services/pdf_export_service.dart</code></strong> <em>(new file)</em> — generates the PDF document. Returns <code>Uint8List</code> bytes.</li><li><strong>NEW: <code>lib/ui/export_pdf/export_pdf_binding.dart</code></strong> <em>(new file)</em></li><li><strong>NEW: <code>lib/ui/export_pdf/export_pdf_logic.dart</code></strong> <em>(new file)</em></li><li><strong>NEW: <code>lib/ui/export_pdf/export_pdf_view.dart</code></strong> <em>(new file)</em> — the date-range and section picker UI.</li><li><strong><code>lib/routes/app_routes.dart</code></strong> — add <code>exportPdf</code> route.</li><li><strong><code>lib/routes/app_pages.dart</code></strong> — register.</li><li><strong><code>lib/ui/medicine_history_screen/medicine_history_screen_view.dart</code></strong> — add <code>Export PDF</code> action button. Premium gate.</li><li><strong><code>lib/ui/appointment_history_screen/appointment_history_screen_view.dart</code></strong> — same.</li><li><strong>Locale files</strong> — new keys.</li></ul>
+<h2>4. Data model</h2>
+<p>No schema changes. PDF is generated from existing <code>medicine_history_table</code>, <code>journal_table</code>, <code>journal_history_table</code>, <code>family_member_table</code>.</p>
+<h2>5. Locale keys</h2>
+<pre><code class="lang-">'txtExportPdfTitle': "Export to PDF",
+'txtExportPdfDateRange': "Date range",
+'txtExportPdfLast30Days': "Last 30 days",
+'txtExportPdfLast90Days': "Last 90 days",
+'txtExportPdfLastYear': "Last year",
+'txtExportPdfCustomRange': "Custom range",
+'txtExportPdfSelectFamily': "Whose data?",
+'txtExportPdfIncludeMeds': "Include medicine history",
+'txtExportPdfIncludeJournal': "Include journal notes",
+'txtExportPdfIncludeAppointments': "Include appointments",
+'txtExportPdfGenerate': "Generate PDF",
+'txtExportPdfSharing': "Generating PDF…",
+'txtExportPdfSuccess': "PDF ready",
+'txtExportPdfPremiumRequired': "Premium feature — upgrade to export.",
+'txtExportPdfCoverTitle': "Medication summary",
+'txtExportPdfCoverPatient': "Patient",
+'txtExportPdfCoverPeriod': "Period",
+'txtExportPdfFooter': "Generated by MediNest",</code></pre>
+<p>PDF section headers (rendered into the PDF, <strong>also</strong> localized via <code>.tr</code>):</p>
+<pre><code class="lang-">'txtExportPdfSectionMeds': "Medications",
+'txtExportPdfSectionJournal': "Journal entries",
+'txtExportPdfSectionAppointments': "Appointments",</code></pre>
+<h2>6. Routing</h2>
+<p><code>exportPdf</code> route added.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Confirm packages with Abdul. Run pub add (Abdul).</li><li>Add <code>Preference</code> access — none. Premium check uses existing <code>Preference.shared.getIsPurchase()</code>.</li><li>Add locale keys + replicate.</li><li>Create <code>PdfExportService</code>. Use the <code>pdf</code> package's <code>pw.Document()</code>. One method: <code>Future&lt;Uint8List&gt; generate({required DateTime from, required DateTime to, required FamilyMemberTable patient, required ExportSections sections})</code>. <code>ExportSections</code> is a small bool struct in the same file.</li><li>Page layout (in service):</li></ol>
+<ul><li>Cover page: app logo (use <code>Assets.icons.icMedinest</code> or whatever exists in <code>lib/generated/assets.dart</code> — verify), patient name, period, generation date.</li><li>Sections: each as a heading + table of entries with date, medicine name, action (taken/skipped), dose, note (if present).</li><li>Footer on each page: <code>Generated by MediNest · page X of Y</code>.</li></ul>
+<ol><li>Create the export-pdf screen: simple GetX screen with date-range chips, family-member dropdown, three section checkboxes, and a <code>Generate PDF</code> button.</li><li>On generate: show a spinner, call <code>PdfExportService.generate(...)</code>, then call <code>Printing.sharePdf(bytes: bytes, filename: 'medinest-summary-${date}.pdf')</code> (from <code>printing</code> package).</li><li>Add Premium gate in the entry points (<code>medicine_history_screen_view.dart</code>, <code>appointment_history_screen_view.dart</code>):</li></ol>
+<p>   ``<code>dart    if (!Preference.shared.getIsPurchase()) {      Get.bottomSheet(CommonSubscriptionDialog(        title: 'txtExportPdfPremiumRequired'.tr,        description: 'txtPaywallBodyMedicines'.tr,  // reuse from F01        buttonText: 'txtPaywallCtaUpgrade'.tr,        onTapDelete: () =&gt; Get.toNamed(AppRoutes.proVersion),      ));      return;    }    Get.toNamed(AppRoutes.exportPdf, arguments: { ... });    </code>``</p>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path (premium user):</strong></p>
+<ol><li>Subscribed user. Open Medicine History.</li><li>Tap Export PDF.</li><li>Pick last 30 days, self profile, all sections checked.</li><li>Tap Generate.</li><li><strong>Expected:</strong> PDF generated within 5 seconds (for ~100 entries). System share sheet opens. Save to Files. Open in iOS/Android PDF viewer.</li><li>Verify content: cover, headers, dates, every dose accounted for.</li></ol>
+<p><strong>Edge case 1 — Free user:</strong></p>
+<ol><li>Tap Export PDF.</li><li><strong>Expected:</strong> subscription dialog opens. No PDF generated. CTA routes to ProVersion.</li></ol>
+<p><strong>Edge case 2 — Empty range:</strong></p>
+<ol><li>Premium user, pick a range with no data (e.g., year 2010).</li><li><strong>Expected:</strong> PDF still generates with sections showing "No entries in this period." Don't crash.</li></ol>
+<p><strong>Edge case 3 — Large data:</strong></p>
+<ol><li>Premium user with 365 days of dense data, "Last year".</li><li><strong>Expected:</strong> PDF generates in &lt;30 seconds, file size &lt;5 MB. If it exceeds, log warning and trim to most recent 365 days.</li></ol>
+<p><strong>Edge case 4 — Special characters in medicine name:</strong></p>
+<ol><li>Add medicine <code>Vitamin D₃ – 1000mg (Mom's pharmacy)</code> with non-ASCII.</li><li>Export.</li><li><strong>Expected:</strong> renders correctly in PDF. (<code>pdf</code> package uses Helvetica by default — use a UTF-8-safe font; embed <code>assets/fonts/NunitoSans_Regular.ttf</code> for PDF rendering.)</li></ol>
+<p><strong>Edge case 5 — Arabic / Hindi data:</strong></p>
+<ol><li>Premium user, Arabic locale, medicine names in Arabic.</li><li>Export. <strong>Expected:</strong> RTL text renders correctly. <strong>Note:</strong> the <code>pdf</code> package's RTL support requires careful font selection — confirm during implementation.</li></ol>
+<p><strong>Regression check:</strong></p>
+<p>History screens still load and render normally without the export action.</p>
+<h2>9. Rollout</h2>
+<ul><li>Internal track first.</li><li>Roll-back: hide the Export PDF button via a <code>Debug.featurePdfExport</code> flag. Don't remove the new screen; it's harmless if unreachable.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>PDF opens cleanly in Adobe Reader, Apple Preview, and Google Drive</li><li>File name contains date range, no spaces, no special chars</li><li>Premium gate verified</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Email-the-PDF-direct-to-a-doctor (we use share sheet only — let the OS handle it)</li><li>Cloud-saved exports (Firebase Storage upload) — privacy implications, v2</li><li>Customizable PDF template — v2</li><li>Editable cover page — v2</li></ul>
+<h2>12. Open questions</h2>
+<ol><li>Logo asset — which file is the app's logo for PDF embedding? Verify path in <code>assets/</code>.</li><li>Should journal <em>photo</em> attachments (if any) be embedded in the PDF? Recommendation: no in v1 — keeps file size small.</li><li>Should the PDF include a disclaimer paragraph ("This document is informational only, not medical advice")? Recommend yes — protects against medical-claims policy. Add to footer.</li></ol>
+<hr>
+<h2>Implemented — STATUS: BLOCKED on package approval</h2>
+<ul><li>Date of attempt: 2026-05-09</li><li>versionCode shipped: <strong>none</strong></li><li><strong>Why blocked:</strong> the spec explicitly calls out package additions as requiring Abdul's approval before implementation:</li></ul>
+<ol><li><code>pdf: ^3.x</code></li><li><code>printing: ^5.x</code></li></ol>
+<ul><li>Without these, the <code>PdfExportService</code> cannot be implemented — the entire feature depends on them.</li><li><strong>What I did NOT do:</strong></li><li>Did not edit <code>pubspec.yaml</code></li><li>Did not create <code>PdfExportService</code> skeleton (it would not compile)</li><li>Did not create the export-pdf screen</li><li><strong>What I'm asking from you to unblock F10:</strong></li></ul>
+<ol><li>Confirm both packages can be added.</li><li>Confirm the recommendation: ship Premium-gated, with the existing <code>txtPaywallTitleMedicines</code> body reused for the "premium feature" prompt (already in F01 keys). No new IAP product needed.</li><li>Decide: do we embed <code>assets/fonts/NunitoSans_Regular.ttf</code> into the PDF for UTF-8 / Arabic / Hindi support? (Recommend yes — adds ~150 KB to APK but enables global PDF rendering.)</li></ol>
+<ul><li><strong>Recommended next session:</strong> confirm decision, then I implement service + screen + binding + entry-point gates in one focused pass. Estimate: 4–5 days with packages signed off.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F10 · "Notes for Doctor" PDF Export</code></div>
+</div>
+</body>
+</html>

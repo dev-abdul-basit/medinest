@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F16 · Win-back Notifications (offline resurrection) — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F16 · Win-back Notifications (offline resurrection)</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>engagement-system.md §4 D1/D2 (build-order #2, the win-back half)</td></tr><tr><td>Effort</td><td>1 day</td></tr><tr><td>Risk</td><td>low–med (touches the shared notification reschedule path + tap routing)</td></tr><tr><td>Schema change</td><td>no (uses <code>Preference.lastOpenTs</code> from F15)</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no</td></tr><tr><td>ASO signals moved</td><td>R (D7+) — direct: recovers users who lapsed before forming the habit</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>The single highest-ROI net-new notification in the engagement system. A pill-reminder user who stops opening the app inside the first two weeks usually never comes back on their own — there's no social pull. The classic fix is a local "we miss you" notification scheduled for <em>now + 5 days</em> and <strong>cancelled/rescheduled on every app open</strong>: active users never see it, lapsed users do. It needs <strong>zero backend</strong> — <code>zonedSchedule()</code> fires even when the app is killed. See <code>../../feature-improvements/engagement-system.md</code> §4 (D1/D2) and §1 Resurrection stage.</p>
+<h2>2. What changes for the user</h2>
+<ul><li>An <strong>active</strong> user never sees these — every app open pushes the timer back.</li><li>A user who stops opening MediNest gets, at <strong>11:00 local</strong> (chosen to sit outside the 21:00–08:00 quiet window):</li><li><strong>D1, +5 days idle:</strong> <em>"Your reminders are waiting — Open MediNest to pick up where you left off."</em></li><li><strong>D2, +14 days idle:</strong> <em>"Start fresh today — A new streak is one tap away."</em></li><li>Tapping either just opens the app to Home. We stop after D2 — chasing a 30-day-gone user earns an uninstall.</li></ul>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/utils/constant.dart</code></strong> — add win-back IDs, day offsets, fire hour, engagement channel id/name, and the <code>winback</code> payload marker.</li><li><strong><code>lib/notification/notification_helper.dart</code></strong> — add <code>scheduleWinBackNotifications()</code> (public) + <code>_scheduleWinBack(...)</code> (private). Call <code>scheduleWinBackNotifications()</code> at the <strong>end</strong> of the existing <code>scheduleMedicineNotification()</code> — that method already <code>cancelAll()</code>s at the top and is the single choke point invoked on app start (via <code>reScheduleNotifications</code>) and after every medicine add/edit, so the win-back is always refreshed <em>after</em> the cancel and the "open" timer resets whenever the user is active.</li><li><strong><code>lib/ui/home/home_controller.dart</code></strong> — guard the two payload consumers so a <code>winback</code> payload never routes into the full-screen medicine screen:</li><li>cold-launch block (<code>onInit</code>, ~line 76) — skip if <code>selectedNotificationPayload</code> is the win-back marker.</li><li><code>selectNotificationStream</code> listener (~line 287) — return early on the win-back marker (app is already open; nothing to route).</li><li><strong>52 locale files</strong> — 4 new keys.</li></ul>
+<p><code>lastOpenTs</code> (from F15) is written inside <code>scheduleWinBackNotifications()</code> so it's set on every reschedule.</p>
+<h2>4. Data model</h2>
+<p>No schema changes. Reuses <code>Preference.lastOpenTs</code> (added in F15). New <code>Constant</code> values:</p>
+<pre><code class="lang-dart">static const int winBackD1NotificationId = 990001; // far outside medicine id range (nId + 1000)
+static const int winBackD2NotificationId = 990002;
+static const int winBackD1AfterDays = 5;
+static const int winBackD2AfterDays = 14;
+static const int winBackFireHour = 11; // 11:00 local — outside quiet hours
+static const String winBackPayload = "winback";
+static const String engagementNotificationChannelId = "engagement_notification_channel";
+static const String engagementNotificationChannelName = "MediNest Nudges";</code></pre>
+<p>The win-back uses a <strong>calm</strong> notification (default importance/priority, no full-screen intent, no alarm sound) — the opposite of the medicine-reminder channel. <code>androidScheduleMode: inexactAllowWhileIdle</code> so it needs no exact-alarm permission and is battery-friendly (a resurrection nudge does not need second-precision).</p>
+<h2>5. Locale keys</h2>
+<pre><code class="lang-">'txtWinBackD1Title': "Your reminders are waiting",
+'txtWinBackD1Body': "Open MediNest to pick up where you left off.",
+'txtWinBackD2Title': "Start fresh today",
+'txtWinBackD2Body': "A new streak is one tap away. Your reminders are ready.",</code></pre>
+<p>Added to all 52 files in <code>lib/localization/languages/</code> with the English value as fallback (same convention as F08/F13). Copy is Productivity-safe — no medical claim.</p>
+<h2>6. Routing</h2>
+<p>No new route. A win-back tap opens the app to Home (default launch); the guards in §3 prevent any navigation to the medicine full-screen.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Add the <code>Constant</code> values (§4).</li><li>Add 4 locale keys to all 52 files (§5).</li><li>In <code>notification_helper.dart</code>, add <code>scheduleWinBackNotifications()</code> + <code>_scheduleWinBack(...)</code>; call it at the end of <code>scheduleMedicineNotification()</code>.</li><li>In <code>home_controller.dart</code>, add the <code>winback</code> guard to both payload consumers.</li><li><code>flutter analyze</code> the changed files.</li></ol>
+<h2>8. Manual test plan</h2>
+<ul><li><strong>Golden path (active user):</strong> open app → background it → reopen. Inspect pending notifications log (<code>checkPendingNotificationRequests</code>) → exactly two win-back ids (990001/990002) scheduled ~5d and ~14d out at 11:00. Each reopen pushes them forward.</li><li><strong>Idle fire (simulated):</strong> temporarily set <code>winBackD1AfterDays = 0</code> and <code>winBackFireHour</code> to two minutes ahead; do NOT reopen; confirm D1 fires with the right copy. Revert.</li><li><strong>Tap while app alive:</strong> with app foregrounded, tap a win-back → app stays on Home, no full-screen medicine screen, no crash (verifies the <code>selectNotificationStream</code> guard).</li><li><strong>Cold-launch tap:</strong> kill app, fire a win-back, tap it → app launches to Home, not the medicine full-screen (verifies the <code>onInit</code> guard).</li><li><strong>Edge — notifications denied:</strong> deny permission → <code>reScheduleNotifications</code> isn't called → no win-back scheduled. Correct (they couldn't fire anyway).</li><li><strong>Regression check:</strong> add a medicine → reminders still schedule and fire normally; the <code>cancelAll</code> + reschedule path is unaffected; medicine tap still opens the full-screen reminder.</li></ul>
+<h2>9. Rollout</h2>
+<ul><li>No flag. Roll-back: revert the four edits. Win-back ids are unique, so a revert leaves no orphans after the next <code>cancelAll()</code> on app start.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>Two win-back ids present after app open; pushed forward on reopen.</li><li>Win-back tap (foreground + cold) lands on Home, never the medicine full-screen.</li><li>Medicine reminders unaffected (regression).</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>A1 permission rescue card → <strong>F17</strong> (UI surface, separate slice).</li><li>In-session nudges (streak milestone, adherence tip) that exercise <code>EngagementService.canFire</code> caps → <strong>F18</strong>.</li><li>Warm resume-from-background reset — v1 resets on cold start + med edits only; a root <code>WidgetsBindingObserver</code> is a later refinement.</li><li>FCM-driven win-back → phase 2.</li></ul>
+<h2>12. Open questions</h2>
+<p>None. Copy is provisional pending the full A/B set (engagement-system.md §10, "draft the full copy set").</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>F16 · Win-back Notifications (offline resurrection)</code></div>
+</div>
+</body>
+</html>

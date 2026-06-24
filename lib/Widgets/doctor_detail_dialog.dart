@@ -66,7 +66,7 @@ class DoctorDetailsDialog {
                             InkWell(
                               onTap: () => Get.back(),
                               child: Image.asset(
-                                Assets.iconsIcCloseDark,
+                                Assets.icons.icCloseDark.path,
                                 color: Get.theme.colorScheme.tertiary,
                                 height: AppSizes.height_2,
                                 width: AppSizes.height_2,
@@ -144,7 +144,7 @@ class DoctorDetailsDialog {
                                 subtitle: 'txtEnterDoctorCategory'.tr.split(' ').sublist(1,3).join(' '),
                                 title: doctor.experience!,
                                 maxWidth: AppSizes.fullWidth/3,
-                                icon: Assets.iconsIcBag,
+                                icon: Assets.icons.icBag.path,
                               ),
                             ),
                           if (doctor.gender != null &&
@@ -152,7 +152,7 @@ class DoctorDetailsDialog {
                             DetailItem(
                               subtitle: 'txtGender'.tr,
                               title: doctor.gender!,
-                              icon: Assets.iconsIcGender,
+                              icon: Assets.icons.icGender.path,
                             ),
                         ],
                       ),
@@ -166,7 +166,7 @@ class DoctorDetailsDialog {
                             DetailItem(
                               subtitle: 'txtPhoneNumber'.tr,
                               title: doctor.phoneNumber!,
-                              icon: Assets.iconsIcPhone,
+                              icon: Assets.icons.icPhone.path,
                             ),
                         ],
                       ),
@@ -179,7 +179,7 @@ class DoctorDetailsDialog {
                             DetailItem(
                               subtitle: 'txtEmailAddress'.tr,
                               title: doctor.email!,
-                              icon: Assets.iconsIcMessage,
+                              icon: Assets.icons.icMessage.path,
                             ),
                         ],
                       ),
@@ -193,7 +193,7 @@ class DoctorDetailsDialog {
                             DetailItem(
                               subtitle: 'txtHospitalName'.tr,
                               title: doctor.hospitalName!,
-                              icon: Assets.iconsIcHospital,
+                              icon: Assets.icons.icHospital.path,
                             ),
                         ],
                       ),
@@ -207,7 +207,7 @@ class DoctorDetailsDialog {
                             DetailItem(
                               subtitle: 'txtHospitalAddress'.tr,
                               title: doctor.hospitalAddress!,
-                              icon: Assets.iconsIcLocation,
+                              icon: Assets.icons.icLocation.path,
                             ),
                         ],
                       ),

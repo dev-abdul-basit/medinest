@@ -89,7 +89,7 @@ class AppointmentDetailsDialog {
                             InkWell(
                               onTap: () => Get.back(),
                               child: Image.asset(
-                                Assets.iconsIcCloseDark,
+                                Assets.icons.icCloseDark.path,
                                 color: Get.theme.colorScheme.tertiary,
                                 height: AppSizes.height_2,
                                 width: AppSizes.height_2,
@@ -201,12 +201,12 @@ class AppointmentDetailsDialog {
                       //     DetailItem(
                       //       subtitle: 'txtDate'.tr,
                       //       title: DateFormat('dd-MM-yyyy').format(startDate),
-                      //       icon: Assets.iconsIcCalendar,
+                      //       icon: Assets.icons.icCalendar.path,
                       //     ),
                       //     DetailItem(
                       //       subtitle: 'txtTime'.tr,
                       //       title: times.first.format(Get.context!),
-                      //       icon: Assets.iconsIcWatch,
+                      //       icon: Assets.icons.icWatch.path,
                       //       // titleWidget: InputChip(
                       //       //   padding: EdgeInsets.zero,
                       //       //
@@ -234,7 +234,7 @@ class AppointmentDetailsDialog {
                       //     subtitle: 'txtRemindBeforeTime'.tr,
                       //     title:
                       //         '${'txtBefore'.tr} ${appointmentTable.reminderBeforeTime}min',
-                      //     icon: Assets.iconsIcWatchBefore,
+                      //     icon: Assets.icons.icWatchBefore.path,
                       //   ),
                       // SizedBox(
                       //   height: AppSizes.height_2_5,
@@ -244,7 +244,7 @@ class AppointmentDetailsDialog {
                       //   DetailItem(
                       //     subtitle: 'txtHospitalName'.tr,
                       //     title: '${doctorDetails.hospitalName}',
-                      //     icon: Assets.iconsIcHospital,
+                      //     icon: Assets.icons.icHospital.path,
                       //   ),
                       // SizedBox(
                       //   height: AppSizes.height_2_5,
@@ -254,7 +254,7 @@ class AppointmentDetailsDialog {
                       //   DetailItem(
                       //     subtitle: 'txtHospitalAddress'.tr,
                       //     title: '${doctorDetails.hospitalAddress}',
-                      //     icon: Assets.iconsIcLocation,
+                      //     icon: Assets.icons.icLocation.path,
                       //   ),
                       SizedBox(
                         height: AppSizes.height_2_5,
@@ -264,7 +264,7 @@ class AppointmentDetailsDialog {
                         DetailItem(
                           subtitle: 'txtDescription'.tr,
                           title: '${appointmentTable.description}',
-                          icon: Assets.iconsIcDocument,
+                          icon: Assets.icons.icDocument.path,
                         ),
                       SizedBox(
                         height: AppSizes.height_4,

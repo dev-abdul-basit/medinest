@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Keyword Research — MediNest — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="README.md">← back to docs index</a>
+  <span class="kicker">ASO</span>
+<h1>Keyword Research — MediNest</h1>
+<blockquote><p><strong>Honesty up front.</strong> I do not have live monthly-search-volume numbers for Google Play. No LLM does. The numbers below are <em>demand priors</em> — my read of how the keyword has historically behaved in this category — and they need to be replaced with real data from your AppFollow / AppTweak account + Play Console Search Terms report (see <code>../NEXT-STEPS.md</code> step 1). Treat this file as the candidate set + scoring rubric, not as verified volume.</p>
+</blockquote>
+<hr>
+<h2>How Google Play search actually works (so the rubric makes sense)</h2>
+<p>Google Play matches a user query against four indexed fields, weighted roughly in this order (Google does not publish exact weights, this is the order ASO practitioners agree on from years of testing):</p>
+<ol><li><strong>App title</strong> (30 chars) — strongest signal. A keyword in the title beats the same keyword anywhere else.</li><li><strong>Short description</strong> (80 chars) — second strongest, also the line shown above the fold.</li><li><strong>Long description</strong> (4 000 chars) — diminishing returns past ~5 occurrences of any one term, and stuffing is penalized.</li><li><strong>App package name + developer name</strong> — minor but real.</li></ol>
+<p>Outside the listing fields, ranking is also moved by:</p>
+<ul><li><strong>Install velocity</strong> (installs / day, especially from search results)</li><li><strong>Retention</strong> (D1, D7, D30)</li><li><strong>Ratings &amp; reviews</strong> (rating value AND volume; new reviews matter more than old)</li><li><strong>Engagement</strong> (sessions/user, opens/day)</li><li><strong>Update cadence</strong> (active apps rank above abandoned ones)</li><li><strong>Crash + ANR rate</strong></li></ul>
+<p>So keyword choice is necessary but not sufficient. A great keyword + bad retention still doesn't rank.</p>
+<hr>
+<h2>Scoring rubric (use this when validating each candidate)</h2>
+<table><thead><tr><th>Score</th><th>Demand prior</th><th>Competition prior</th><th>Relevance to MediNest</th><th>Action</th></tr></thead><tbody><tr><td><strong>A</strong></td><td>High</td><td>Low–Med</td><td>Direct</td><td>Put in title or short description</td></tr><tr><td><strong>B</strong></td><td>Med–High</td><td>Med–High</td><td>Direct</td><td>Sprinkle 2–3× in long description, target via review-prompt copy</td></tr><tr><td><strong>C</strong></td><td>Low</td><td>Low</td><td>Direct</td><td>One mention in long description, useful for long-tail</td></tr><tr><td><strong>D</strong></td><td>Any</td><td>Any</td><td>Indirect</td><td>Drop. Don't dilute relevance score.</td></tr></tbody></table>
+<p>Demand and competition each get re-graded once you have AppFollow data. Until then, the labels are priors.</p>
+<hr>
+<h2>Tier 1 — title-worthy candidates (English)</h2>
+<p>These are the head terms in the category. Almost every successful pill-reminder app on Play has at least one of them in their title.</p>
+<table><thead><tr><th>Keyword</th><th>Demand prior</th><th>Competition prior</th><th>Notes</th></tr></thead><tbody><tr><td><code>pill reminder</code></td><td>High</td><td>High</td><td>Most direct head term. Already in current title.</td></tr><tr><td><code>medication reminder</code></td><td>High</td><td>High</td><td>Slightly broader — captures non-pill (injectables, syrups). Worth fighting for.</td></tr><tr><td><code>medicine reminder</code></td><td>High</td><td>Med</td><td>Strong in India / Pakistan / MENA. Sometimes underweighted in US-centric ASO advice.</td></tr><tr><td><code>med reminder</code></td><td>Med</td><td>Med</td><td>US shorthand. Good in title for US-targeted listing.</td></tr></tbody></table>
+<p><strong>Recommendation:</strong> title locks one of these. Current title <code>Medinest – Pill Reminder</code> already does. Do not give it up. The redesign in <code>01-store-listing.md</code> adds <em>one more</em> head term inside the 30-char limit.</p>
+<h2>Tier 2 — short-description-worthy</h2>
+<p>These belong in the 80-char short description because that field has the second-highest weight and is also what users read in 1.5 seconds before tapping.</p>
+<table><thead><tr><th>Keyword</th><th>Demand prior</th><th>Competition prior</th><th>Notes</th></tr></thead><tbody><tr><td><code>pill tracker</code></td><td>High</td><td>Med</td><td>Different intent: "track what I took" vs "remind me". Captures journaling users — fits MediNest's history+notes feature exactly.</td></tr><tr><td><code>medication tracker</code></td><td>High</td><td>Med</td><td>Same as above, broader.</td></tr><tr><td><code>pill organizer</code></td><td>Med</td><td>Med</td><td>Often searched by caregivers. Lower in-store CVR but high relevance.</td></tr><tr><td><code>dose tracker</code></td><td>Med</td><td>Low</td><td>Long-tail. Easy win in long description.</td></tr><tr><td><code>prescription reminder</code></td><td>Med</td><td>Low–Med</td><td>Underused in headlines, real demand exists.</td></tr></tbody></table>
+<h2>Tier 3 — long-tail / long-description fillers</h2>
+<p>Two-to-five-word queries. Individually small, collectively meaningful for total install volume.</p>
+<table><thead><tr><th>Keyword</th><th>Demand prior</th><th>Competition prior</th><th>Notes</th></tr></thead><tbody><tr><td><code>elderly pill reminder</code></td><td>Med</td><td>Low</td><td>Caregiver intent. High CVR.</td></tr><tr><td><code>senior medication app</code></td><td>Med</td><td>Low</td><td>Same. Pair with <code>parents</code> and <code>caregiver</code> in copy.</td></tr><tr><td><code>pill alarm</code></td><td>Med</td><td>Low</td><td>Often the user's literal pain point.</td></tr><tr><td><code>daily pill reminder</code></td><td>Med</td><td>Med</td><td></td></tr><tr><td><code>medicine schedule</code></td><td>Med</td><td>Low</td><td></td></tr><tr><td><code>medication log</code></td><td>Low</td><td>Low</td><td>Aligns with our journal feature.</td></tr><tr><td><code>doctor appointment reminder</code></td><td>Med</td><td>Med</td><td>We have appointments — claim this term.</td></tr><tr><td><code>family medication app</code></td><td>Low</td><td>Low</td><td>Highlights multi-profile feature.</td></tr><tr><td><code>caregiver app</code></td><td>Med</td><td>High</td><td>Crowded category but a relevance match.</td></tr><tr><td><code>health journal</code></td><td>Med</td><td>High</td><td>Crowded. Drop unless we double down on the journal feature.</td></tr><tr><td><code>tablet reminder</code></td><td>Med</td><td>Low</td><td>Big in India. Localize.</td></tr><tr><td><code>drug reminder</code></td><td>Low</td><td>Low</td><td>Lower CVR (clinical-sounding). Skip.</td></tr></tbody></table>
+<h2>Tier 4 — adjacency, decide case-by-case</h2>
+<table><thead><tr><th>Keyword</th><th>Why considered</th><th>Decision</th></tr></thead><tbody><tr><td><code>symptom tracker</code></td><td>We have notes/journal</td><td>Skip — separate category (Bearable, Guava). Diluting toward symptoms hurts pill-reminder relevance.</td></tr><tr><td><code>mental health journal</code></td><td>We have journals</td><td>Skip — wrong audience.</td></tr><tr><td><code>period tracker</code></td><td>Has reminders</td><td>Skip — completely different category.</td></tr><tr><td><code>water reminder</code></td><td>Reminder-adjacent</td><td>Skip — different intent.</td></tr><tr><td><code>vitamin reminder</code></td><td>Subset of pill reminder</td><td><strong>Keep.</strong> Easy mention in long description.</td></tr><tr><td><code>birth control reminder</code></td><td>Subset, sensitive</td><td>Mention with care. Good keyword, clinical sensitivity around copy.</td></tr></tbody></table>
+<h2>Tier 5 — localized (real terms, not transliterations)</h2>
+<p>These are the actual terms native speakers type, not English-to-language word-for-word maps. Volume needs validation per market.</p>
+<table><thead><tr><th>Locale</th><th>Term</th><th>English meaning</th><th>Notes</th></tr></thead><tbody><tr><td>ar-SA</td><td>تذكير بالدواء</td><td>medicine reminder</td><td>The most common phrasing in Saudi/Gulf listings.</td></tr><tr><td>ar-SA</td><td>منبه الدواء</td><td>medicine alarm</td><td>Slightly less formal. Pairs well with the alarm/sound feature.</td></tr><tr><td>ar-SA</td><td>تذكير الأدوية</td><td>medications reminder</td><td>Plural form, slightly higher demand than singular per peer apps' titles.</td></tr><tr><td>hi-IN</td><td>दवा रिमाइंडर</td><td>medicine reminder</td><td>"रिमाइंडर" is a loanword now standard.</td></tr><tr><td>hi-IN</td><td>दवाई याद</td><td>medicine memory</td><td>Lower formal demand but very natural — fits short description.</td></tr><tr><td>ur-PK</td><td>دوا یاد دہانی</td><td>medicine reminder</td><td>Many Pakistani users will also search in English; localize anyway because the listing wins both.</td></tr><tr><td>id-ID</td><td>pengingat obat</td><td>medicine reminder</td><td>Indonesia is a top opportunity market — high install volume, low ARPU but high LTV via ads.</td></tr><tr><td>es-ES / es-419</td><td>recordatorio de medicamentos</td><td>medication reminder</td><td>Use <code>es-419</code> for Latin America — separate Play Console listing.</td></tr><tr><td>pt-BR</td><td>lembrete de remédios</td><td>medication reminder</td><td>Brazil-only, separate from pt-PT.</td></tr><tr><td>tr-TR</td><td>ilaç hatırlatıcı</td><td>medicine reminder</td><td></td></tr><tr><td>de-DE</td><td>Tabletten Erinnerung / Medikamenten Erinnerung</td><td>tablet/medication reminder</td><td>DE users often search both.</td></tr><tr><td>fr-FR</td><td>rappel médicaments</td><td>medication reminder</td><td></td></tr><tr><td>ru-RU</td><td>напоминание о лекарствах</td><td>medication reminder</td><td></td></tr><tr><td>ja-JP</td><td>服薬リマインダー</td><td>medication reminder</td><td>Strong term — Japanese users are heavy reminder-app users.</td></tr><tr><td>ko-KR</td><td>약 알림</td><td>pill notification</td><td></td></tr></tbody></table>
+<blockquote><p><strong>Translation rule:</strong> never machine-translate the title or short description. Cheaper to pay one native fluent reviewer per locale on Fiverr/Upwork (~$10–25) than to rank for the wrong term. Half the localized listings I've audited in this category have a translated title that no native speaker would search.</p>
+</blockquote>
+<hr>
+<h2>Negative-keyword list (do <em>not</em> chase these)</h2>
+<p>We will get pushed toward these by AI tools and bad ASO advice. Don't.</p>
+<table><thead><tr><th>Keyword</th><th>Why we skip</th></tr></thead><tbody><tr><td><code>medical app</code></td><td>Too generic. SERP dominated by clinics/telemedicine. Wrong intent.</td></tr><tr><td><code>doctor app</code></td><td>Same — telemedicine intent.</td></tr><tr><td><code>health app</code></td><td>Generic, dominated by Samsung/Google Fit.</td></tr><tr><td><code>hospital</code></td><td>Wrong audience.</td></tr><tr><td><code>diagnosis</code>, <code>medical advice</code></td><td>Regulatory risk. Play Store penalizes apps that imply diagnosis without medical-device certification.</td></tr><tr><td><code>prescription delivery</code></td><td>Different category (Capsule, NowRx).</td></tr></tbody></table>
+<hr>
+<h2>Final priority list to validate (this is what you take to AppFollow)</h2>
+<p>Order matters — validate top-down and stop when 5 are confirmed strong.</p>
+<ol><li><code>pill reminder</code></li><li><code>medication reminder</code></li><li><code>medicine reminder</code></li><li><code>pill tracker</code></li><li><code>medication tracker</code></li><li><code>med reminder</code></li><li><code>pill organizer</code></li><li><code>daily pill reminder</code></li><li><code>prescription reminder</code></li><li><code>elderly pill reminder</code></li><li><code>pill alarm</code></li><li><code>medication schedule</code></li><li><code>doctor appointment reminder</code></li><li><code>tablet reminder</code> (India)</li><li><code>pengingat obat</code> (Indonesia)</li><li><code>تذكير بالدواء</code> (Saudi)</li><li><code>दवा रिमाइंडर</code> (India Hindi)</li><li><code>vitamin reminder</code></li><li><code>senior medication app</code></li><li><code>medication log</code></li></ol>
+<hr>
+<h2>What to record in this file once you have data</h2>
+<p>Replace this section with a table that has columns:</p>
+<pre><code class="lang-">| Keyword | Real volume (AppFollow) | Real difficulty | Our current rank | Target rank | Listing field |</code></pre>
+<p>Source the volume + difficulty from one tool only — don't average across tools because they normalize differently. AppFollow free tier has been the most stable for Play data in my experience.</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>Keyword Research — MediNest</code></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F06 · Update-Cadence Policy — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F06 · Update-Cadence Policy</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>QW-6</td></tr><tr><td>Effort</td><td>¼ day (process, not code)</td></tr><tr><td>Risk</td><td>low</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no</td></tr><tr><td>ASO signals moved</td><td>Algorithm freshness</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>Google Play algorithm down-weights apps that look abandoned. Versioning monthly (even if cosmetic) signals an active app. Solo devs commonly ship in bursts then go quiet for 3 months — that pattern is the silent killer of organic install velocity.</p>
+<p>This isn't a feature. It's a <strong>policy</strong> that ships as documentation + a small commit hook.</p>
+<h2>2. What changes for the user</h2>
+<p>Nothing directly. But over months, the user sees occasional "What's new" notes in Play Store that signal the app is alive.</p>
+<h2>3. What changes in the code</h2>
+<ul><li><strong>NEW: <code>docs/engineering/v1/release-cadence.md</code></strong> <em>(new file — see template at end of this spec)</em> — the policy itself, kept in the engineering folder so it's versioned with the rest of v1.</li><li><strong><code>pubspec.yaml</code></strong> — bump <code>versionCode</code> discipline: never ship a <code>versionName</code> change without a <code>versionCode</code> increment. (Already standard, but write it down.)</li><li><strong>NEW: <code>docs/engineering/v1/release-checklist.md</code></strong> <em>(new file)</em> — pre-release checklist that includes localized "What's new" string updates.</li></ul>
+<h2>4. Data model</h2>
+<p>No schema changes.</p>
+<h2>5. Locale keys</h2>
+<p>This spec doesn't add keys, but it locks a process for adding "What's new" copy in Play Console for every release. That copy:</p>
+<ul><li>Is plain English (the localized listings will translate via the same translator pipeline)</li><li>Is between 100–500 characters</li><li>Names the user-visible change in non-engineer language</li><li>Skips marketing-speak ("blazing fast 🚀")</li></ul>
+<p>Example from a future release:</p>
+<blockquote><p><em>Faster reminders that don't dismiss themselves when you put your phone down. Plus the option to mark a dose with a single tap from the lock screen. (And a smaller, friendlier paywall.)</em></p>
+</blockquote>
+<h2>6. Routing</h2>
+<p>No routing changes.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Create <code>docs/engineering/v1/release-cadence.md</code> with the policy text below.</li><li>Create <code>docs/engineering/v1/release-checklist.md</code> with the checklist below.</li><li>Add a one-line link from <code>../../README.md</code> to both new files (we will batch this when v1 is finalized).</li><li>Add a calendar reminder for Abdul to ship at least one release every 4 weeks (Abdul's task; not code).</li></ol>
+<h3>Policy text for <code>release-cadence.md</code></h3>
+<pre><code class="lang-markdown"># Release Cadence Policy (v1)
+
+## Hard rules
+- **Ship at least once every 4 weeks**, even if the change is one string fix or a `versionCode`-only bump.
+- **Never** edit `versionName` without bumping `versionCode`.
+- **Never** ship two consecutive releases with the same "What's new" copy. If nothing changed, don't ship.
+
+## Soft rules
+- Bigger releases land on Tuesday or Wednesday — best window for review prompts and Play algorithm visibility.
+- Avoid Friday releases unless rolling back a prior release; weekend monitoring is poor.
+- Before a release, post on X build-in-public account (`docs/strategies/x/`) — install velocity from social aligned with release timing reads as healthy momentum.
+
+## What counts as a 4-week release
+- A real bug fix
+- A real string improvement (visible to users)
+- A real new feature, however small
+- A localized listing update + matching `versionCode` bump
+- A dependency upgrade with a release-note worth one sentence
+
+## What does NOT count
+- A version bump with no diff
+- A copy change that nobody outside the team will notice
+- A change that benefits only the developer (refactor)
+
+## When to break the rule
+- Real outage or critical bug → ship out-of-cadence immediately
+- Extended dev work on a Tier-1 feature spanning 6+ weeks → still ship a small release in week 4 (split a tiny improvement off the trunk)</code></pre>
+<h3>Checklist text for <code>release-checklist.md</code></h3>
+<pre><code class="lang-markdown"># Pre-Release Checklist (v1)
+
+Run before every Play Console release.
+
+## Code
+- [ ] `pubspec.yaml`: `versionCode` incremented
+- [ ] `pubspec.yaml`: `versionName` follows `MAJOR.MINOR.PATCH` and reflects scope
+- [ ] No new packages added without a corresponding spec entry
+- [ ] `flutter analyze` clean (or only known warnings)
+- [ ] Tested on Android 9 device + Android 13/14 device
+- [ ] Tested in Light AND Dark theme
+- [ ] Tested in English AND Arabic (RTL)
+
+## Listing
+- [ ] "What's new" copy written (English, 100–500 chars)
+- [ ] If localized listings are live: "What's new" copy translated for each locale (use the translator pipeline, NOT machine translation)
+- [ ] Screenshots still match the current build (no UI regressions vs screenshots)
+
+## Play Console
+- [ ] Privacy policy URL still loads
+- [ ] Data safety form still accurate (any new permissions or data collected this release?)
+- [ ] Internal track tested first when feature is non-trivial; promote to production after manual smoke
+
+## Post-release
+- [ ] Watch crash-free rate for 48 h. Roll back if &lt; 99 %.
+- [ ] Reply to first 10 reviews of the new release
+- [ ] Update `aso/05-aso-roadmap-90day.md` notes with release date
+- [ ] Bump `versionCode` reference in any feature spec that shipped, in their `Implemented` block</code></pre>
+<h2>8. Manual test plan</h2>
+<p>This feature has no code change to test. Verification:</p>
+<ol><li>Open <code>release-cadence.md</code> and <code>release-checklist.md</code> in a browser/Markdown viewer.</li><li>Walk through the checklist mentally for the next planned release.</li><li>Confirm Abdul has a calendar reminder set for the 4-week mark.</li></ol>
+<h2>9. Rollout</h2>
+<ul><li>Documents land in the next commit. No release needed.</li></ul>
+<h2>10. Definition of done</h2>
+<ul><li>Both files committed</li><li>Linked from <code>v1/README.md</code></li><li>Abdul has acknowledged the policy</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Automating versionCode bumps (a script in <code>tools/</code>) — could be a v2 nice-to-have</li><li>CI integration of any kind</li></ul>
+<h2>12. Open questions</h2>
+<p>None.</p>
+<hr>
+<h2>Implemented</h2>
+<ul><li>Date: 2026-05-09</li><li>Files added:</li><li><code>docs/engineering/v1/release-cadence.md</code></li><li><code>docs/engineering/v1/release-checklist.md</code></li><li><code>docs/engineering/v1/README.md</code> updated with two new entries in the read-order list (after <code>04-definition-of-done.md</code>).</li><li>Out of code path entirely; pure documentation. The behavioral change (4-week cadence) is on Abdul's side — set a recurring calendar reminder.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F06 · Update-Cadence Policy</code></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Play Store — Copy-Paste Content</title>
+<style>
+  :root { --fg:#1a1a1a; --muted:#666; --bg:#fff; --box:#f4f4f5; --border:#e5e5e5; --accent:#2563eb; --warn:#b45309; --warnbg:#fffbeb; }
+  * { box-sizing: border-box; }
+  body { font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--fg); background: var(--bg); margin: 0; padding: 32px 16px; }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  h2 { font-size: 20px; margin: 32px 0 12px; padding-top: 16px; border-top: 1px solid var(--border); }
+  h3 { font-size: 16px; margin: 20px 0 8px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  p { margin: 0 0 14px; }
+  .lede { color: var(--muted); }
+  .copybox { background: var(--box); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; margin: 12px 0 24px; font: 14px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; word-wrap: break-word; }
+  .meta { font-size: 13px; color: var(--muted); margin-top: -16px; margin-bottom: 18px; }
+  .warn { background: var(--warnbg); border-left: 4px solid var(--warn); padding: 12px 14px; margin: 16px 0; font-size: 14px; color: #4d3a0a; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--box); font-weight: 600; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  ol li { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<main>
+
+<p><a href="index.html">&larr; Back to ready-to-use index</a></p>
+
+<h1>Play Store &mdash; Copy-Paste Content</h1>
+<p class="lede">Paste the boxes below into Play Console &rarr; Main store listing.</p>
+
+<div class="warn"><strong>Run this as a Store Listing Experiment</strong> against the current live listing. Do not push direct to 100&nbsp;% of users.</div>
+
+<h2>Title (29 / 30 chars)</h2>
+<div class="copybox">Medinest: Pill &amp; Med Reminder</div>
+
+<h2>Short description (78 / 80 chars)</h2>
+<div class="copybox">Pill reminder &amp; medication tracker. Never miss a dose. Family &amp; doctor support.</div>
+<p class="meta">Note: "doctor" here references a use-case ("for your next doctor visit") not an in-app feature. If you want to be 100&nbsp;% literal about MVP scope, swap to: <code>Pill reminder &amp; medication tracker. Never miss a dose. Family &amp; journal support.</code></p>
+
+<h2>Full description (~2,600 / 4,000 chars)</h2>
+<p class="meta">Journal is the second pillar. Doctor and appointment features are removed.</p>
+
+<div class="copybox">Never miss a dose again.
+
+Medinest is a clean, reliable pill reminder and medication tracker that helps you take medicines on time, log every dose, and keep a personal health journal — for yourself and your family — all in one app.
+
+Whether you handle a single daily pill or coordinate medicines for parents, kids, or a partner, Medinest keeps the routine simple and stress-free.
+
+🔔 Smart Pill Reminders
+Set medicines with dosage, time, and frequency. Daily, custom, or recurring schedules. Reliable on-time notifications even when the app is closed. Choose from 11 alert sounds — gentle bells, alarm clock, classic ringtone, or silent.
+
+📋 Medication Tracker &amp; Dose Log
+Mark doses as taken, missed, or skipped. Review your full medicine history at any time. A clear daily view shows what is due, what is done, and what is next.
+
+📓 Personal Health Journal
+Add notes alongside any medicine, or as standalone journal entries. Track how you feel, side effects, dose changes, or anything worth remembering for your next doctor visit. No fixed templates — write in your own words. The journal is what turns a reminder app into a record you can actually use.
+
+👨‍👩‍👧 Family Medication Support
+Add and manage medications for family members in one app. Useful for caregivers handling a parent's pills, a child's prescriptions, or a partner's chronic-condition routine — without mixing schedules.
+
+🌍 Works in Your Language
+Medinest is available in 50+ languages including English, Arabic, Hindi, Urdu, Indonesian, Spanish, Portuguese, Turkish, French, German, Russian, Japanese, Korean, Chinese, Vietnamese, Bengali, Tamil, Telugu, and many more.
+
+Why Medinest
+
+• Simple — designed for a single screen, not buried menus
+• Reliable — local notifications run even offline
+• Private — your data stays on your device, with optional secure cloud backup
+• Family-friendly — multiple profiles, one app
+• Lightweight — fast on older phones, low battery use
+
+Premium
+
+Free version includes core reminders, full medication history, full health journal, and family support — up to 10 medicines.
+
+Upgrade to Premium for:
+• Ad-free experience
+• Unlimited medicines
+• Unlimited reminders
+• Priority support
+
+🔐 Privacy
+Medinest does not provide medical advice, diagnosis, or treatment. We do not sell your data. Notifications and history live on your device. Cloud sync is opt-in and uses Google Sign-in for secure backup only.
+
+Built for people who want to take their medicine on time without thinking about it. Try Medinest free today.</div>
+
+<h2>Other Play Console fields</h2>
+<table>
+  <tr><th>Field</th><th>Value</th></tr>
+  <tr><td>Category</td><td>Health &amp; Fitness</td></tr>
+  <tr><td>Tags (pick 5)</td><td><code>Reminders</code>, <code>Medication tracking</code>, <code>Family</code>, <code>Health journal</code>, <code>Caregiving</code></td></tr>
+  <tr><td>Contact email</td><td>A <code>support@</code> address &mdash; not personal Gmail</td></tr>
+  <tr><td>Privacy policy URL</td><td>Required (host on GitHub Pages if not yet)</td></tr>
+</table>
+
+<h2>Localization order (ship in this sequence)</h2>
+<ol>
+  <li><strong>ar-SA</strong> &mdash; pricing already in SAR, in-app translation exists. Easiest win.</li>
+  <li><strong>id-ID</strong> &mdash; high volume, low ASO competition.</li>
+  <li><strong>hi-IN</strong> &mdash; enormous volume, long-tail open.</li>
+  <li><strong>ur-PK</strong> &mdash; meaningful volume, very low competition.</li>
+  <li><strong>es-419</strong> &mdash; Latin America Spanish (separate from es-ES).</li>
+  <li><strong>pt-BR</strong> &mdash; Brazil only.</li>
+  <li><strong>tr-TR</strong>, <strong>ru-RU</strong>, <strong>fr-FR</strong>, <strong>de-DE</strong> &mdash; slower CVR but stable rankings.</li>
+</ol>
+<p>For each, brief the translator: <em>"Don't literal-translate. Localize the title and short description so a native speaker would actually type and tap them. Long description should read naturally."</em></p>
+
+</main>
+</body>
+</html>

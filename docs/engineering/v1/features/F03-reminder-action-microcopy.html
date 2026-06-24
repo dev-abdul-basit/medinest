@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F03 · Reminder-Action Microcopy Pass — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F03 · Reminder-Action Microcopy Pass</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>QW-3</td></tr><tr><td>Effort</td><td>1 day</td></tr><tr><td>Risk</td><td>low</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no</td></tr><tr><td>ASO signals moved</td><td>R, ★</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>The full-screen reminder UI uses verbose action labels (<code>Mark as taken</code>, <code>Skipped</code>, <code>Reschedule</code>). User research in this category consistently shows shorter, lower-guilt verbs convert better. <code>Taken</code> &gt; <code>Mark as taken</code>. <code>Skip</code> &gt; <code>Skipped</code> / <code>Missed</code>. We're making one careful microcopy pass and verifying it doesn't break the underlying handler logic.</p>
+<h2>2. What changes for the user</h2>
+<p>The full-screen reminder shows three primary action labels. Today these read (verify on real device — see step 1):</p>
+<ul><li>"Mark as taken" → <strong>"Taken"</strong></li><li>"Skipped" / "Missed" → <strong>"Skip"</strong></li><li>"Snooze" / "Snooze for X" → <strong>"Snooze"</strong></li></ul>
+<p>The icons stay. The colors stay. Only the labels change. The same change cascades to:</p>
+<ul><li>Notification action buttons (the small action buttons under the OS notification)</li><li>Today's-medicine list "Taken" button on the home screen</li></ul>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/localization/languages/language_en.dart</code></strong> — likely the keys <code>txtTaken</code> and <code>txtSkipped</code> already exist. Verify, then ensure the values are <code>"Taken"</code> and <code>"Skip"</code>. Do not introduce new keys if existing ones can carry the new copy.</li><li><strong><code>lib/Widgets/select_sound_appointment_screen_view.dart</code> / select_sound_screen_view.dart</strong> — these contain "Take after / before / any time" strings; verify if they use existing locale keys or hardcoded English.</li><li><strong><code>lib/ui/full_screen_notification/full_screen_notification_view.dart</code></strong> — replace any hardcoded label with <code>'txtTaken'.tr</code>, <code>'txtSkip'.tr</code>, <code>'txtSnooze'.tr</code>.</li><li><strong><code>lib/ui/full_screen_appointment_notification/full_screen_appointment_notification_view.dart</code></strong> — same.</li><li><strong><code>lib/notification/notification_helper.dart</code></strong> — the OS notification action button text is set when scheduling. Find the <code>AndroidNotificationDetails</code> / <code>DarwinNotificationDetails</code> block. Update to use the same locale keys. <strong>Important:</strong> notification action labels may not localize on a per-fire basis on all OS versions — confirm before claiming the change works at the OS level.</li><li><strong><code>lib/ui/home/home_screens.dart</code></strong> — verify the today's list uses <code>'txtTaken'.tr</code> for its quick-action button.</li></ul>
+<h2>4. Data model</h2>
+<p>No schema changes.</p>
+<h2>5. Locale keys</h2>
+<p>Existing keys to confirm and possibly retune values:</p>
+<pre><code class="lang-">'txtTaken': "Taken",        // already exists; confirm value is exactly "Taken"
+'txtSkipped': "Skipped",    // currently used; consider replacing with txtSkip
+'txtSkip': "Skip",          // already exists; verify
+'txtSnoozeFor': "Snooze for",  // already exists</code></pre>
+<p>Possible new key (only if needed for the standalone snooze button):</p>
+<pre><code class="lang-">'txtSnooze': "Snooze",</code></pre>
+<blockquote><p><strong>Decision rule:</strong> if <code>txtSnoozeFor</code> is used in a "Snooze for X minutes" submenu and we need a standalone "Snooze" button, add <code>txtSnooze</code>. Otherwise reuse.</p>
+</blockquote>
+<h2>6. Routing</h2>
+<p>No routing changes.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Build the app on a real device. Trigger a full-screen reminder (set a med for 1 minute from now). Photograph the screen so we have ground-truth labels before changing anything.</li><li>Open <code>lib/ui/full_screen_notification/full_screen_notification_view.dart</code>. Identify each button. Note: hardcoded English vs <code>.tr</code> keys.</li><li>Repeat for <code>full_screen_appointment_notification_view.dart</code>.</li><li>Audit <code>lib/notification/notification_helper.dart</code> for <code>actions:</code> / <code>androidActions:</code> blocks (in <code>AndroidNotificationDetails</code>). Identify the action labels.</li><li>For each label found:</li></ol>
+<ul><li>If hardcoded English: replace with the existing locale key (<code>txtTaken</code>, <code>txtSkip</code>, <code>txtSnooze</code>).</li><li>If using a long key like <code>txtMarkAsTaken</code>: confirm the <strong>value</strong> is updated in <code>language_en.dart</code> to <code>"Taken"</code>. Do not delete the key — other places may use it. Just refresh the value.</li></ul>
+<ol><li>If a new key is needed (<code>txtSnooze</code>): add to all <code>language_*.dart</code>.</li><li>For OS-side notification actions: re-schedule all pending notifications (<code>NotificationHelper.instance.scheduleMedicineNotification()</code>) once on the next app launch after this build, so existing scheduled actions get the new labels. Bump <code>versionCode</code> so the helper re-runs on first open.</li><li>Run <code>flutter analyze</code>.</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path 1 — full-screen reminder (medicine):</strong></p>
+<ol><li>Set a medicine reminder for 1 minute from now.</li><li>Lock device. Wait for trigger.</li><li><strong>Expected:</strong> full-screen UI shows three buttons labelled <code>Taken</code>, <code>Skip</code>, <code>Snooze</code>. Tap <code>Taken</code>. Reminder is marked taken in history.</li><li>Set another reminder, this time tap <code>Skip</code>. Verify history shows skipped.</li><li>Set another, tap <code>Snooze</code>. Verify the snooze submenu shows <code>Snooze for 5 minutes</code> etc.</li></ol>
+<p><strong>Golden path 2 — appointment reminder:</strong></p>
+<p>Same as above for the appointment full-screen.</p>
+<p><strong>Edge case — OS notification action buttons:</strong></p>
+<ol><li>With device unlocked, allow a reminder to fire as a system notification (don't open it).</li><li>Pull down notification shade.</li><li><strong>Expected:</strong> action buttons show <code>Taken</code> and <code>Skip</code>. Tap <code>Taken</code>. Confirm history updated. (If OS doesn't update existing scheduled notifications, this only works for newly-scheduled — note in the <code>Implemented</code> block.)</li></ol>
+<p><strong>Edge case — Arabic locale:</strong></p>
+<ol><li>Switch to Arabic.</li><li>Trigger reminder.</li><li><strong>Expected:</strong> buttons show Arabic translations of <code>Taken</code> / <code>Skip</code> / <code>Snooze</code>. RTL alignment.</li></ol>
+<p><strong>Edge case — Premium vs free:</strong></p>
+<p>No premium-gating affects this change. Verify both still show the same labels.</p>
+<p><strong>Regression check:</strong></p>
+<p>Open <code>Add medicine</code> flow → sound picker → check the "Take After A Meal" / "Take Before A Meal" / "Take Any Time" picker. Those strings are separate (<code>Constant.beforeOrAfterMeal</code>) and should be unaffected. Confirm.</p>
+<h2>9. Rollout</h2>
+<ul><li>Ship in next release.</li><li>No flag.</li><li>Rollback: revert locale key value changes; the key replacements in views are also reversible per file.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>Photograph evidence (before / after) of the full-screen reminder labels — attach to commit message</li><li>All locale files have any new key added</li><li>Existing scheduled notifications confirmed to fire with new labels OR known limitation documented</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Redesigning the full-screen reminder UI</li><li>Changing the snooze duration list (<code>Constant.snoozeMinutesList</code>)</li><li>Adding new actions to the reminder</li></ul>
+<h2>12. Open questions</h2>
+<ol><li>Does the Android notification system update action labels on already-scheduled notifications when the app is updated? This is OS-version-dependent. Confirm on at least Android 11 and Android 14 during QA.</li></ol>
+<hr>
+<h2>Implemented</h2>
+<ul><li>Date: 2026-05-09</li><li>versionCode shipped: pending</li><li>Outcome: simpler than feared. The full-screen reminder views were already locale-keyed (<code>txtTaken</code>, <code>txtSkip</code>, <code>txtSnoozeFor</code>). Only the <strong>Android system-notification action labels</strong> in <code>notification_helper.dart</code> were hardcoded English (<code>'Taken'</code>, <code>'Skip'</code>, <code>'Snooze for 5 minutes'</code>).</li><li>Files changed:</li><li><code>lib/notification/notification_helper.dart</code> — replaced 3 hardcoded labels with <code>.tr</code> lookups (<code>txtTaken</code>, <code>txtSkip</code>, <code>txtSnoozeForFiveMinutes</code>).</li><li><code>lib/localization/languages/language_en.dart</code> — added <code>txtSnoozeForFiveMinutes</code>: "Snooze for 5 min" (shorter than "Snooze for 5 minutes" — Android action labels are space-constrained).</li><li>51 other locale files — same key with English fallback.</li><li>Locale key values verified: <code>txtTaken</code>: "Taken", <code>txtSkip</code>: "Skip" already match the spec.</li><li>Open question (Android propagation of action labels to already-scheduled notifications): unresolved — depends on OS version. To verify in QA: re-schedule via <code>NotificationHelper.instance.scheduleMedicineNotification()</code> after install of new build, OR confirm whether new versionCode triggers re-scheduling automatically.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F03 · Reminder-Action Microcopy Pass</code></div>
+</div>
+</body>
+</html>

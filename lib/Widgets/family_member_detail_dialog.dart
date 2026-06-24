@@ -71,7 +71,7 @@ class FamilyMemberDialog {
                                 height: AppSizes.height_3,
                                 alignment: Alignment.center,
                                 child: Image.asset(
-                                  Assets.iconsIcCloseDark,
+                                  Assets.icons.icCloseDark.path,
                                   color: Get.theme.colorScheme.tertiary,
                                   height: AppSizes.height_2,
                                   width: AppSizes.height_2,
@@ -135,13 +135,13 @@ class FamilyMemberDialog {
                           if(familyMember.gender!=null&&familyMember.gender!.isNotEmpty)DetailItem(
                             subtitle: 'txtGender'.tr,
                             title: familyMember.gender!,
-                            icon: Assets.iconsIcGender,
+                            icon: Assets.icons.icGender.path,
                           ),
                           if(familyMember.age!=null&& familyMember.age!.isNotEmpty)DetailItem(
                             subtitle: 'txtAge'.tr,
                             title:
                                 '${familyMember.age!.split(' ')[0]} ${familyMember.age!.split(' ')[1]}',
-                            icon: Assets.iconsIcAge,
+                            icon: Assets.icons.icAge.path,
                           ),
                         ],
                       ),
@@ -154,13 +154,13 @@ class FamilyMemberDialog {
                             subtitle: 'txtBirthDate'.tr,
                             title: familyMember.birthDate!,
                             maxWidth: AppSizes.fullWidth/3.5,
-                            icon: Assets.iconsIcCalendar,
+                            icon: Assets.icons.icCalendar.path,
                           ),
                           if(familyMember.bloodGroup!=null&&familyMember.bloodGroup!.isNotEmpty)DetailItem(
                             subtitle: 'txtBloodGroup'.tr,
                             title: familyMember.bloodGroup!,
                             maxWidth: AppSizes.fullWidth/4.1,
-                            icon: Assets.iconsIcBloodGroup,
+                            icon: Assets.icons.icBloodGroup.path,
                           ),
                         ],
                       ),
@@ -172,7 +172,7 @@ class FamilyMemberDialog {
                           if(familyMember.phoneNumber!=null&&familyMember.phoneNumber!.isNotEmpty)DetailItem(
                             subtitle: 'txtPhone'.tr,
                             title: familyMember.phoneNumber!,
-                            icon: Assets.iconsIcPhone,
+                            icon: Assets.icons.icPhone.path,
                           ),
                         ],
                       ),
@@ -185,7 +185,7 @@ class FamilyMemberDialog {
                           if(familyMember.email!=null&&familyMember.email!.isNotEmpty)DetailItem(
                             subtitle: 'txtEmail'.tr,
                             title: familyMember.email!,
-                            icon: Assets.iconsIcMessage,
+                            icon: Assets.icons.icMessage.path,
                           ),
                         ],
                       ),

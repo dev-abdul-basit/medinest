@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Engagement &amp; Retention System — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="README.md">← back to docs index</a>
+  <span class="kicker">Feature &amp; ranking</span>
+<h1>Engagement &amp; Retention System</h1>
+<p>How MediNest keeps a user past install — designed against what the codebase already has, not a generic retention listicle. The honest headline: <strong>the whole phase-1 system ships with zero backend.</strong> <code>zonedSchedule()</code> fires even when the app is killed, and every app-open can cancel/reschedule. FCM is a phase-2 luxury, not a prerequisite.</p>
+<p>This doc is the <strong>overview + roadmap</strong>. Each notification family below becomes (or maps to) a per-feature spec under <code>../engineering/v1/features/</code> (F15+). It does not duplicate the streak math — that lives in <code>F08-adherence-streak.md</code> and <code>lib/services/adherence_service.dart</code>.</p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>North-star metric</td><td><strong>D7 retention</strong> + <strong>notification opt-in rate</strong> (not DAU)</td></tr><tr><td>Backend required</td><td>No (phase 1) · FCM optional (phase 2)</td></tr><tr><td>Category constraint</td><td>Productivity · US market · no medical/diagnostic claims (per <code>../context/app-snapshot.md</code>)</td></tr><tr><td>Status</td><td>spec — awaiting review before any <code>lib/</code> change</td></tr></tbody></table>
+<hr>
+<h2>1. The retention model we're designing against</h2>
+<p>Retention here isn't one problem, it's four failure points along a lifecycle. Every notification in §4 maps to exactly one.</p>
+<table><thead><tr><th>Stage</th><th>When</th><th>Failure mode</th><th>The lever</th></tr></thead><tbody><tr><td><strong>Activation</strong></td><td>Day 0–1</td><td>Didn't finish setup / denied notification permission → app never delivers value</td><td>Permission rescue + finish-setup nudge</td></tr><tr><td><strong>Habituation</strong></td><td>Day 2–14</td><td>Reminders feel naggy or mistimed → user disables notifications (silent churn — worse than uninstall, undetectable)</td><td>Reminder quality + adherence nudges + quiet hours</td></tr><tr><td><strong>Stickiness</strong></td><td>Week 2–4</td><td>Course ended OR habit formed → "I don't need the app"</td><td>Streaks, milestones, journal hook</td></tr><tr><td><strong>Resurrection</strong></td><td>Day 7+ idle</td><td>Stopped opening</td><td>Local win-back notification</td></tr></tbody></table>
+<p>The core tension: <strong>medicine reminders are already frequent.</strong> Stacking engagement notifications on top is how you get fatigue → user disables notifications → the retention backbone dies. So the first thing we build is a guardrail, not a feature.</p>
+<hr>
+<h2>2. The guardrail: an engagement notification budget (build this first)</h2>
+<p>The most important and most-skipped piece. Every <strong>non-medicine</strong> notification must pass through one gatekeeper before it fires.</p>
+<p><strong>Rules — all local, all enforced in one <code>EngagementService</code>:</strong></p>
+<ul><li><strong>Quiet hours</strong> — default 21:00–08:00. No engagement notifications fire. Medicine reminders are exempt (user-set times).</li><li><strong>Cap</strong> — max <strong>1</strong> engagement notification/day, max <strong>3</strong>/week.</li><li><strong>Spacing</strong> — never fire within <strong>90 min</strong> of a scheduled medicine reminder. Every reminder's <code>nNotificationTimeStamp</code> is already in <code>lib/database/tables/notification_table.dart</code> — query it.</li><li><strong>Priority</strong> — if two are eligible the same day, fire the higher-priority one and drop the other: <code>resurrection &gt; milestone &gt; journal &gt; adherence-tip</code>.</li></ul>
+<p>Powered by two new <code>Preference</code> keys: <code>lastEngagementNotifTs</code> and a rolling weekly counter. Without this, every feature below backfires.</p>
+<hr>
+<h2>3. Channels available today</h2>
+<table><thead><tr><th>Channel</th><th>State</th><th>Use for</th></tr></thead><tbody><tr><td>Local scheduled notifications</td><td>✅ Built — <code>lib/notification/notification_helper.dart</code>, <code>zonedSchedule()</code> with taken/skip/snooze actions</td><td>Everything in phase 1</td></tr><tr><td>In-app cards / prompts</td><td>✅ Built — <code>lib/Widgets/adherence_card.dart</code> on Home</td><td>Permission rescue, milestone celebration, finish-setup</td></tr><tr><td>In-app review</td><td>✅ Built + well-gated — <code>lib/services/review_prompt_service.dart</code></td><td>Leave as-is; do not touch its gates</td></tr><tr><td>FCM push</td><td>⚠️ Token collected in <code>lib/ui/get_started_screen/</code> — no backend, no handler, no topics</td><td>Phase 2 only</td></tr></tbody></table>
+<hr>
+<h2>4. The notification catalogue</h2>
+<p>Grouped by lifecycle stage. Copy is US-market, Productivity-safe (no "treat / diagnose / manage your condition" — all framed as reminders/organizing, per reshape constraints). Every row is gated by §2 unless it's a medicine reminder.</p>
+<h3>A. Activation (Day 0–1)</h3>
+<table><thead><tr><th>ID</th><th>Trigger</th><th>Timing</th><th>Powered by</th><th>Copy</th></tr></thead><tbody><tr><td><strong>A1 · Permission rescue</strong></td><td>OS notification permission denied</td><td>Next app open, in-app card (not a notification)</td><td><code>home_controller.dart</code> <code>_requestPermissions()</code> result</td><td><em>"Reminders are off — MediNest can't remind you without notifications."</em> → deep-link to OS settings</td></tr><tr><td><strong>A2 · Finish setup</strong></td><td>Onboarding done, 0 medicines added</td><td>T+3h local notif; cancel on first medicine add</td><td><code>Preference.firstMedicineCreated</code></td><td><em>"Add your first medicine to start getting reminders 💊"</em> → opens <code>lib/ui/first_medicine/</code></td></tr></tbody></table>
+<p>A1 is the highest-leverage fix in the whole doc: a denied permission silently kills every other notification here.</p>
+<h3>B. Habituation (Day 2–14)</h3>
+<table><thead><tr><th>ID</th><th>Trigger</th><th>Timing</th><th>Powered by</th><th>Copy</th></tr></thead><tbody><tr><td><strong>B1 · Adherence tip</strong></td><td>Today partial AND an untaken dose remains</td><td>~19:30 (pre-quiet-hours)</td><td><code>AdherenceService</code> today's %</td><td><em>"You took 2 of 3 today. One left to stay on track."</em></td></tr><tr><td><strong>B2 · Journal prompt</strong></td><td>No journal entry in 7 days</td><td>Weekly, gentle</td><td><code>JournalTable</code> + new <code>Preference.lastJournalTs</code></td><td><em>"How have you been feeling this week? Add a quick note."</em></td></tr></tbody></table>
+<p>B2 re-enables the journal reminder code currently <strong>commented out</strong> in <code>notification_helper.dart</code>. Journaling is the emotional hook that survives "my course ended" — the reason MyTherapy retains.</p>
+<h3>C. Stickiness (Week 2–4)</h3>
+<table><thead><tr><th>ID</th><th>Trigger</th><th>Timing</th><th>Powered by</th><th>Copy</th></tr></thead><tbody><tr><td><strong>C1 · Streak milestone</strong></td><td>Hit 3 / 7 / 14 / 30 / 100-day streak</td><td>On compute, same day</td><td><code>AdherenceService.currentStreak</code></td><td><em>"🔥 7-day streak! You've stayed on track a full week."</em></td></tr><tr><td><strong>C2 · Streak-at-risk</strong></td><td><code>streak &gt;= 3</code> AND untaken dose by evening</td><td>~19:45</td><td><code>AdherenceService</code></td><td><em>"Don't break your 6-day streak — 1 dose left today."</em></td></tr></tbody></table>
+<p>C1 is celebration, not a nag — your highest-leverage stickiness tool; pair with an in-app moment on <code>adherence_card.dart</code>. C2 uses loss-aversion (outperforms gain framing) but must be rare — gate hard.</p>
+<h3>D. Resurrection (Day 7+ idle) — the offline win-back</h3>
+<table><thead><tr><th>ID</th><th>Trigger</th><th>Timing</th><th>Powered by</th><th>Copy</th></tr></thead><tbody><tr><td><strong>D1 · We miss you</strong></td><td>App not opened</td><td>Reschedule to now+5d on every open; fires only if user goes dark</td><td>new <code>Preference.lastOpenTs</code> + cancel/reschedule on resume</td><td><em>"Your reminders are waiting. Pick up where you left off."</em></td></tr><tr><td><strong>D2 · Soft restart</strong></td><td>Still idle</td><td>now+14d, then stop</td><td>same</td><td><em>"Start a fresh streak today — it only takes a tap."</em></td></tr></tbody></table>
+<p>The mechanism: on every app open, cancel D1 and reschedule for now+5 days. Active users never see it; dark users do. <strong>No backend.</strong> Stop after D2 — chasing a 30-day-gone user earns an uninstall.</p>
+<hr>
+<h2>5. What actually needs FCM (phase 2, defer)</h2>
+<p>Everything above is local. FCM only buys what local can't:</p>
+<ul><li><strong>Remote-controlled / A-B-tested copy</strong> without an app update.</li><li><strong>Broadcast campaigns</strong> (feature announcements, seasonal).</li><li><strong>Dynamic content</strong> ("3 people in your family circle have reminders today").</li></ul>
+<p>Needs a Cloud Function + a campaign table. Worth it only <em>after</em> the local system proves it moves D7. Token is already collected — nothing blocks starting later.</p>
+<hr>
+<h2>6. Instrumentation (you can't tune what you don't measure)</h2>
+<p>Add a small local events surface (reuse <code>Preference</code> counters where possible) so next iteration tunes cadence against data, not guesses:</p>
+<ul><li><code>lastOpenTs</code>, <code>openCount</code>, weekly session count → D1/D7/D30 retention.</li><li>Notification permission state (granted/denied) → activation ceiling.</li><li>Per-notification-type scheduled-vs-tapped → kill any type with a low tap rate.</li><li>Adherence-% and streak-length distributions (already derivable from <code>AdherenceService</code>).</li></ul>
+<hr>
+<h2>7. Build order (by ROI, lowest effort first)</h2>
+<ol><li><strong>Engagement budget + quiet hours</strong> (§2) — the guardrail. Must come first.</li><li><strong>A1 permission rescue + D1 win-back</strong> — highest retention ROI, ~1 day combined.</li><li><strong>C1 milestones + C2 at-risk</strong> — reuses existing streak math.</li><li><strong>B1 adherence tip</strong> — reuses <code>AdherenceService</code>.</li><li><strong>B2 journal prompt</strong> — uncomment + gate.</li><li><strong>Instrumentation</strong> (§6) — so we can iterate.</li><li><strong>FCM campaigns</strong> (§5) — phase 2, only after 1–6 prove out.</li></ol>
+<p>Each numbered item becomes a feature spec (F15 = engagement budget, F16 = permission-rescue + win-back, …) under <code>../engineering/v1/features/</code>, written just-in-time before its implementation.</p>
+<hr>
+<h2>8. Out of scope</h2>
+<ul><li>Gamification beyond calm streaks — no points, badges, leaderboards (same stance as F08).</li><li>Social sharing of streaks — privacy concern, irrelevant to install funnel.</li><li>Aggressive "you broke your streak!" guilt notifications — hurts review sentiment in a Productivity listing.</li><li>Server-driven anything in phase 1.</li></ul>
+<hr>
+<h2>9. Decisions (locked 2026-06-16)</h2>
+<p>Operator delegated these calls; rationale recorded so we can revisit with data.</p>
+<ol><li><strong>Quiet hours: 21:00–08:00</strong>, single global window. Not per-user in v1 — a settings toggle is scope creep before evidence anyone wants it.</li><li><strong>Cap: 1/day, 3/week.</strong> Conservative on purpose — easier to loosen later than to win back a muted user.</li><li><strong>Journal re-engagement (B2): parked for v1.</strong> Half-built feature; re-enabling is real work and would stall the guardrail. Guardrail + win-back + streak nudges deliver most of the lift without it.</li><li><strong>Milestone ladder: 3 / 7 / 14 / 30 / 100 days</strong> — matches F08's existing streak math, no new computation.</li></ol>
+<p>These are encoded as constants (not magic numbers) so a future data-driven change is a one-line edit.</p>
+<hr>
+<h2>10. The split</h2>
+<p><strong>Claude does:</strong></p>
+<ul><li>✅ <code>F15-engagement-budget.md</code> — the §2 guardrail spec + <code>EngagementService</code> foundation (shipped, unwired, analyzer-clean).</li><li>✅ <code>F16-winback-notifications.md</code> — D1/D2 offline win-back (shipped: <code>scheduleWinBackNotifications()</code> on the reschedule path + tap guards + 4 locale keys × 52 files).</li><li>✅ <code>F17-permission-rescue.md</code> — A1 (shipped: rewrote the broken placeholder denial dialog into a real explain + <code>openAppSettings()</code> deep-link; 4 locale keys × 52 files).</li><li>✅ <code>F18-streak-milestone-celebration.md</code> — C1 (shipped: <code>EngagementScheduler</code> — the first real consumer of <code>EngagementService.canFire</code>/<code>recordFired</code>; milestone notification gated by quiet hours + caps; 2 locale keys × 52 files).</li><li>Next: <code>F19</code> — evening scheduled nudges (adherence tip B1 + streak-at-risk C2) — <code>canFire</code> against a candidate fire time + reminder spacing.</li><li>On request, draft the full local-notification copy set (all IDs × A/B variants) ready to drop into locale files.</li></ul>
+<p><strong>You do:</strong></p>
+<ul><li>Review F15–F18 (all ship safely — F15 unwired, F16 fires only for absent users, F17 only improves a denial dialog, F18 fires at most once per milestone within budget).</li><li>Decide phase-1 stopping point: ship through build-order item 5 before any FCM investment (recommended: yes).</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>Engagement &amp; Retention System</code></div>
+</div>
+</body>
+</html>

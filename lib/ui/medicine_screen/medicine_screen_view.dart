@@ -1,7 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:medinest/Widgets/member_avatar.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
+import 'package:medinest/ui/family_member_screen/family_member_screen_logic.dart';
 import 'package:medinest/ui/medicine_screen/medicine_list_screen.dart';
 import 'package:medinest/utils/constant.dart';
 
@@ -36,7 +37,16 @@ class MedicineScreenPage extends StatelessWidget {
                     return _AvatarChip(
                       member: members[index]!,
                       isSelected: logic.selectedTabIndex == index,
-                      onTap: () => logic.onTabSelected(index),
+                      // Tap switches to this member; re-tapping the already
+                      // selected member opens their profile.
+                      onTap: () {
+                        if (logic.selectedTabIndex == index) {
+                          Get.find<FamilyMemberScreenLogic>()
+                              .gotoEditMember(members[index]!);
+                        } else {
+                          logic.onTabSelected(index);
+                        }
+                      },
                     );
                   },
                 ),
@@ -78,13 +88,6 @@ class _AvatarChip extends StatelessWidget {
     required this.onTap,
   });
 
-  String get _genderIcon {
-    final idx = Constant.genderList.indexOf(
-      member.gender ?? Constant.genderList[0],
-    );
-    return Constant.genderIconList[idx < 0 ? 0 : idx];
-  }
-
   @override
   Widget build(BuildContext context) {
     final primary = Get.theme.colorScheme.primary;
@@ -120,17 +123,10 @@ class _AvatarChip extends StatelessWidget {
                     : null,
               ),
               padding: const EdgeInsets.all(2.5),
-              child: ClipOval(
-                child: member.profileImage != null
-                    ? CachedNetworkImage(
-                        imageUrl: member.profileImage!,
-                        fit: BoxFit.cover,
-                        placeholder: (_, __) =>
-                            _AvatarFallback(genderIcon: _genderIcon),
-                        errorWidget: (_, __, ___) =>
-                            _AvatarFallback(genderIcon: _genderIcon),
-                      )
-                    : _AvatarFallback(genderIcon: _genderIcon),
+              child: MemberAvatar(
+                size: 45,
+                profileImage: member.profileImage,
+                gender: member.gender,
               ),
             ),
 
@@ -163,23 +159,3 @@ class _AvatarChip extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────
-// Fallback avatar (gender icon)
-// ─────────────────────────────────────────────
-
-class _AvatarFallback extends StatelessWidget {
-  final String genderIcon;
-
-  const _AvatarFallback({required this.genderIcon});
-
-  @override
-  Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Get.theme.colorScheme.errorContainer,
-      child: Padding(
-        padding: const EdgeInsets.all(9),
-        child: Image.asset(genderIcon, fit: BoxFit.contain),
-      ),
-    );
-  }
-}

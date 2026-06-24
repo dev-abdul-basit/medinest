@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F07 · Onboarding Rewrite — First-Reminder-Set in Under 60 Seconds — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F07 · Onboarding Rewrite — First-Reminder-Set in Under 60 Seconds</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>T1-1</td></tr><tr><td>Effort</td><td>1–2 weeks</td></tr><tr><td>Risk</td><td>med</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no</td></tr><tr><td>ASO signals moved</td><td>R (D1), CVR</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>D1 retention is the single biggest install-velocity multiplier on Play. The biggest D1 drop in pill-reminder apps is users who install but never set a single reminder. Today's onboarding goes through introduction → get-started → optional sign-in → home. The user then must navigate to "Add medicine" and fill 6+ fields before a single reminder exists. We're compressing that to &lt; 60 seconds.</p>
+<h2>2. What changes for the user</h2>
+<p>Before:</p>
+<ol><li>Splash → Introduction (3 swipe slides) → Get Started → optional Sign-in → Home (empty) → Add Medicine (6+ fields).</li></ol>
+<p>After:</p>
+<ol><li>Splash → Introduction (3 swipe slides — unchanged, but shortens to "Skip to add my first medicine").</li><li><strong>NEW screen:</strong> "Add your first medicine" — minimal form with smart defaults:</li></ol>
+<ul><li>Medicine name (one text input, autofocus)</li><li>Frequency: pill-shaped picker [Once daily | Twice daily | 3× daily | Custom] — defaults to "Once daily"</li><li>Time: defaults to next 8:00 AM (or next 8:00 PM if user is currently between 6 AM and 8 PM)</li><li><strong>No</strong> dosage, color, shape, doctor, family member, before/after meal, sound — all optional, accessible via a <code>More options</code> link below</li></ul>
+<ol><li>After Save: confetti / Lottie success animation, navigate to Home with that medicine visible and a tooltip "You're set. We'll remind you at 8:00 AM tomorrow."</li><li>Sign-in is offered AFTER the first successful reminder fires the next day, not during onboarding.</li></ol>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/ui/get_started_screen/get_started_screen_view.dart</code></strong> — change the primary CTA destination from current path to a new "First Medicine" screen.</li><li><strong>NEW: <code>lib/ui/first_medicine/first_medicine_binding.dart</code></strong> <em>(new file)</em></li><li><strong>NEW: <code>lib/ui/first_medicine/first_medicine_logic.dart</code></strong> <em>(new file)</em></li><li><strong>NEW: <code>lib/ui/first_medicine/first_medicine_view.dart</code></strong> <em>(new file)</em></li><li><strong><code>lib/routes/app_routes.dart</code></strong> — add <code>static const String firstMedicine = '/firstMedicine';</code></li><li><strong><code>lib/routes/app_pages.dart</code></strong> — register the new page + binding.</li><li><strong><code>lib/ui/home/home_controller.dart</code></strong> — show a one-shot tooltip on first home view if the user came from the new onboarding (gate on a new <code>Preference</code> key <code>seenFirstMedicineTooltip</code>).</li><li><strong><code>lib/utils/preference.dart</code></strong> — add <code>seenFirstMedicineTooltip</code> (bool).</li><li><strong><code>lib/ui/introduction_screen/introduction_screen_view.dart</code></strong> — adjust skip / continue button text to <code>Skip to setup</code> / <code>Get started</code>.</li><li><strong><code>lib/ui/get_started_screen/get_started_screen_view.dart</code></strong> — defer Google Sign-in. Replace immediate sign-in with a "Continue without account" primary button + small "Sign in" secondary link.</li><li><strong><code>lib/Widgets/</code></strong> — possibly a new <code>first_medicine_frequency_chips.dart</code> if the chip selector isn't reusable from existing widgets.</li><li><strong>Locale files</strong> — multiple new keys, all replicated.</li></ul>
+<h2>4. Data model</h2>
+<p>No schema changes — the new screen writes through the existing <code>medicine_table</code> row insertion path.</p>
+<p>New <code>Preference</code> keys:</p>
+<pre><code class="lang-dart">static const String seenFirstMedicineTooltip = "SEEN_FIRST_MEDICINE_TOOLTIP";
+static const String firstMedicineCreated     = "FIRST_MEDICINE_CREATED";  // bool — for analytics &amp; future flow gating</code></pre>
+<p>With typed accessors matching existing style.</p>
+<h2>5. Locale keys</h2>
+<pre><code class="lang-">'txtFirstMedTitle': "Set up your first medicine",
+'txtFirstMedNamePlaceholder': "e.g. Vitamin D",
+'txtFirstMedFrequencyOnce': "Once daily",
+'txtFirstMedFrequencyTwice': "Twice daily",
+'txtFirstMedFrequencyThrice': "3 times daily",
+'txtFirstMedFrequencyCustom': "Custom",
+'txtFirstMedNextReminder': "Next reminder",
+'txtFirstMedMoreOptions': "More options (dose, color, doctor…)",
+'txtFirstMedSaveCta': "Save &amp; remind me",
+'txtFirstMedTooltip': "You're set. We'll remind you at {time}.",
+'txtSkipToSetup': "Skip to setup",
+'txtContinueWithoutAccount': "Continue without account",</code></pre>
+<p><code>{time}</code> is interpolated at runtime — keep the placeholder syntax consistent with any existing interpolation (audit one or two existing keys to match).</p>
+<h2>6. Routing</h2>
+<p>Add <code>firstMedicine</code> route per section 3.</p>
+<p>Onboarding navigation after this change:</p>
+<pre><code class="lang-">/  →  introduction  →  getStarted  →  firstMedicine  →  home</code></pre>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Add <code>Preference</code> keys + accessors.</li><li>Add locale keys to <code>language_en.dart</code>. Replicate.</li><li>Add route constant + GetPage entry.</li><li>Create the three new files (<code>first_medicine_*</code>). Logic class extends <code>GetxController</code>. Mirror the structure of <code>lib/ui/add_medicine/add_medicine_controller.dart</code> but stripped to the minimal field set.</li><li>Wire the save action: build a <code>MedicineTable</code> row with smart defaults (today's date, default sound <code>assets/sounds/defaulttone.mp3</code>, default shape, no doctor, no family member assigned to "Self" if it exists), insert via <code>DataBaseHelper.instance</code>, schedule notification via <code>NotificationHelper.instance.scheduleMedicineNotification()</code>.</li><li>Set <code>Preference.shared.setFirstMedicineCreated(true)</code> after success.</li><li>Update <code>get_started_screen_view.dart</code> to route to <code>/firstMedicine</code> instead of current target. Defer sign-in.</li><li>Update <code>introduction_screen_view.dart</code> button labels.</li><li>In <code>home_controller.dart</code>, on <code>onReady</code>, if <code>firstMedicineCreated &amp;&amp; !seenFirstMedicineTooltip</code>, show a one-shot Lottie + tooltip overlay (use existing <code>lottie</code> package), then mark <code>seenFirstMedicineTooltip = true</code>.</li><li>Manual QA pass.</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path:</strong></p>
+<ol><li>Fresh install. App launches. Splash → Introduction (3 slides).</li><li>Tap <code>Skip to setup</code> on slide 1.</li><li><strong>Expected:</strong> Get Started screen with "Continue without account" primary, "Sign in" secondary.</li><li>Tap "Continue without account".</li><li><strong>Expected:</strong> First Medicine screen, name field autofocused.</li><li>Type <code>Vitamin D</code>. Frequency defaults to <code>Once daily</code>. Time shows next 8 AM.</li><li>Tap <code>Save &amp; remind me</code>.</li><li><strong>Expected:</strong> brief Lottie confetti, navigate to Home, the new medicine listed under today, tooltip shows "You're set. We'll remind you at 8:00 AM."</li><li>Time-stopwatch this from app cold start to home: target ≤ 60 seconds.</li></ol>
+<p><strong>Edge case 1 — Sign-in path:</strong></p>
+<ol><li>Same flow but tap <code>Sign in</code> on Get Started.</li><li><strong>Expected:</strong> Google sign-in flow, then route to First Medicine (not directly Home — onboarding still completes).</li></ol>
+<p><strong>Edge case 2 — User skips First Medicine:</strong></p>
+<p>If we provide a back arrow on first-medicine screen, the user might back out. Currently no back arrow is in the spec. Confirm: pressing system back from first-medicine should <em>not</em> exit the app. Either disable back, or back to Get Started.</p>
+<p><strong>Edge case 3 — Late-night user:</strong></p>
+<p>Test at 11 PM device time. Default time should be "next 8:00 AM" (tomorrow), not today.</p>
+<p><strong>Edge case 4 — Notification permission denied:</strong></p>
+<p>If on Android 13+, the user denies POST_NOTIFICATIONS. Save still succeeds, medicine is in DB, but no system notification will fire. Show a one-time banner: "Notifications are off. Tap to enable so we can remind you." (Use existing <code>permission_handler</code> package.)</p>
+<p><strong>Edge case 5 — Re-install:</strong></p>
+<p>Uninstall, reinstall. Ensure <code>firstMedicineCreated</code> is false again (it's in <code>GetStorage</code>, which is wiped on uninstall — verify).</p>
+<p><strong>Regression check:</strong></p>
+<p>Verify the <strong>classic</strong> Add Medicine flow (<code>/add</code> route, full form) still works for second-medicine onwards.</p>
+<h2>9. Rollout</h2>
+<ul><li>Internal track for 3–5 days first. This is a major user-facing flow change.</li><li>After internal verification, ship to production.</li><li>Roll-back: revert routing change in <code>get_started_screen_view.dart</code> to point at the old target. The new screens stay (harmless), the new route stays (unused).</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>60-second-from-cold-start metric verified on at least two devices</li><li>Notification fires correctly the next morning (set test medicine for 5 minutes ahead, verify)</li><li>Re-install test passes</li><li>Lottie animation file (any reasonable celebration animation) committed under <code>assets/animation/</code></li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Personalizing onboarding to user input (we don't ask "what's your goal" — adds friction without conversion lift in this category)</li><li>Multiple-medicine setup in one go — not v1</li><li>Importing from other apps — way out of scope</li></ul>
+<h2>12. Open questions</h2>
+<ol><li>Confirm with Abdul: does a "Self" <code>family_member_table</code> row exist by default for new users? If not, the first-medicine save will need to either create one or accept a null <code>mFamilyMemberId</code>.</li><li>Does Lottie animation file exist for celebration, or do we need to source one? (Recommend free LottieFiles asset — check license.)</li></ol>
+<hr>
+<h2>Implemented — STATUS: BLOCKED on product input</h2>
+<ul><li>Date of attempt: 2026-05-09</li><li>versionCode shipped: <strong>none — not implemented</strong></li><li><strong>Why blocked:</strong> the spec's section-12 open questions are real blockers, not nits. Specifically:</li></ul>
+<ol><li><em>Does a "Self" family-member row exist by default?</em> Audited: NO. The existing <code>add_or_edit_profile_screen</code> is what creates it, and that flow is mandatory in current onboarding. The new first-medicine screen would either need to insert one silently (UX decision Abdul should weigh in on — does the user see a "Self" tab they didn't name?) OR refactor <code>medicine_table.mFamilyMemberId</code> to accept null (substantive schema change, out of v1 scope).</li><li><em>Lottie celebration source:</em> <code>assets/animation/celibretion1.json</code> already exists. <strong>Resolved.</strong> Use it.</li></ol>
+<ul><li><strong>What I deliberately did NOT do:</strong></li><li>I did not silently create a default "Self" <code>FamilyMemberTable</code> in <code>main.dart</code>. That alters user-visible behavior in a way that requires sign-off.</li><li>I did not add the new <code>first_medicine_*</code> screen / route. Without resolving question 1, the screen would not function.</li><li>I did not defer Google Sign-in. That's a flow restructure with downstream impact on home, profile, sync — needs design review.</li><li><strong>What I'm asking from you to unblock F07:</strong></li><li>Decide: is auto-creating a "Self" family-member row (with name "Me", default gender Other) acceptable as the on-first-launch behavior? OR do you want users to still see the profile screen?</li><li>Decide: should sign-in be deferred to <em>after</em> first reminder fires (per the spec) or stay as part of onboarding?</li><li><strong>Recommended next session:</strong> confirm those two decisions, then I implement Stage-1 (auto-default profile + new screen) in one focused pass. Estimate: 1 day with the decisions in hand.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F07 · Onboarding Rewrite — First-Reminder-Set in Under 60 Seconds</code></div>
+</div>
+</body>
+</html>

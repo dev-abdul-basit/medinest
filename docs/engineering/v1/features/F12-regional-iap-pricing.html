@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F12 · Per-Region IAP Pricing — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F12 · Per-Region IAP Pricing</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>T1-6</td></tr><tr><td>Effort</td><td>½ day in Play Console + ½ day in code</td></tr><tr><td>Risk</td><td>low</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>n/a (this <em>is</em> the pricing)</td></tr><tr><td>ASO signals moved</td><td>$$ (revenue, not rank)</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>Currently a single global IAP price (5 SAR / month) auto-converts in Play. That's purchasing-power-mismatched: too cheap in US/EU, plausibly too expensive in some emerging markets. A 30-minute Play Console job moves revenue 30–60 % per <code>monetization-snapshot.md</code>.</p>
+<p>This feature is mostly a Play Console operation. The code change is small but real: the in-app paywall must read the <strong>localized</strong> price string from <code>ProductDetails</code>, not assume a hardcoded "5 SAR".</p>
+<h2>2. What changes for the user</h2>
+<ul><li>A US user sees the monthly plan at $4.99 instead of $1.30.</li><li>A Saudi user still sees 5 SAR.</li><li>An Indian user sees ₹49.</li><li>A Brazilian user sees R$9.90.</li><li>The CTA button (from F01) renders the right currency for the user's Play account country.</li></ul>
+<p>Free-tier behavior is unchanged.</p>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/in_app_purchase/in_app_purchase_helper.dart</code></strong> — confirm the helper exposes localized <code>ProductDetails.price</code> string. If not, refactor to do so.</li><li><strong><code>lib/ui/pro_version/pro_version_controller.dart</code></strong> — read <code>ProductDetails.price</code> and <code>priceCurrencyCode</code>. Display these on the plan cards.</li><li><strong><code>lib/ui/pro_version/pro_version_screen.dart</code></strong> — render localized prices. Don't hardcode "5 SAR" or "$4.99" in copy.</li><li><strong><code>lib/Widgets/common_subscribe_dialog.dart</code></strong> — already extended in F01 to accept <code>priceLabel</code>. Confirm it's actually populated everywhere from <code>ProductDetails</code>.</li><li><strong><code>pubspec.yaml</code></strong> — no changes.</li><li><strong>Play Console</strong> — the actual price-tier setup (Abdul's task, not Claude's).</li></ul>
+<h2>4. Data model</h2>
+<p>No schema. No new <code>Preference</code>.</p>
+<h2>5. Locale keys</h2>
+<p>Audit existing pro-version copy for hardcoded prices. If any locale string contains a price string ("5 SAR", "$4.99"), replace with placeholder syntax:</p>
+<pre><code class="lang-">'txtProMonthlyPriceLabel': "{price} / month",
+'txtProYearlyPriceLabel': "{price} / year",
+'txtProYearlySavings': "Save {percent}%",</code></pre>
+<p><code>{price}</code> is interpolated at render time from <code>ProductDetails</code>. <code>{percent}</code> is computed from monthly vs yearly.</p>
+<h2>6. Routing</h2>
+<p>No changes.</p>
+<h2>7. Implementation steps (linear)</h2>
+<h3>Code side</h3>
+<ol><li>Read <code>lib/in_app_purchase/in_app_purchase_helper.dart</code>. Confirm the helper queries product details on init and exposes them.</li><li>Read <code>pro_version_controller.dart</code> + <code>pro_version_screen.dart</code>. Find any hardcoded price strings or numbers.</li><li>Refactor: every price displayed comes from <code>ProductDetails.price</code>. The string is already locale-formatted by Play.</li><li>Add the locale keys above. Replicate.</li><li>Verify no other place in the app shows a price (search the codebase for <code>SAR</code>, <code>USD</code>, <code>5 SAR</code>, <code>4.99</code>, <code>$1</code>, etc.).</li><li>The CTA in <code>CommonSubscriptionDialog</code> (from F01) already accepts <code>priceLabel</code>. Wire the populated value from monthly product details.</li></ol>
+<h3>Play Console side (Abdul's task — document here)</h3>
+<ol><li>Play Console → Monetize → Products → Subscriptions → "Premium monthly" → Pricing.</li><li>Switch from "Single global price" to "Set prices manually for selected countries".</li><li>Use Play's pricing tier suggestions for these markets:</li></ol>
+<table><thead><tr><th>Market</th><th>Monthly</th><th>Yearly</th><th>Notes</th></tr></thead><tbody><tr><td>US, CA, AU, GB</td><td>$4.99</td><td>$39.99</td><td>Anchor against Medisafe ($4.99)</td></tr><tr><td>EU (DE, FR, IT, ES, NL)</td><td>€4.99</td><td>€39.99</td><td></td></tr><tr><td>Saudi Arabia</td><td>5 SAR (current)</td><td>49 SAR</td><td>Don't raise — it's working</td></tr><tr><td>UAE, Qatar, Kuwait</td><td>5 AED</td><td>49 AED</td><td>MENA parity</td></tr><tr><td>India</td><td>₹49</td><td>₹399</td><td>High-volume / low-ARPU</td></tr><tr><td>Pakistan</td><td>₹279</td><td>₹1 999</td><td></td></tr><tr><td>Indonesia</td><td>Rp 19 000</td><td>Rp 149 000</td><td></td></tr><tr><td>Brazil</td><td>R$ 9.90</td><td>R$ 79</td><td></td></tr><tr><td>Mexico</td><td>MX$ 35</td><td>MX$ 269</td><td>LATAM anchor</td></tr><tr><td>Turkey</td><td>₺49</td><td>₺399</td><td>Inflation-adjust quarterly</td></tr><tr><td>Egypt</td><td>EGP 49</td><td>EGP 399</td><td></td></tr><tr><td>Philippines</td><td>₱99</td><td>₱799</td><td></td></tr><tr><td>Nigeria</td><td>₦999</td><td>₦7 999</td><td></td></tr><tr><td>Vietnam</td><td>đ 39 000</td><td>đ 299 000</td><td></td></tr><tr><td>All other countries</td><td>Auto-convert from $4.99</td><td>Auto-convert from $39.99</td><td>Default for unlisted</td></tr></tbody></table>
+<ol><li>Save. Submit subscription update.</li><li>Wait 24 h for Play to propagate. Verify on a real device with a Play account in a different country (or VPN).</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path:</strong></p>
+<ol><li>Real device with Play account in Saudi Arabia. Open ProVersion.</li><li><strong>Expected:</strong> monthly price shows <code>5 SAR</code>, yearly shows <code>49 SAR</code>.</li><li>Switch device's Play account to a US-region account. Reopen.</li><li><strong>Expected:</strong> monthly shows <code>$4.99</code>, yearly shows <code>$39.99</code>.</li></ol>
+<p><strong>Edge case 1 — IAP not yet loaded:</strong></p>
+<ol><li>Force-quit. Open ProVersion immediately.</li><li><strong>Expected:</strong> loading spinner or "Loading prices…" text. No <code>null</code> rendered.</li></ol>
+<p><strong>Edge case 2 — Country not in the table:</strong></p>
+<ol><li>Play account in Argentina (not listed above).</li><li><strong>Expected:</strong> auto-converted price displays correctly. Not "$0.00" or "—".</li></ol>
+<p><strong>Regression check:</strong></p>
+<p>Existing subscription purchase still completes successfully in sandbox.</p>
+<h2>9. Rollout</h2>
+<ul><li>Code change ships in next release.</li><li>Play Console pricing change can be made any time and propagates 24 h. Recommend: ship code first, <em>then</em> update Play Console pricing — so when the new prices land, the app renders them correctly.</li><li>Roll-back (Play Console): revert to single-price global. Roll-back (code): hardcode currency strings if the dynamic path breaks. Last resort.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>No hardcoded price strings in the app</li><li>Real device tests across at least 2 currencies</li><li>Play Console pricing matches the table above (or whatever Abdul ultimately chose — record the final table in <code>Implemented</code>)</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Promotional pricing / launch discounts (separate spec)</li><li>A/B testing prices via Play's "intro pricing" feature — interesting but adds complexity</li><li>Removing the yearly plan from any market — for v1 we offer both everywhere</li></ul>
+<h2>12. Open questions</h2>
+<ol><li>Final pricing table per market — the table above is a starting point; Abdul confirms before Play Console changes.</li><li>Should the app show the savings on yearly with a calculated percentage ("Save 33 %") or a hardcoded label? Recommend calculated, since price ratios may differ per market once tiers are set.</li></ol>
+<hr>
+<h2>Implemented — code side DONE; Play Console pricing pending Abdul</h2>
+<ul><li>Date: 2026-05-09</li><li>versionCode shipped: pending</li><li><strong>Code side (DONE):</strong></li><li><code>lib/ui/pro_version/pro_version_screen.dart</code> — replaced <code>'$0.00'</code> placeholder with <code>'txtProLoadingPrice'.tr</code>. Replaced hardcoded <code>"per month"</code> with <code>'txtProPerMonth'.tr</code> / <code>'txtProPerYear'.tr</code>. <strong>Bug fixed in scope:</strong> the price display was always showing <code>products.last.price</code> (monthly) regardless of <code>isMonthlySelected</code>. Now correctly shows <code>products.first.price</code> for yearly. Documented inline.</li><li><code>lib/localization/languages/language_en.dart</code> — 3 new keys (<code>txtProPerMonth</code>, <code>txtProPerYear</code>, <code>txtProLoadingPrice</code>).</li><li>51 other locale files — same 3 keys with English fallback.</li><li>Final sweep confirmed no other hardcoded prices in <code>lib/</code>. The one remaining <code>"5.00 SAR"</code> reference is in the docstring comment for <code>InAppPurchaseHelper.monthlyPriceLabel</code> (added in F01) — documentation, not a displayed string.</li><li><strong>Play Console side (pending Abdul):</strong></li><li>Set per-region pricing tiers per the table in spec section 7.</li><li>24 h propagation expected after Play Console save.</li><li><strong>Remaining open question (spec section 12):</strong> dynamic "Save N%" calculation on the yearly card. Recommend implementing in a follow-up — adds value but requires real product data to verify the math at runtime.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F12 · Per-Region IAP Pricing</code></div>
+</div>
+</body>
+</html>

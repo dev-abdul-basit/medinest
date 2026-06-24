@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feature Spec Template (v1) — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1</span>
+<h1>Feature Spec Template (v1)</h1>
+<p>Every feature spec under <code>features/</code> follows this exact structure. Copy this file as the starting point.</p>
+<blockquote><p>Section order is not optional. Skipping a section is a bug; if it's not applicable, write <code>n/a</code> rather than removing the heading.</p>
+</blockquote>
+<hr>
+<pre><code class="lang-markdown"># F0X · &lt;feature name&gt;
+
+| | |
+| --- | --- |
+| Roadmap ref | (e.g. QW-1, T1-3) |
+| Effort | (½ day · 1 day · 1 week · 2 weeks) |
+| Risk | (low · med · high) |
+| Schema change | (yes / no — yes requires DB version bump) |
+| New package | (yes / no — yes requires Abdul approval before implementation) |
+| Premium-gated | (yes / no) |
+| ASO signals moved | (R · ★ · KW · CVR · $$ · L) |
+| Status | (spec · in-progress · shipped) |
+
+## 1. Why we're shipping it
+2–4 sentences. The user / business outcome. Cross-link to the ASO doc that motivated it. No fluff.
+
+## 2. What changes for the user
+A user-perspective description. What they see, tap, hear, save, lose. Include before / after if the change is non-obvious.
+
+## 3. What changes in the code
+File-by-file delta, in dependency order. Each entry:
+
+- **`relative/path/to/file.dart`** — what changes (one or two lines)
+
+If a new file is created, mark `(new)`. If a file is moved, call it out. Be specific about what's added vs replaced.
+
+## 4. Data model
+Tables, columns, prefs, enums affected. If `Schema change` is `no`, write `No schema changes`. If yes, include:
+
+- New columns + types + default values
+- Migration SQL (within `database_helper.dart` version-bump block)
+- New `Preference` keys + getter/setter signatures
+
+## 5. Locale keys
+List every new `txt…` key with its English value:</code></pre>
+<p>'txtMyNewKey': "My new English string",</p>
+<pre><code class="lang-">
+State explicitly which language files must receive the key (default: all of them, with English fallback).
+
+## 6. Routing
+If a new route is added: routing const + GetPage entry block. Otherwise `No routing changes`.
+
+## 7. Implementation steps (linear)
+1. Step one (refer to file paths in section 3)
+2. Step two
+3. ...
+
+These are the exact steps Claude follows during implementation. Each step should be commit-able if interrupted.
+
+## 8. Manual test plan
+Tap-by-tap on a real device:
+
+- **Golden path**
+  1. Open the app
+  2. ... (concrete steps)
+  3. Expected: ...
+
+- **Edge case 1: &lt;name&gt;**
+  - Steps + expected result
+
+- **Regression check**
+  - One adjacent feature to retest. (E.g., if we touch the home controller, we re-test the medicine list filter.)
+
+## 9. Rollout
+- Behind a feature flag? (default in v1: no — solo dev codebase, ship-or-don't)
+- Targeted release? (e.g., internal track first)
+- Roll-back plan: which file to revert + what to expect
+
+## 10. Definition of done
+Reference `../04-definition-of-done.md`. Override or add only if necessary.
+
+## 11. Out of scope (for this feature)
+What this spec does NOT cover, even if related. Prevents scope creep.
+
+## 12. Open questions
+Anything unresolved as of spec freeze. **Must be answered before implementation starts.**
+
+---
+
+## Implemented (filled in after ship)
+
+- Date: YYYY-MM-DD
+- versionCode shipped: NN
+- Commit SHA: &lt;sha&gt;
+- Deviations from spec: &lt;none, or describe&gt;
+- Lessons / notes for v2: &lt;optional&gt;</code></pre>
+<hr>
+<h2>How to fill in each section well</h2>
+<h3><code>Why we're shipping it</code></h3>
+<p>Cite <strong>one</strong> signal we're moving. "We think it'll improve retention" is not a why; "review-prompt fires too early — see ../../aso/feature-roadmap.md QW-2 — empirical pattern is review-prompt timing moves rating averages 0.1–0.3 stars" is.</p>
+<h3><code>What changes for the user</code></h3>
+<p>Write it as if QA is reading it. "User opens Settings → Privacy → toggles X → toast appears." Future-you and Abdul will both refer to this when verifying done-ness.</p>
+<h3><code>What changes in the code</code></h3>
+<p>Be specific enough that a fresh session of Claude can implement without re-discovering the codebase. Include:</p>
+<ul><li>File paths exact (case-sensitive)</li><li>Whether you're adding a method to an existing class or creating a new one</li><li>Which existing pattern you're matching ("same shape as <code>medicine_screen_logic.dart</code>'s <code>getAllFamilyMembers()</code> method")</li></ul>
+<h3><code>Manual test plan</code></h3>
+<p>The single most important section for v1. We have no automated tests. If this section is vague, the feature ships broken. Steps need to fit on a phone screen-by-screen — number them, expect concrete state at each step.</p>
+<h3><code>Out of scope</code></h3>
+<p>This is where you stop yourself from doing too much. Examples:</p>
+<blockquote><p><em>"This feature changes paywall copy only. It does NOT modify paywall trigger logic — that stays in <code>home_controller.dart</code> and is not touched."</em></p>
+</blockquote>
+<p>When in doubt, scope down.</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>Feature Spec Template (v1)</code></div>
+</div>
+</body>
+</html>

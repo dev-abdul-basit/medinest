@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>90-Day ASO Roadmap — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="README.md">← back to docs index</a>
+  <span class="kicker">ASO</span>
+<h1>90-Day ASO Roadmap</h1>
+<p>Calendar starts 2026-05-09. Each week has <strong>your tasks</strong> and <strong>my tasks</strong> (Claude). Don't run the next week until current week's blockers clear — out-of-order work creates noise that hides what actually moved the needle.</p>
+<blockquote><p>Single-variable rule. Each week ships ≤1 listing-changing experiment so we can attribute install / rank movement to a cause. Multiple changes in one week = no signal.</p>
+</blockquote>
+<hr>
+<h2>Week 1 (2026-05-09 → 05-15) — Baseline</h2>
+<h3>Your side</h3>
+<ul><li>Pull Play Console Search Terms (90d) → <code>aso/_data/search-terms-90d.csv</code></li><li>Pull Acquisition by country (90d) → <code>aso/_data/acquisition-by-country-90d.csv</code></li><li>Note install/rating/review numbers in <code>context/app-snapshot.md</code></li><li>Take SERP screenshots for <code>pill reminder</code>, <code>medication reminder</code>, <code>medicine reminder</code>, <code>tablet reminder</code> from clean / incognito browser. Repeat for one MENA-locale browser.</li><li>Sign up for AppFollow free tier</li><li>Confirm primary target country (Saudi vs worldwide-EN)</li></ul>
+<h3>My side</h3>
+<ul><li>Validate keyword candidates with the data you pulled, update <code>02-keyword-research.md</code> priority list</li><li>Map current screenshots vs. competitor SERP — update <code>04-screenshot-strategy.md</code> with the gap analysis</li></ul>
+<h3>Exit criteria</h3>
+<p>We have: real volumes, real ranks for ~20 keywords, real SERP screenshots. No listing changes ship this week.</p>
+<hr>
+<h2>Week 2 (2026-05-16 → 05-22) — Title experiment</h2>
+<h3>Your side</h3>
+<ul><li>In Play Console → Store Listing Experiments → create test:</li><li><strong>Variant A:</strong> v1 title <code>Medinest: Pill &amp; Med Reminder</code></li><li><strong>Control:</strong> current title</li><li>Audience: 50 / 50, all countries</li><li>Reply to every review from the past 30 days that you haven't replied to. Even "thanks!" replies. Play algorithm reads developer-reply-rate as an engagement signal.</li></ul>
+<h3>My side</h3>
+<ul><li>Draft localized titles for ar-SA, id-ID, hi-IN — sized for Play 30-char limit per locale</li><li>Find a translator (or hand off the brief) — translation work happens Week 3</li></ul>
+<h3>Exit criteria</h3>
+<p>Title experiment running. Review reply rate ≥80 % on last 30 days.</p>
+<hr>
+<h2>Week 3 (2026-05-23 → 05-29) — Short description + first localization</h2>
+<h3>Your side</h3>
+<ul><li>If title test has ≥95 % confidence, ship the winner. Otherwise let it run another week.</li><li>Start a <strong>separate</strong> experiment: short description v1 vs control.</li><li>Send English source + translation brief to a native fluent translator for ar-SA. Budget $25–50.</li></ul>
+<h3>My side</h3>
+<ul><li>Audit <code>home_controller.dart</code> paywall copy — write a v2 paywall copy, hand to you to ship in next app update. (Doesn't change ASO directly but feeds review sentiment, which does.)</li><li>Build review-prompt timing recommendation — see <code>feature-improvements/feature-roadmap.md</code> Quick Wins.</li></ul>
+<h3>Exit criteria</h3>
+<p>Short-description test running. Arabic translation in flight.</p>
+<hr>
+<h2>Week 4 (2026-05-30 → 06-05) — First localized listing live</h2>
+<h3>Your side</h3>
+<ul><li>Receive ar-SA translation. <strong>Have one other Arabic speaker spot-check it for naturalness.</strong> Translation quality is the #1 reason localized listings underperform.</li><li>In Play Console → Store presence → Translations → add Arabic (Saudi Arabia). Paste title, short, full.</li><li>Upload Arabic screenshots (or skip first round if budget-constrained — English screenshots in an Arabic listing still convert better than no Arabic listing).</li><li>Build app: bump versionCode, ship a release. Even a no-feature update keeps freshness signal alive.</li></ul>
+<h3>My side</h3>
+<ul><li>Draft id-ID and hi-IN listing copy in English source form, ready to hand to translators in Week 5</li><li>Begin <code>strategies/x/x-content-30day.md</code> Week 1 posts (pre-launch teasers)</li></ul>
+<h3>Exit criteria</h3>
+<p>Arabic listing live. Release shipped.</p>
+<hr>
+<h2>Week 5 (2026-06-06 → 06-12) — Screenshot redesign starts</h2>
+<h3>Your side</h3>
+<ul><li>Hire / brief a designer with <code>04-screenshot-strategy.md</code>. Budget $150–400 for the full 8-screenshot set if outsourcing. If DIYing in Figma, expect 6–10 hours.</li><li>Send id-ID + hi-IN copy to translators.</li><li>Begin organic X posting (per <code>strategies/x/</code>).</li></ul>
+<h3>My side</h3>
+<ul><li>Review designer drafts when they arrive (paste image into chat, I'll critique against the strategy doc).</li><li>Begin <code>strategies/reddit/reddit-subreddits.md</code> engagement plan — week-by-week subreddit list.</li></ul>
+<h3>Exit criteria</h3>
+<p>Screenshot redesign in progress. Two more localized listings in flight. X presence started.</p>
+<hr>
+<h2>Week 6 (2026-06-13 → 06-19) — Screenshots ship + Reddit engagement begins</h2>
+<h3>Your side</h3>
+<ul><li>Ship redesigned screenshots as <strong>a Store Listing Experiment</strong> (50/50 vs current screenshots), not direct.</li><li>id-ID listing live (translator should have delivered).</li><li>Begin Reddit engagement — comment-only, no link-drops, in the subreddits flagged in <code>strategies/reddit/reddit-subreddits.md</code>.</li></ul>
+<h3>My side</h3>
+<ul><li>Update <code>aso/03-competitor-analysis.md</code> with month-over-month rank deltas observed (you screenshot the SERPs again, I diff).</li><li>Draft LinkedIn posts → <code>strategies/linkedin/linkedin-content-30day.md</code> Week 1.</li></ul>
+<h3>Exit criteria</h3>
+<p>Screenshot test running. Two locales live (ar-SA, id-ID). Reddit account warmed.</p>
+<hr>
+<h2>Week 7 (2026-06-20 → 06-26) — Hindi listing + first social-driven installs</h2>
+<h3>Your side</h3>
+<ul><li>hi-IN listing live.</li><li>Post LinkedIn week 1 content per <code>strategies/linkedin/</code>.</li><li>Continue Reddit comments.</li><li>App update: bump versionCode, include any small feature win (e.g., new sound, theme tweak — keeps store-freshness signal).</li></ul>
+<h3>My side</h3>
+<ul><li>Pull early read on screenshot test — if clear winner (≥95 % CI, ≥10k installs per arm), declare. If not, recommend extending or simplifying variant set.</li><li>Audit reviews from Week 1–6 for keyword opportunities (real users using new terms = real keyword signals to chase).</li></ul>
+<h3>Exit criteria</h3>
+<p>Three localized listings live. App update shipped. Social presence active on X + LinkedIn + Reddit.</p>
+<hr>
+<h2>Week 8 (2026-06-27 → 07-03) — Iterate</h2>
+<h3>Your side</h3>
+<ul><li>Whatever the screenshot test winner is, ship it everywhere. Then start a new test on a different variable.</li><li>Add ur-PK and tr-TR localized listings (translators briefed last week).</li><li>Reach out to 3 caregiver / chronic-illness creators on X / LinkedIn (list to be in <code>strategies/x/x-content-30day.md</code>).</li></ul>
+<h3>My side</h3>
+<ul><li>Mid-roadmap audit. Update <code>aso/05-aso-roadmap-90day.md</code> (this file) — what worked, what didn't, what plan changes.</li><li>Pull current rank for the top 20 keywords vs. baseline. If we have not moved on at least 5, we need to debug.</li></ul>
+<h3>Exit criteria</h3>
+<p>Five localized listings live. First creator outreach sent. Mid-roadmap retro committed.</p>
+<hr>
+<h2>Weeks 9–12 (2026-07-04 → 07-31) — Compounding</h2>
+<p>By week 9, every week is the same shape:</p>
+<ul><li>1 listing experiment running (rotate: title → short → screenshot 1 → screenshot 2 → icon)</li><li>1 app update / month minimum (bump versionCode even if cosmetic)</li><li>2 new localized listings every 2 weeks</li><li>3 social posts per week (X), 1 per week (LinkedIn), 5 Reddit comments per week</li><li>1 review reply session per week (target ≥90 % reply rate on last 30 days)</li></ul>
+<p>I will keep updating this file with the weekly target as we have data.</p>
+<hr>
+<h2>What success looks like at Day 90</h2>
+<p>Honest targets, calibrated to what new entrants in this category actually achieve:</p>
+<table><thead><tr><th>Metric</th><th>Day 0</th><th>Day 90 target</th><th>Stretch</th></tr></thead><tbody><tr><td>Localized listings</td><td>1 (en)</td><td>6</td><td>10</td></tr><tr><td>Tracked keywords ranking top 50</td><td>TBD</td><td>+10</td><td>+20</td></tr><tr><td>Tracked keywords ranking top 10</td><td>TBD</td><td>3</td><td>6</td></tr><tr><td>Daily organic installs</td><td>TBD</td><td>+50 %</td><td>+150 %</td></tr><tr><td>Star rating</td><td>TBD</td><td>hold or +0.1</td><td>+0.2</td></tr><tr><td>Review count</td><td>TBD</td><td>+30 %</td><td>+60 %</td></tr><tr><td>X followers</td><td>0</td><td>200</td><td>600</td></tr><tr><td>LinkedIn page followers</td><td>0</td><td>100</td><td>300</td></tr><tr><td>Reddit karma in target subs</td><td>0</td><td>200</td><td>500</td></tr></tbody></table>
+<p>Rank movement is non-linear. Expect nothing in weeks 1–4 (Play algorithm has a baseline period for new listings/changes), small wins weeks 5–8, compounding in weeks 9–12.</p>
+<hr>
+<h2>What we will <em>stop doing</em> if it isn't working</h2>
+<p>Be ready to kill these:</p>
+<ul><li>Any keyword we are still ≥ rank 100 on at Day 60 (we drop it from the long description).</li><li>Any localized listing with &lt;100 installs at Day 60 (we pause work on more locales until we understand why; don't compound the loss).</li><li>Any social channel below the Day 90 stretch target by Day 60 — we cut to weekly cadence, not 3×/week, and let it ride. Don't burn time chasing a channel that isn't pulling.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>90-Day ASO Roadmap</code></div>
+</div>
+</body>
+</html>

@@ -13,6 +13,7 @@ import 'package:medinest/connectivity_manager/connectivity_manager.dart';
 import 'package:medinest/database/helper/database_helper.dart';
 import 'package:medinest/database/helper/firestore_helper.dart';
 import 'package:medinest/database/tables/user_table.dart';
+import 'package:medinest/main.dart';
 import 'package:medinest/routes/app_routes.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
@@ -54,6 +55,23 @@ class GetStartedScreenLogic extends GetxController {
     super.onInit();
   }
 
+  /// F07 — deferred sign-in: let the user reach value (their first reminder)
+  /// without an account. Sign-in is offered later for backup & sync. We commit
+  /// the get-started step so they aren't shown this screen again, then hand off
+  /// to the first-medicine screen.
+  void continueAsGuest() {
+    Preference.shared.setIsGetStarted(true);
+    // A returning guest (already onboarded, e.g. after signing out) keeps all
+    // their local data and goes straight Home — no re-onboarding. Only a true
+    // first-run guest sees the first-medicine screen.
+    if (Preference.shared.getFirstMedicineCreated() ||
+        Preference.shared.getProfileAdded()) {
+      Get.offAllNamed(AppRoutes.home);
+    } else {
+      Get.offNamed(AppRoutes.firstMedicine);
+    }
+  }
+
   /// Google Sign-In (Using Centralized Service)
 
   loginWithGoogle(BuildContext context) async {
@@ -70,6 +88,11 @@ class GetStartedScreenLogic extends GetxController {
       final result = await GoogleAuthService.instance.signInWithGoogle();
 
       if (result.isSuccess && result.credential != null) {
+        // Account isolation: if a DIFFERENT account than the one that owns the
+        // current local data signs in, swap out the local data first so the new
+        // user never sees the previous account's data.
+        await _isolateLocalDataForAccount(result.credential!.user!.uid);
+
         // Firestore sync & profile checks
         if (Preference.shared.getProfileAdded()) {
           List<UserTable> userDataList = await DataBaseHelper.instance
@@ -106,6 +129,23 @@ class GetStartedScreenLogic extends GetxController {
       isShowProgress = false;
       update([Constant.idProVersionProgress]);
     }
+  }
+
+  /// Account isolation. If the local data belongs to a DIFFERENT account than
+  /// the one signing in, clear it first (the previous owner's data is safe in
+  /// their own cloud) so accounts never see each other's data. Guest-owned data
+  /// (owner == null) is claimed by the signing-in account. Always records the
+  /// new owner so the next sign-in can compare.
+  Future<void> _isolateLocalDataForAccount(String uid) async {
+    final String? owner = Preference.shared.getDataOwnerUid();
+    if (owner != null && owner != uid) {
+      await DataBaseHelper.instance.clearAllUserData();
+      await flutterLocalNotificationsPlugin.cancelAll();
+      await Preference.shared.clearSelfMemberId();
+      Preference.shared.setProfileAdded(false);
+      Debug.printLog("Account switch: cleared $owner's local data for $uid");
+    }
+    await Preference.shared.setDataOwnerUid(uid);
   }
 
   Future<void> logoutGoogle() async {

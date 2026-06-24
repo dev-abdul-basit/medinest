@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -52,7 +49,7 @@ class AddOrEditProfileScreenPage extends StatelessWidget {
                               ],
                               hintText: '${'txtEnterUserName'.tr} *',
                               fillColor: Get.theme.colorScheme.surfaceVariant,
-                              prefixIcon: Assets.iconsIcUserName,
+                              prefixIcon: Assets.icons.icUserName.path,
                               shouldValidate: true,
                               validatorText: 'txtEnterUserName'.tr,
                             );
@@ -69,7 +66,7 @@ class AddOrEditProfileScreenPage extends StatelessWidget {
                                   end: AppSizes.width_4,
                                 ),
                                 child: Image.asset(
-                                  Assets.iconsIcGender,
+                                  Assets.icons.icGender.path,
                                   width: AppSizes.width_6,
                                   height: AppSizes.width_6,
                                 ),
@@ -94,7 +91,7 @@ class AddOrEditProfileScreenPage extends StatelessWidget {
                               controller: logic.userBirthDateController,
                               hintText: 'txtEnterYourBirthDate'.tr,
                               fillColor: Get.theme.colorScheme.surfaceVariant,
-                              prefixIcon: Assets.iconsIcCalendar,
+                              prefixIcon: Assets.icons.icCalendar.path,
                               validatorText: 'txtEnterYourBirthDate'.tr,
                             );
                           },
@@ -109,7 +106,7 @@ class AddOrEditProfileScreenPage extends StatelessWidget {
                               controller: logic.userAgeController,
                               hintText: 'txtAge'.tr,
                               fillColor: Get.theme.colorScheme.surfaceVariant,
-                              prefixIcon: Assets.iconsIcAge,
+                              prefixIcon: Assets.icons.icAge.path,
                               validatorText: 'txtEnterYourBirthDate'.tr,
                             );
                           },
@@ -125,7 +122,7 @@ class AddOrEditProfileScreenPage extends StatelessWidget {
                                   end: AppSizes.width_4,
                                 ),
                                 child: Image.asset(
-                                  Assets.iconsIcBloodGroup,
+                                  Assets.icons.icBloodGroup.path,
                                   width: AppSizes.width_6,
                                   height: AppSizes.width_6,
                                 ),
@@ -150,7 +147,7 @@ class AddOrEditProfileScreenPage extends StatelessWidget {
                               hintText: 'txtEnterYourEmail'.tr,
                               validatorType: Constant.validationTypeEmail,
                               fillColor: Get.theme.colorScheme.surfaceVariant,
-                              prefixIcon: Assets.iconsIcMessage,
+                              prefixIcon: Assets.icons.icMessage.path,
                               validatorText: 'txtEnterYourEmail'.tr,
                             );
                           },
@@ -169,7 +166,7 @@ class AddOrEditProfileScreenPage extends StatelessWidget {
                               fillColor: Get.theme.colorScheme.surfaceVariant,
                               keyboardType: TextInputType.phone,
                               maxLength: 15,
-                              prefixIcon: Assets.iconsIcPhone,
+                              prefixIcon: Assets.icons.icPhone.path,
                               // validatorText: 'txtEnterValidPhoneNumber'.tr,
                             );
                           },

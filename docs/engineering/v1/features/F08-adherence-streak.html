@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F08 · Adherence Streak on Home — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F08 · Adherence Streak on Home</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>T1-2</td></tr><tr><td>Effort</td><td>1–2 weeks</td></tr><tr><td>Risk</td><td>low–med</td></tr><tr><td>Schema change</td><td>no (uses existing <code>medicine_history_table</code>)</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no (free feature; encourages retention which feeds funnel)</td></tr><tr><td>ASO signals moved</td><td>R (D7+), $$</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>Pill-reminder retention compounds when users see their adherence visualized on the home screen. Mango Health and Round Health have proven this pattern over years. We add a single, calm streak indicator — no gamification, no points, no badges. The goal is to reinforce a behavior, not turn the app into a game.</p>
+<h2>2. What changes for the user</h2>
+<p>A new card at the top of the Home screen, above today's medicine list, showing:</p>
+<ul><li><strong>Today's adherence</strong>: <code>3 of 4 doses taken</code> with a thin progress bar</li><li><strong>Current streak</strong>: <code>7 day streak</code> (number of consecutive days with ≥80 % adherence)</li><li><strong>Tap action</strong>: opens a calm weekly view (last 14 days as small dots — green / yellow / red).</li></ul>
+<p>The card is collapsible. After 14 days of use, the user can tap "Hide" to dismiss permanently (rate-stored in <code>Preference</code>).</p>
+<h2>3. What changes in the code</h2>
+<ul><li><strong>NEW: <code>lib/ui/home/widgets/adherence_card.dart</code></strong> <em>(new file, widget — placed in a new <code>widgets/</code> subfolder under home, matching emerging convention)</em></li><li><strong><code>lib/ui/home/home_controller.dart</code></strong> — compute today's adherence and current streak from <code>medicine_history_table</code>. Two new public fields: <code>todayAdherenceTaken</code>, <code>todayAdherenceTotal</code>, <code>currentStreakDays</code>. Update IDs.</li><li><strong><code>lib/ui/home/home_screens.dart</code></strong> — render <code>AdherenceCard</code> above the existing medicine list, gated by <code>Preference.shared.getAdherenceCardHidden()</code>.</li><li><strong><code>lib/utils/preference.dart</code></strong> — add <code>adherenceCardHidden</code> bool.</li><li><strong><code>lib/utils/constant.dart</code></strong> — add <code>static const idAdherenceCard = "idAdherenceCard";</code></li><li><strong>NEW: <code>lib/services/adherence_service.dart</code></strong> <em>(new file)</em> — pure-Dart logic for streak calculation. Single function: <code>Future&lt;AdherenceSummary&gt; compute({DateTime? at})</code>. Keeps the controller thin and the streak-rules testable in the future.</li></ul>
+<h2>4. Data model</h2>
+<p>No schema changes. We compute adherence from existing <code>medicine_history_table</code>:</p>
+<ul><li>For each day, count rows where <code>mHistoryAction == 'taken'</code> and rows where <code>mHistoryAction == 'skipped'</code> (or whatever values exist — audit table model in <code>lib/database/tables/medicine_history_table.dart</code>).</li><li>Adherence ratio = taken / (taken + skipped + missed).</li><li>A day "counts" toward streak when adherence ≥ 80 % AND the user had at least one scheduled dose that day.</li><li>Streak = number of consecutive prior days (back from today) meeting the criterion.</li></ul>
+<p>New <code>Preference</code> key:</p>
+<pre><code class="lang-dart">static const String adherenceCardHidden = "ADHERENCE_CARD_HIDDEN";
+Future&lt;void&gt; setAdherenceCardHidden(bool v) =&gt; _pref!.write(adherenceCardHidden, v);
+bool getAdherenceCardHidden()              =&gt; _pref!.read(adherenceCardHidden) ?? false;</code></pre>
+<h2>5. Locale keys</h2>
+<pre><code class="lang-">'txtAdherenceTodayLabel': "Today",
+'txtAdherenceDosesTakenOf': "{taken} of {total} doses taken",
+'txtAdherenceStreakSingular': "1 day streak",
+'txtAdherenceStreakPlural': "{n} day streak",
+'txtAdherenceCardHide': "Hide",
+'txtAdherenceWeekTitle': "Last 14 days",
+'txtAdherenceLegendOnTrack': "On track",
+'txtAdherenceLegendPartial': "Partial",
+'txtAdherenceLegendMissed': "Missed",</code></pre>
+<p>Replicate to all locale files.</p>
+<h2>6. Routing</h2>
+<p>No new route — the 14-day weekly view opens as a bottom sheet (use <code>Get.bottomSheet(...)</code>).</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Add <code>Preference</code> key + accessors.</li><li>Add locale keys + replicate.</li><li>Add <code>Constant.idAdherenceCard</code>.</li><li>Create <code>lib/services/adherence_service.dart</code> with <code>AdherenceSummary</code> model class (<code>int takenToday</code>, <code>int totalToday</code>, <code>int currentStreakDays</code>, <code>List&lt;DayMark&gt; last14Days</code>). Implement <code>compute()</code> reading from <code>DataBaseHelper.instance.getMedicineHistoryData(...)</code> (existing method — confirm signature in DB helper).</li><li>Create the widget at <code>lib/ui/home/widgets/adherence_card.dart</code>. Pure StatelessWidget, takes the summary fields as constructor params and a callback for <code>onHide</code>.</li><li>Wire up the bottom-sheet 14-day view inside the same widget file or a separate <code>adherence_week_sheet.dart</code>.</li><li>In <code>home_controller.dart</code>, in <code>onReady</code>, call <code>AdherenceService().compute()</code> and call <code>update([Constant.idAdherenceCard])</code> on the result.</li><li>In <code>home_screens.dart</code>, conditionally render the card above the existing list.</li><li>Hide-action: tap → <code>Preference.shared.setAdherenceCardHidden(true)</code> → <code>update([...])</code>.</li><li>QA across edge cases (section 8).</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path:</strong></p>
+<ol><li>Pre-existing user with at least 5 days of medicine history. Open app.</li><li><strong>Expected:</strong> card visible. Today's progress correct. Streak number reflects history.</li><li>Tap card.</li><li><strong>Expected:</strong> bottom sheet with 14 dots colored according to per-day adherence.</li></ol>
+<p><strong>Edge case 1 — Brand new user (no history):</strong></p>
+<ol><li>Fresh install, set first medicine. Don't take it yet.</li><li><strong>Expected:</strong> card shows <code>0 of 1 doses taken</code>, no streak number (or "0 day streak").</li><li>Mark dose taken.</li><li><strong>Expected:</strong> card updates to <code>1 of 1 doses taken</code>, streak stays 0 until end of day.</li></ol>
+<p><strong>Edge case 2 — User has zero medicines:</strong></p>
+<ol><li>Brand new user, hasn't created any medicine yet (skipped onboarding).</li><li><strong>Expected:</strong> card does NOT render — there's nothing to show. <code>home_screens.dart</code> should suppress when <code>totalToday == 0</code> AND <code>currentStreakDays == 0</code>.</li></ol>
+<p><strong>Edge case 3 — Hide:</strong></p>
+<ol><li>Tap Hide.</li><li><strong>Expected:</strong> card disappears immediately. <code>Preference.adherenceCardHidden = true</code>. Persists across restart.</li></ol>
+<p><strong>Edge case 4 — Multiple family members:</strong></p>
+<ol><li>User has self + parent profiles, each with meds.</li><li><strong>Expected:</strong> adherence is calculated for the <em>currently-selected</em> profile in the home tab controller. Verify against <code>medicineTabController.index</code>.</li></ol>
+<p><strong>Edge case 5 — Day-boundary:</strong></p>
+<ol><li>At 11:59 PM, mark a dose taken. Wait until 12:01 AM.</li><li><strong>Expected:</strong> "Today" updates to the new day. Streak count includes the previous day if it qualified.</li></ol>
+<p><strong>Edge case 6 — DST / timezone change:</strong></p>
+<p>Move device timezone forward / back by 1 hour. Streak shouldn't shift unexpectedly.</p>
+<p><strong>Regression check:</strong></p>
+<p>Existing today's-medicine list still renders below the card. Sorting / filtering still works.</p>
+<h2>9. Rollout</h2>
+<ul><li>Ship behind <code>Preference.adherenceCardHidden = true</code> on first launch for <em>existing</em> users (so we don't surprise users with a new card after an update). Reset to <code>false</code> after they pass through any onboarding hint about the card.</li><li>On reflection: <strong>simpler</strong> — show by default for all users, including existing. The card is calm and dismissable. Risk is minimal. Ship without flag.</li><li>Roll-back: hide via a hot-config? We don't have hot-config infra. Roll back via revert + new versionCode.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>Card hidden state persists across app restart</li><li>Streak math verified by hand on a real 7-day history</li><li>Bottom sheet renders correctly in dark mode + RTL</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Push notifications for streak loss ("you broke your streak!") — too aggressive for this category, hurts review sentiment</li><li>Sharing streak to social — privacy concern, irrelevant to install funnel</li><li>Custom streak rules per medicine — over-engineering</li></ul>
+<h2>12. Open questions</h2>
+<ol><li>Confirm exact field names and possible values of <code>mHistoryAction</code> in <code>medicine_history_table</code>. If the values aren't <code>taken</code> / <code>skipped</code> / <code>missed</code>, adjust <code>AdherenceService</code> accordingly.</li><li>Streak threshold (80 %) — Abdul to confirm. Lower (e.g., 60 %) is friendlier; higher feels meaningful but breaks more easily.</li><li>When a user hasn't logged anything for a day (no taken, no skipped), does that count as broken streak or not? Recommendation: <strong>not counted</strong> if the day had zero scheduled doses; <strong>counted as missed</strong> if there were scheduled doses unanswered.</li></ol>
+<hr>
+<h2>Implemented</h2>
+<ul><li>Date: 2026-05-09</li><li>Files added:</li><li><code>lib/services/adherence_service.dart</code> — <code>AdherenceService.compute()</code> returning <code>AdherenceSummary</code> (today's taken/total, current streak, last 14 days). Day "counts" toward streak when ratio ≥ 0.8 AND day had at least one logged action; days with zero actions are neutral (don't extend, don't break).</li><li><code>lib/Widgets/adherence_card.dart</code> — <code>AdherenceCard</code> widget + <code>AdherenceWeekSheet</code> bottom sheet.</li><li>Files changed:</li><li><code>lib/utils/preference.dart</code> — added <code>adherenceCardHidden</code> key + accessors.</li><li><code>lib/utils/constant.dart</code> — added <code>idAdherenceCard</code> GetX update id.</li><li><code>lib/localization/languages/language_en.dart</code> — 9 new keys.</li><li>51 other locale files — same 9 keys with English fallback.</li><li><code>lib/ui/home/home_screens.dart</code> — renders <code>AdherenceCard</code> between header row and tab content. Suppressed when <code>summary.isEmpty</code> OR <code>adherenceCardHidden</code>. Imports <code>adherence_card.dart</code>.</li><li><code>lib/ui/home/home_controller.dart</code> — adds <code>adherenceSummary</code>, <code>adherenceCardHidden</code> fields, <code>refreshAdherence()</code>, <code>hideAdherenceCard()</code>, <code>openAdherenceWeek()</code>. <code>onReady</code> calls <code>refreshAdherence()</code>.</li><li>Streak threshold (0.8) is hardcoded in <code>AdherenceService.streakThreshold</code>. To revisit per spec section-12 question 2.</li><li>Refresh strategy: card updates on every Home <code>onReady</code>. NOT updated reactively when a dose is marked taken from the full-screen reminder (would require cross-controller coupling we can't safely add in v1). User sees the new value on next return to Home — acceptable trade-off.</li><li>Deferred from spec: writing tests (no test infra in v1), adding analytics on <code>Hide</code> taps.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F08 · Adherence Streak on Home</code></div>
+</div>
+</body>
+</html>

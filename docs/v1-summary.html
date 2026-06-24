@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>v1 — Session Summary &amp; Cold-Start Brief — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="README.md">← back to docs index</a>
+  <span class="kicker">Session summary</span>
+<h1>v1 — Session Summary &amp; Cold-Start Brief</h1>
+<blockquote><p><strong>Read this first when starting a new session.</strong> It is the navigation hub that tells you what already exists, what's blocked, and what to do next. The detailed work lives in the linked files — this summary points at them, it does not duplicate them.</p>
+</blockquote>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Session date</td><td>2026-05-09</td></tr><tr><td>Brain version</td><td>v1</td></tr><tr><td>Engineering handbook version</td><td>v1</td></tr><tr><td>Author</td><td>Abdul (product owner) + Claude (senior ASO + Flutter engineer)</td></tr><tr><td>Repo HEAD at session start</td><td><code>4d4cbf2</code></td></tr><tr><td>Repo state at session end</td><td>uncommitted (Abdul commits)</td></tr></tbody></table>
+<hr>
+<h2>TL;DR (90 seconds)</h2>
+<ol><li>We built a <strong>two-brain system</strong> in this repo: an ASO/growth brain and a Flutter engineering handbook. Both are versioned. Both have <code>.md</code> (canonical) and <code>.html</code> (styled, rendered) twin views.</li><li>We wrote <strong>12 feature specs</strong> (F01–F12) covering the next ~6 months of MediNest work.</li><li>We implemented those features one-by-one in the same session: <strong>8 fully shipped (code-side), 1 partial (F11 Stage 1 only), 3 honestly blocked (F07/F09/F10) on product or package decisions Abdul must make.</strong></li><li><strong>Nothing is committed yet.</strong> Abdul commits. Claude doesn't.</li><li><strong>Next session's first move:</strong> Abdul answers 4 unblocking decisions (listed below); Claude implements F07 + F09 + F10 + F11 Stage 2 in one focused pass. Estimate ~5 days of work once unblocked.</li></ol>
+<hr>
+<h2>How to resume in a new session</h2>
+<h3>If you (Abdul) want to keep doing ASO/marketing work:</h3>
+<blockquote><p><em>"Read <code>CLAUDE.md</code> and <code>docs/v1-summary.md</code>, then continue ASO work from <code>docs/NEXT-STEPS.md</code>."</em></p>
+</blockquote>
+<h3>If you want to keep implementing features:</h3>
+<blockquote><p><em>"Read <code>docs/v1-summary.md</code>, then read <code>docs/engineering/v1/01-claude-flutter-engineer-role.md</code> and <code>docs/engineering/v1/02-architecture-canon.md</code>. Then implement <code>docs/engineering/v1/features/F0X-...md</code>."</em></p>
+</blockquote>
+<h3>If you don't know which yet:</h3>
+<blockquote><p><em>"Read <code>docs/v1-summary.md</code> and tell me what's most useful next."</em></p>
+</blockquote>
+<hr>
+<h2>What was built — a map</h2>
+<pre><code class="lang-">CLAUDE.md                                  ← root index, navigation entry
+docs/
+├── README.md                              ← docs hub &amp; read-order
+├── NEXT-STEPS.md                          ← sprint board (Your-side / My-side)
+├── v1-summary.md                          ← THIS FILE
+├── context/
+│   ├── app-snapshot.md                    ← feature inventory + locale list
+│   └── monetization-snapshot.md           ← AdMob, IAP, paywall details
+├── aso/
+│   ├── store_listing_desc.txt             ← LIVE listing (v0, kept for diff)
+│   ├── 01-store-listing.md/.html          ← recommended NEW listing
+│   ├── 02-keyword-research.md/.html       ← keyword tiers + scoring rubric
+│   ├── 03-competitor-analysis.md/.html
+│   ├── 04-screenshot-strategy.md/.html
+│   └── 05-aso-roadmap-90day.md/.html
+├── strategies/
+│   ├── x/{x-strategy.md/.html, x-content-30day.md}
+│   ├── linkedin/{linkedin-strategy.md/.html, linkedin-content-30day.md}
+│   └── reddit/{reddit-strategy.md/.html, reddit-subreddits.md}
+├── feature-improvements/
+│   ├── feature-roadmap.md/.html           ← features ranked by ASO impact
+│   └── ranking-tactics.md/.html           ← country-by-country ranking plan
+├── engineering/
+│   ├── README.md/.html                    ← version index
+│   └── v1/
+│       ├── README.md/.html                ← v1 entry point + feature table
+│       ├── 00-overview.md/.html
+│       ├── 01-claude-flutter-engineer-role.md/.html  ← agent role, READ FIRST
+│       ├── 02-architecture-canon.md/.html ← actual conventions
+│       ├── 03-feature-template.md/.html
+│       ├── 04-definition-of-done.md/.html
+│       ├── release-cadence.md             ← F06 output
+│       ├── release-checklist.md           ← F06 output
+│       └── features/F01..F12.md/.html + T2-T3-placeholders.md/.html
+├── _build/render.mjs                      ← run after editing .md to refresh .html
+└── MediNest/                              ← graphics (existing, not generated)</code></pre>
+<hr>
+<h2>What got shipped this session</h2>
+<h3>Documentation work (all .md + .html where applicable)</h3>
+<table><thead><tr><th>Area</th><th>Files</th><th>What it gives you</th></tr></thead><tbody><tr><td><strong>ASO/marketing brain</strong></td><td><code>CLAUDE.md</code>, <code>docs/README.md</code>, <code>docs/NEXT-STEPS.md</code>, 2 context snapshots, 5 ASO docs, 3 strategy folders, 2 feature-improvement docs</td><td>Real ASO recommendations: title <code>Medinest: Pill &amp; Med Reminder</code>, short description rewrite, full description rewrite, 20 priority keywords, competitor analysis, 90-day roadmap, X/LinkedIn/Reddit playbooks, country-by-country ranking plan</td></tr><tr><td><strong>Engineering handbook v1</strong></td><td><code>docs/engineering/v1/</code> × 27 files</td><td>Versioned implementation contract: agent role, audited architecture canon, spec template, definition of done, 12 feature specs, release cadence + checklist</td></tr><tr><td><strong>HTML renderer</strong></td><td><code>docs/_build/render.mjs</code></td><td>Zero-dep Node script. Run <code>node docs/_build/render.mjs</code> after editing any spec or strategy <code>.md</code> to refresh the <code>.html</code> mirror.</td></tr></tbody></table>
+<h3>Code work — 12 features, run through one-by-one</h3>
+<p>For full details on each, open the linked spec — every one has an <code>## Implemented</code> block with files changed, deviations, open questions. The table here is the index.</p>
+<table><thead><tr><th>ID</th><th>Feature</th><th>Status</th><th>Spec</th><th>Effort</th><th>Notes</th></tr></thead><tbody><tr><td>F01</td><td>Paywall copy rewrite</td><td>✅ shipped</td><td><a href="engineering/v1/features/F01-paywall-copy-rewrite.html">features/F01</a></td><td>½ d</td><td>7 files, 6 keys × 52 locales</td></tr><tr><td>F02</td><td>Review-prompt timing</td><td>✅ shipped</td><td><a href="engineering/v1/features/F02-review-prompt-timing.html">features/F02</a></td><td>½ d</td><td>New <code>ReviewPromptService</code> + 4 prefs + counter increments</td></tr><tr><td>F03</td><td>Reminder microcopy</td><td>✅ shipped</td><td><a href="engineering/v1/features/F03-reminder-action-microcopy.html">features/F03</a></td><td>1 d</td><td>3 hardcoded labels → <code>.tr</code>; <code>txtSnoozeForFiveMinutes</code> × 52 locales</td></tr><tr><td>F04</td><td>ASO strings</td><td>✅ shipped</td><td><a href="engineering/v1/features/F04-aso-strings-on-screens.html">features/F04</a></td><td>½ d</td><td>3 conservative value refreshes in <code>language_en.dart</code> only</td></tr><tr><td>F05</td><td>Privacy link</td><td>✅ verified</td><td><a href="engineering/v1/features/F05-privacy-policy-link.html">features/F05</a></td><td>½ d</td><td>Code already correct. URL + Play Console field verification on you.</td></tr><tr><td>F06</td><td>Update cadence policy</td><td>✅ shipped</td><td><a href="engineering/v1/features/F06-update-cadence-policy.html">features/F06</a></td><td>¼ d</td><td>Policy + checklist docs in <code>engineering/v1/</code></td></tr><tr><td><strong>F07</strong></td><td><strong>Onboarding rewrite</strong></td><td>🟥 <strong>BLOCKED</strong></td><td><a href="engineering/v1/features/F07-onboarding-rewrite.html">features/F07</a></td><td>1–2 w</td><td>2 product decisions needed</td></tr><tr><td>F08</td><td>Adherence streak</td><td>✅ shipped</td><td><a href="engineering/v1/features/F08-adherence-streak.html">features/F08</a></td><td>1–2 w</td><td>New <code>AdherenceService</code> + <code>AdherenceCard</code> + 9 keys × 52 locales</td></tr><tr><td><strong>F09</strong></td><td><strong>Health Connect</strong></td><td>🟥 <strong>BLOCKED</strong></td><td><a href="engineering/v1/features/F09-health-connect.html">features/F09</a></td><td>1 w</td><td>Needs <code>health</code> package + AndroidManifest approval</td></tr><tr><td><strong>F10</strong></td><td><strong>Doctor PDF export</strong></td><td>🟥 <strong>BLOCKED</strong></td><td><a href="engineering/v1/features/F10-doctor-pdf-export.html">features/F10</a></td><td>1 w</td><td>Needs <code>pdf</code> + <code>printing</code> packages</td></tr><tr><td>F11</td><td>Caregiver mode</td><td>🟡 partial (Stage 1)</td><td><a href="engineering/v1/features/F11-caregiver-mode.html">features/F11</a></td><td>1–2 w</td><td>Settings toggle shipped; Stage 2 needs content + design input</td></tr><tr><td>F12</td><td>Regional IAP pricing</td><td>✅ code side</td><td><a href="engineering/v1/features/F12-regional-iap-pricing.html">features/F12</a></td><td>½ d</td><td>Latent bug fixed (was always showing monthly price). Play Console pricing on you.</td></tr></tbody></table>
+<h3>Aggregate code-side delta</h3>
+<p><strong>5 new Dart files:</strong></p>
+<ul><li><code>lib/services/review_prompt_service.dart</code></li><li><code>lib/services/adherence_service.dart</code></li><li><code>lib/Widgets/adherence_card.dart</code></li></ul>
+<p><strong>2 new docs files (F06 output):</strong></p>
+<ul><li><code>docs/engineering/v1/release-cadence.md</code></li><li><code>docs/engineering/v1/release-checklist.md</code></li></ul>
+<p><strong>Modified Dart files:</strong></p>
+<ul><li><code>lib/main.dart</code> — <code>firstInstallTs</code> boot init</li><li><code>lib/utils/preference.dart</code> — 6 new keys + 11 typed accessors</li><li><code>lib/utils/constant.dart</code> — <code>idAdherenceCard</code></li><li><code>lib/in_app_purchase/in_app_purchase_helper.dart</code> — <code>monthlyPriceLabel</code> getter</li><li><code>lib/notification/notification_helper.dart</code> — Android action labels via <code>.tr</code></li><li><code>lib/Widgets/common_subscribe_dialog.dart</code> — <code>ctaSubtext</code> + <code>priceLabel</code> + bug fix to honor <code>buttonText</code></li><li><code>lib/ui/home/home_screens.dart</code> — <code>AdherenceCard</code> slot above tabs</li><li><code>lib/ui/home/home_controller.dart</code> — <code>onReady</code>, adherence fields/methods, paywall ts</li><li><code>lib/ui/full_screen_notification/full_screen_notification_logic.dart</code> — counter increment</li><li><code>lib/ui/medicine_history_screen/medicine_history_screen_logic.dart</code> — counter + paywall ts</li><li><code>lib/ui/appointment_history_screen/appointment_history_screen_logic.dart</code> — paywall ts</li><li><code>lib/ui/setting/setting_screen_logic.dart</code> — caregiver-mode field + handler</li><li><code>lib/ui/setting/setting_screen_view.dart</code> — caregiver toggle row</li><li><code>lib/ui/pro_version/pro_version_screen.dart</code> — locale-keyed price labels + monthly/yearly bug fix</li><li><code>lib/localization/languages/language_en.dart</code> — 21 new keys + 3 value refreshes</li></ul>
+<p><strong>51 non-en locale files</strong> received 5 separate idempotent injection passes (F01 / F03 / F08 / F11 / F12 keys with English fallback).</p>
+<hr>
+<h2>Blockers — exactly what to decide</h2>
+<p>These four decisions unblock the remaining work. Each one is a 1-line answer.</p>
+<h3>1. F07 onboarding (2 decisions)</h3>
+<blockquote><p>Decision A: <strong>Auto-create a "Self" <code>FamilyMemberTable</code> row at first launch?</strong> (Name "Me", default fields.) Yes/No. Why it matters: the new first-medicine screen needs a profile to attach the medicine to, but the spec wants to defer the existing profile-creation screen.</p>
+<p>Decision B: <strong>Defer Google Sign-in to AFTER the first reminder fires?</strong> Yes/No. Why it matters: today sign-in is part of onboarding; the spec wants it removed from the critical path so first-medicine-set hits ≤60 s.</p>
+</blockquote>
+<p>→ Once answered, F07 implementation lands in 1 day.</p>
+<h3>2. F09 Health Connect (1 decision)</h3>
+<blockquote><p><strong>Add <code>health</code> package + AndroidManifest changes for Health Connect?</strong> Yes/No. If yes, confirm package version at the time of implementation. If no, defer to v2 — affects keyword surface (<code>health connect</code>, <code>google fit</code>) but not core ranking.</p>
+</blockquote>
+<p>→ Once approved, implementation lands in 1 day.</p>
+<h3>3. F10 PDF export (1 decision)</h3>
+<blockquote><p><strong>Add <code>pdf</code> + <code>printing</code> packages?</strong> Yes/No. Plus: embed <code>assets/fonts/NunitoSans_Regular.ttf</code> into PDF for UTF-8 / Arabic / Hindi rendering? (Recommend yes — adds ~150 KB to APK.)</p>
+</blockquote>
+<p>→ Once approved, implementation lands in 4–5 days.</p>
+<h3>4. F11 caregiver mode Stage 2 (content + design)</h3>
+<blockquote><p><strong>Caregiver-tips content</strong> — 8 × 60-word tips, written from real Reddit threads (per spec, NOT generated). 2 hours of writing time on Abdul's side. Plus: confirm UI prominence shift on home (bigger family-member avatars when caregiver-mode is on?).</p>
+</blockquote>
+<p>→ Once content delivered, Stage 2 lands in 1 day.</p>
+<hr>
+<h2>Next todos — split</h2>
+<h3>Your side (Abdul) — start of next session</h3>
+<p>In priority order. Each is short.</p>
+<ol><li><strong>Commit this session's work.</strong> <code>git status</code> to see the 26 changed/new files. Recommended: one commit per feature using <code>feat(F0X): ...</code> per the DoD checklist. Bump <code>versionCode</code> once at the end. (See <code>docs/engineering/v1/release-checklist.md</code>.)</li><li><strong>Build + manual QA.</strong> Test plan for all 8 shipped features is at the end of the previous session's last reply, summarized below in this file → "Manual test plan after fresh build".</li><li><strong>Pull Play Console data.</strong> Search Terms 90d → <code>docs/aso/_data/search-terms-90d.csv</code>. Acquisition by country → <code>docs/aso/_data/acquisition-by-country-90d.csv</code>. (Required to validate the keyword research priors — see <code>docs/NEXT-STEPS.md</code>.)</li><li><strong>Answer the 4 blocker decisions above.</strong> Even short answers unblock days of work.</li><li><strong>Set per-region IAP pricing in Play Console</strong> (F12 server side). Pricing table is in <a href="engineering/v1/features/F12-regional-iap-pricing.html">features/F12 § Play Console side</a>.</li><li><strong>Verify privacy policy URL</strong> (F05). Read <a href="engineering/v1/features/F05-privacy-policy-link.html">features/F05</a> — 4-step checklist.</li><li><strong>Calendar reminder</strong> for the 4-week release cadence (F06).</li></ol>
+<h3>My side (Claude) — once unblocked</h3>
+<p>Linear list. Each unblocks the next.</p>
+<ol><li>Implement <strong>F07</strong> onboarding rewrite — once Decision A + B are in.</li><li>Implement <strong>F09</strong> Health Connect — once package approved.</li><li>Implement <strong>F10</strong> PDF export — once packages approved.</li><li>Implement <strong>F11 Stage 2</strong> — once tips content delivered.</li><li>Optional follow-up: <strong>F12 dynamic "Save N%"</strong> on yearly card — uses real product data.</li><li>Optional follow-up: small-scope <code>F05a</code> to fix <code>Utils.urlLauncher</code> throw on offline.</li></ol>
+<hr>
+<h2>Manual test plan after fresh build</h2>
+<p>Suggested order — runs from foundational to UI-heavy. Hits every shipped feature once.</p>
+<ol><li><strong>Fresh install + onboarding.</strong> Walk through. Reach Home.</li><li><strong>F12 — Pro Version.</strong> Open ProVersion screen. Toggle Monthly/Yearly. Both prices render in your Play account's region currency. No <code>$0.00</code> placeholder visible. Switch language to Arabic — <code>txtProPerMonth</code> / <code>txtProPerYear</code> show their fallback.</li><li><strong>F01 — Paywall.</strong> Add 10 medicines. Tap "Add medicine" #11. Expect: title <code>Unlock unlimited medicines</code>, body about all 10 free, CTA <code>UPGRADE — {price}</code> if products loaded else <code>UPGRADE</code>, subtext <code>Cancel anytime…</code>. Tap CTA → routes to ProVersion. Same for 10 appointments → appointment-specific copy.</li><li><strong>F02 — Review prompt.</strong> Mark 3 doses taken. Force <code>firstInstallTs</code> to 8 days ago via storage tool / device clock. Reopen. Expect: prompt fires ~3s after Home loads. Trigger paywall, reopen → no prompt for 24h. Logcat shows <code>Debug.printLog</code> skip reasons.</li><li><strong>F03 — Reminder labels.</strong> Schedule a reminder 1 minute ahead. Pull notification shade. Expect: <code>Taken</code>, <code>Skip</code>, <code>Snooze for 5 min</code> in current locale.</li><li><strong>F04 — ASO strings.</strong> Open empty medicine history. Expect: <code>No medication history yet</code> heading + <code>You don't have any pill reminders yet…</code> description + <code>Add Pill Reminder</code> button.</li><li><strong>F05 — Privacy.</strong> Settings → Privacy Policy / About / Terms. Each opens correct URL in in-app browser. (Verification of policy <em>content</em> is your task.)</li><li><strong>F08 — Adherence card.</strong> Take a dose. Return to Home. Card visible above tabs with <code>1 / 1 doses taken</code>. Streak number when applicable. Tap card → 14-day bottom sheet with dots + legend. Tap Hide → card disappears, persists across restart.</li><li><strong>F11 — Caregiver toggle.</strong> Settings → toggle Caregiver mode → persists across restart. (No UI prominence change yet — Stage 2.)</li></ol>
+<h3>Regression checks</h3>
+<ul><li>Existing flows: medicine delete confirmation, appointment add, sign-in/out, theme toggle, language change.</li><li>RTL: switch to Arabic, sweep through main screens. Pre-existing English fallbacks visible — translator pipeline picks them up next pass.</li></ul>
+<hr>
+<h2>What's NOT done in v1 (and why — for clarity)</h2>
+<ul><li><strong>No tests added.</strong> Codebase has no test suite. Adding one alone creates inconsistency. v1 manual-QA only. Revisit in v2.</li><li><strong>No CI added.</strong> Same reasoning.</li><li><strong>No state-management migration.</strong> GetX <code>update([id])</code> pattern stays. No <code>Rx&lt;T&gt;</code> / Riverpod / Bloc.</li><li><strong>No deprecation cleanups.</strong> <code>withOpacity</code>, <code>surfaceVariant</code>, <code>MaterialStatePropertyAll</code>, <code>background</code> deprecation warnings are widespread and pre-existing. Fixing them in F01–F12 alone creates inconsistency. Recommend a single dedicated cleanup pass in v2.</li><li><strong>No iOS launch.</strong> <code>pubspec.yaml</code> ships iOS targets but Play Store is the active channel. Revisit after Day-90 ASO targets hit.</li><li><strong>No tooling for <code>versionCode</code> automation.</strong> Manual bump per release.</li><li><strong>No analytics on paywall / streak / caregiver-toggle.</strong> v1 ships dark — we'll add observability when there's a need-to-know question.</li></ul>
+<hr>
+<h2>Working agreements (for any future session)</h2>
+<ul><li><strong>No AI fluff.</strong> Every claim names a mechanism (Play algorithm signal, real competitor pattern, measurable metric) or it gets cut.</li><li><strong>Honest progress.</strong> "60 % done with a real blocker" beats "done with one small thing remaining". Blocked features stay blocked, not faked.</li><li><strong>Single-thread implementation.</strong> One feature at a time. Hand back diff + manual test plan. Abdul commits.</li><li><strong>Follow the canon.</strong> <code>docs/engineering/v1/02-architecture-canon.md</code> is the truth. Don't invent new patterns.</li><li><strong>Locale keys are part of the work.</strong> Any user-visible string goes through <code>'txtKey'.tr</code> and lives in every <code>language_*.dart</code>.</li><li><strong>Two action lists.</strong> Every plan ends with Your-side / My-side split.</li></ul>
+<hr>
+<h2>Resume checklist for next session</h2>
+<p>Paste this into a new chat to start cleanly:</p>
+<pre><code class="lang-">Read docs/v1-summary.md.
+I want to: [pick one]
+  (a) commit + build + QA the 8 shipped features
+  (b) answer the 4 blocker decisions and have Claude implement F07/F09/F10/F11 Stage 2
+  (c) move ASO work forward (Play Console data, localized listings)
+  (d) something else: [describe]</code></pre>
+<p>That's all the cold-start context needed. The summary plus that one prompt gets us moving in &lt;60 seconds.</p>
+<hr>
+<h2>Versioning convention</h2>
+<p>This is <strong>v1-summary.md</strong>. When a future session hits a substantively different state — e.g., 8+ more features shipped, an architecture canon bump, or v2 of the engineering handbook starts — write <strong>v2-summary.md</strong> alongside this one. Do <strong>not</strong> edit v1-summary in place. Old summaries are the audit trail.</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>v1 — Session Summary &amp; Cold-Start Brief</code></div>
+</div>
+</body>
+</html>

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medinest/Widgets/common_button.dart';
 import 'package:medinest/Widgets/common_text.dart';
-import 'package:medinest/generated/assets.dart';
+import 'package:medinest/Widgets/onboarding_illustrations.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/sizer_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -84,14 +84,16 @@ class IntroductionScreenPage extends StatelessWidget {
   }
 
   final pagesImages = List.generate(3, (index) {
-    List<String> listImages = [
-      Assets.imagesIntroductionImg1,
-      Assets.imagesIntroductionImg2,
-      Assets.imagesIntroductionImg3
+    // F07 — generated vector art (copyright-free, theme-aware) + MVP-correct,
+    // de-medicalised copy. Slide 2 is the health journal, not "doctor visits".
+    const List<OnboardArt> arts = [
+      OnboardArt.pill,
+      OnboardArt.journal,
+      OnboardArt.family,
     ];
     List<String> listIntroText = [
       'txtKeepAllYourMedsInOnePlace'.tr,
-      'txtScheduleDoctorVisits'.tr,
+      'txtOnboardJournalTitle'.tr,
       'txtSetProfilesForYourLovedOnes'.tr
     ];
     return Container(
@@ -99,14 +101,12 @@ class IntroductionScreenPage extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            Image.asset(listImages[index],
-                width: index == 2
-                    ? AppSizes.fullWidth / 1.1
-                    : AppSizes.fullWidth / 1.3,
-                height: AppSizes.fullHeight/4,
-                fit: BoxFit.contain),
+            OnboardingIllustration(
+              art: arts[index],
+              size: AppSizes.fullWidth / 2.1,
+            ),
             SizedBox(
-              height:AppSizes.fullHeight / 3.9,
+              height: AppSizes.fullHeight / 3.9,
             ),
             CommonText(
               text: listIntroText[index],

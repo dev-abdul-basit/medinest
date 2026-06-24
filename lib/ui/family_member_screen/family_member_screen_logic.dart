@@ -8,6 +8,8 @@ import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/database/tables/notification_table.dart';
 import 'package:medinest/main.dart';
 import 'package:medinest/routes/app_routes.dart';
+import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
+import 'package:medinest/ui/medicine_screen/medicine_screen_logic.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
 import 'package:medinest/utils/utils.dart';
@@ -16,6 +18,12 @@ class FamilyMemberScreenLogic extends GetxController {
   bool isShowProgress = false;
 
   List<FamilyMemberTable> familyMembersList = [];
+
+  /// The current user's own "Me" profile row (owner of their own medicines).
+  /// Pinned to the top of the Family tab; edited via the same screen as
+  /// Settings → Edit Profile.
+  int? selfMemberId;
+  FamilyMemberTable? selfMember;
 
   ScrollController listController = ScrollController();
 
@@ -39,13 +47,31 @@ class FamilyMemberScreenLogic extends GetxController {
   }
 
   Future<void> getFamilyMemberDataFromDatabase() async {
+    selfMemberId = await DataBaseHelper.instance
+        .ensureSelfMember(selfName: 'txtSelfProfileName'.tr);
     familyMembersList = await DataBaseHelper.instance.getFamilyMemberData();
+    selfMember = familyMembersList.cast<FamilyMemberTable?>().firstWhere(
+          (m) => m!.fId == selfMemberId,
+          orElse: () => null,
+        );
     Debug.printLog(":: ::: ::: $familyMembersList");
     update([Constant.idFamilyMemberList]);
   }
 
   void gotoAddMember() {
     Get.toNamed(AppRoutes.addOrEditFamilyMember)!.then((value) {
+      getFamilyMemberDataFromDatabase();
+    });
+  }
+
+  /// Edit the current user's own profile. Routes to the same editor as
+  /// Settings → Edit Profile so "you" is managed in one place.
+  void gotoEditSelf() {
+    Get.toNamed(
+      AppRoutes.addOrEditProfile,
+      parameters: {Constant.idIsEditProfile: "true"},
+    )!
+        .then((value) {
       getFamilyMemberDataFromDatabase();
     });
   }
@@ -107,5 +133,12 @@ class FamilyMemberScreenLogic extends GetxController {
     isShowProgress = false;
     update([Constant.idProVersionProgress]);
     getFamilyMemberDataFromDatabase();
+    // Drop the deleted member from the home medicine/journal chips too.
+    if (Get.isRegistered<MedicineScreenLogic>()) {
+      await Get.find<MedicineScreenLogic>().getAllFamilyMembers();
+    }
+    if (Get.isRegistered<JournalScreenLogic>()) {
+      await Get.find<JournalScreenLogic>().getAllFamilyMembers();
+    }
   }
 }

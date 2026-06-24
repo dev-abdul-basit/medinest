@@ -6,13 +6,17 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:medinest/Widgets/add_success_dialoge.dart';
+import 'package:medinest/Widgets/member_avatar.dart';
 import 'package:medinest/Widgets/pick_form_dialog.dart';
 import 'package:medinest/connectivity_manager/connectivity_manager.dart';
 import 'package:medinest/database/helper/database_helper.dart';
 import 'package:medinest/database/helper/firestore_helper.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
+import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
+import 'package:medinest/ui/medicine_screen/medicine_screen_logic.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
+import 'package:medinest/utils/preference.dart';
 import 'package:medinest/utils/utils.dart';
 
 class AddOrEditFamilyMemberScreenLogic extends GetxController {
@@ -134,23 +138,28 @@ class AddOrEditFamilyMemberScreenLogic extends GetxController {
   );
 
   Future<void> submitData(BuildContext context) async {
-    if (!await InternetConnectivity.isInternetConnect(Get.context!)){
+    if (!formKey.currentState!.validate()) return;
+    // Only a photo upload needs connectivity; presets / existing avatars save
+    // offline (SQLite is the source of truth).
+    if (pickedNewFile != null &&
+        !await InternetConnectivity.isInternetConnect(Get.context!)) {
       Utils.showToast(null, "txtCheckYourInternetConnectivity".tr);
-      return ;
+      return;
     }
-    if (formKey.currentState!.validate()) {
+    {
       try {
         isShowProgress = true;
         update([Constant.idProVersionProgress]);
-        var storageRef = FirebaseStorage.instance
-            .ref()
-            .child('member_images/${userNameController.text}.jpg');
-        UploadTask uploadTask;
-        String? downloadUrl;
 
+        // Keep the existing avatar (photo URL or preset:N) unless a new photo
+        // was picked — fixes the bug where editing without re-picking wiped it.
+        String? finalImage = profileUrl;
         if (pickedNewFile != null) {
-          uploadTask = storageRef.putFile(File(pickedNewFile!.path));
-          downloadUrl = await (await uploadTask).ref.getDownloadURL();
+          final storageRef = FirebaseStorage.instance
+              .ref()
+              .child('member_images/${userNameController.text}.jpg');
+          final uploadTask = storageRef.putFile(File(pickedNewFile!.path));
+          finalImage = await (await uploadTask).ref.getDownloadURL();
         }
         FamilyMemberTable familyMemberTable = FamilyMemberTable(
             fId: isEdit ? familyMember?.fId : null,
@@ -161,14 +170,17 @@ class AddOrEditFamilyMemberScreenLogic extends GetxController {
             age: userAgeController.text,
             bloodGroup: selectedBloodGroup,
             phoneNumber: userPhoneController.text,
-            profileImage: downloadUrl,
+            profileImage: finalImage,
             mIsDeleted: 0,
             mIsSynced: 0);
         if (isEdit) {
           await DataBaseHelper.instance
               .updateFamilyMember(familyMemberTable.fId!, familyMemberTable);
+          // Keep the home medicine/journal member chips in sync with the rename.
+          await _refreshMedicineAndJournal();
 
-          if (await InternetConnectivity.isInternetConnect(Get.context!)) {
+          if (Preference.shared.getIsUserLogin() &&
+              await InternetConnectivity.isInternetConnect(Get.context!)) {
             bool? isSuccess =
                 await FireStoreHelper().addOrUpdateFamilyMember(familyMemberTable);
             if (isSuccess != null && isSuccess) {
@@ -194,7 +206,10 @@ class AddOrEditFamilyMemberScreenLogic extends GetxController {
           int userId = await DataBaseHelper.instance
               .insertFamilyMember(familyMemberTable);
           familyMemberTable.fId = userId;
-          if (await InternetConnectivity.isInternetConnect(Get.context!)) {
+          // Surface the new member in the home medicine/journal chips at once.
+          await _refreshMedicineAndJournal();
+          if (Preference.shared.getIsUserLogin() &&
+              await InternetConnectivity.isInternetConnect(Get.context!)) {
             bool? isSuccess =
                 await FireStoreHelper().addOrUpdateFamilyMember(familyMemberTable);
             Debug.printLog("Add FamilyMemberTable $isSuccess");
@@ -261,6 +276,18 @@ class AddOrEditFamilyMemberScreenLogic extends GetxController {
     }
   }
 
+  /// Reload the home medicine & journal member chips so a rename / add reflects
+  /// immediately (these read in-memory lists, not the DB, on every rebuild).
+  /// Guarded — the controllers only exist while Home is in memory.
+  Future<void> _refreshMedicineAndJournal() async {
+    if (Get.isRegistered<MedicineScreenLogic>()) {
+      await Get.find<MedicineScreenLogic>().getAllFamilyMembers();
+    }
+    if (Get.isRegistered<JournalScreenLogic>()) {
+      await Get.find<JournalScreenLogic>().getAllFamilyMembers();
+    }
+  }
+
   void clearData() {
     userNameController.text = '';
     userBirthDateController.text = '';
@@ -297,6 +324,14 @@ class AddOrEditFamilyMemberScreenLogic extends GetxController {
     );
     pickedNewFile = pickedFile;
     profileUrl = null;
+    update([Constant.idProfilePhoto]);
+  }
+
+  /// Pick a generated preset avatar (stored as `preset:<index>` — offline, no
+  /// upload). Clears any picked photo.
+  void selectAvatar(int index) {
+    profileUrl = MemberAvatar.presetValue(index);
+    pickedNewFile = null;
     update([Constant.idProfilePhoto]);
   }
 }

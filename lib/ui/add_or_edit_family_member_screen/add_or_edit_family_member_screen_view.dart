@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:medinest/Widgets/common_appbar.dart';
 import 'package:medinest/Widgets/common_button_one.dart';
+import 'package:medinest/Widgets/common_text.dart';
+import 'package:medinest/Widgets/member_avatar.dart';
 import 'package:medinest/Widgets/custom_drop_down.dart';
 import 'package:medinest/Widgets/text_form_field.dart';
 import 'package:medinest/Widgets/progress_dialog.dart';
@@ -33,6 +35,11 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                   SizedBox(
                     height: AppSizes.height_2_5,
                   ),
+                  GetBuilder<AddOrEditFamilyMemberScreenLogic>(
+                    id: Constant.idProfilePhoto,
+                    builder: (logic) => _avatarSection(logic),
+                  ),
+                  SizedBox(height: AppSizes.height_2),
                   // Stack(
                   //   children: [
                   //     GetBuilder<AddOrEditFamilyMemberScreenLogic>(
@@ -66,17 +73,17 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                   //                     ),
                   //                     placeholder: (context, url) =>
                   //                         Image.asset(
-                  //                       Assets.iconsIcUserName,
+                  //                       Assets.icons.icUserName.path,
                   //                       color: Colors.white,
                   //                     ),
                   //                     errorWidget: (context, url, error) =>
                   //                         Image.asset(
-                  //                       Assets.iconsIcUserName,
+                  //                       Assets.icons.icUserName.path,
                   //                       color: Colors.white,
                   //                     ),
                   //                   )
                   //                 : logic.pickedNewFile != null?const SizedBox():Image.asset(
-                  //                     Assets.iconsIcUserName,
+                  //                     Assets.icons.icUserName.path,
                   //                     color: Colors.white,
                   //                   ),
                   //           );
@@ -97,7 +104,7 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                   //                   width: 4),
                   //               shape: BoxShape.circle,
                   //               color: Get.theme.colorScheme.onSecondary),
-                  //           child: Image.asset(Assets.iconsIcEditPhoto,
+                  //           child: Image.asset(Assets.icons.icEditPhoto.path,
                   //               color: Colors.white),
                   //         ),
                   //       ),
@@ -128,7 +135,7 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                                   // inputFormatters: [
                                   //   FilteringTextInputFormatter.allow(RegExp("[a-z A-Z .]")),
                                   // ],
-                                  prefixIcon: Assets.iconsIcUserName,
+                                  prefixIcon: Assets.icons.icUserName.path,
                                   validatorText: 'txtEnterMemberName'.tr,
                                 );
                               }),
@@ -143,7 +150,7 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                                     padding: EdgeInsetsDirectional.only(
                                         start: AppSizes.width_4_5,
                                         end: AppSizes.width_3_6),
-                                    child: Image.asset(Assets.iconsIcGender,
+                                    child: Image.asset(Assets.icons.icGender.path,
                                         width: AppSizes.width_6,
                                         height: AppSizes.width_6),
                                   ),
@@ -169,7 +176,7 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                                   hintText: 'txtEnterBirthDate'.tr,
                                   fillColor:
                                   Get.theme.colorScheme.surfaceVariant,
-                                  prefixIcon: Assets.iconsIcCalendar,
+                                  prefixIcon: Assets.icons.icCalendar.path,
                                   validatorText: 'txtEnterBirthDate'.tr,
                                 );
                               }),
@@ -186,7 +193,7 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                                   hintText: 'txtAge'.tr,
                                   fillColor:
                                   Get.theme.colorScheme.surfaceVariant,
-                                  prefixIcon: Assets.iconsIcAge,
+                                  prefixIcon: Assets.icons.icAge.path,
                                   validatorText: 'txtEnterBirthDate'.tr,
                                 );
                               }),
@@ -201,7 +208,7 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                                     padding: EdgeInsetsDirectional.only(
                                         start: AppSizes.width_4_5,
                                         end: AppSizes.width_3_6),
-                                    child: Image.asset(Assets.iconsIcBloodGroup,
+                                    child: Image.asset(Assets.icons.icBloodGroup.path,
                                         width: AppSizes.width_6,
                                         height: AppSizes.width_6),
                                   ),
@@ -231,7 +238,7 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                                   ],
                                   fillColor:
                                   Get.theme.colorScheme.surfaceVariant,
-                                  prefixIcon: Assets.iconsIcMessage,
+                                  prefixIcon: Assets.icons.icMessage.path,
                                   validatorText: 'txtEnterEmailAddress'.tr,
                                 );
                               }),
@@ -252,7 +259,7 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                                   ],
                                   maxLength: 15,
                                   keyboardType: TextInputType.phone,
-                                  prefixIcon: Assets.iconsIcPhone,
+                                  prefixIcon: Assets.icons.icPhone.path,
                                   // validatorText: 'txtEnterValidPhoneNumber'.tr,
                                 );
                               }),
@@ -299,6 +306,109 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
               child: const SizedBox(),
             );
           },
+        ),
+      ],
+    );
+  }
+
+  /// Avatar picker — a live preview, a row of generated preset avatars, and a
+  /// camera badge for a photo. Presets save offline; photo needs connectivity.
+  Widget _avatarSection(AddOrEditFamilyMemberScreenLogic logic) {
+    final scheme = Get.theme.colorScheme;
+    const double preview = 96;
+
+    final Widget previewChild = logic.pickedNewFile != null
+        ? Image.file(
+            File(logic.pickedNewFile!.path),
+            width: preview,
+            height: preview,
+            fit: BoxFit.cover,
+          )
+        : MemberAvatar(
+            size: preview,
+            profileImage: logic.profileUrl,
+            gender: logic.selectedGender,
+          );
+
+    return Column(
+      children: [
+        SizedBox(
+          width: preview,
+          height: preview,
+          child: Stack(
+            children: [
+              Container(
+                width: preview,
+                height: preview,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: scheme.primary.withOpacity(0.25),
+                    width: 2,
+                  ),
+                ),
+                child: ClipOval(child: previewChild),
+              ),
+              PositionedDirectional(
+                bottom: 0,
+                end: 0,
+                child: InkWell(
+                  onTap: () => logic.openImagePickerDialog(),
+                  child: Container(
+                    padding: const EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: scheme.primary,
+                      border:
+                          Border.all(color: scheme.background, width: 2),
+                    ),
+                    child: const Icon(Icons.photo_camera,
+                        color: Colors.white, size: 16),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: AppSizes.height_1_5),
+        CommonText(
+          text: 'txtChooseAvatar'.tr,
+          textColor: scheme.onSurface.withOpacity(0.6),
+          fontWeight: FontWeight.w500,
+          fontSize: AppFontSize.size_13,
+        ),
+        SizedBox(height: AppSizes.height_1_5),
+        SizedBox(
+          height: 52,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            itemCount: MemberAvatar.presetCount,
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            itemBuilder: (context, i) {
+              final bool selected =
+                  logic.profileUrl == MemberAvatar.presetValue(i);
+              return GestureDetector(
+                onTap: () => logic.selectAvatar(i),
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: selected ? scheme.primary : Colors.transparent,
+                      width: 2.5,
+                    ),
+                  ),
+                  child: MemberAvatar(
+                    size: 42,
+                    profileImage: MemberAvatar.presetValue(i),
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ],
     );

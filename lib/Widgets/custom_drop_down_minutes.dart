@@ -44,7 +44,7 @@ class DropdownWithPrefixMinutes extends StatelessWidget {
               icon: suffix ??
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: AppSizes.width_4),
-                    child: Image.asset(Assets.iconsIcDropdown,
+                    child: Image.asset(Assets.icons.icDropdown.path,
                         width: AppSizes.width_5, height: AppSizes.width_5),
                   ),
               underline: Container(),

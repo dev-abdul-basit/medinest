@@ -24,9 +24,9 @@ class FullScreenAppointmentNotificationPage extends StatelessWidget {
     return Screenshot(
       controller: screenshotController,
       child: Container(
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(Assets.imagesAppointmentBackground),
+              image: AssetImage(Assets.images.appointmentBackground.path),
               fit: BoxFit.cover),
         ),
         child: Scaffold(
@@ -128,7 +128,7 @@ class FullScreenAppointmentNotificationPage extends StatelessWidget {
                                     icon:
                                     Padding(
                                       padding: const EdgeInsets.all(2),
-                                      child: Image.asset(Assets.iconsIcDropdown,
+                                      child: Image.asset(Assets.icons.icDropdown.path,
                                           color: Get.theme.colorScheme.inverseSurface,
                                           width: AppSizes.width_5, height: AppSizes.width_5),
                                     ),
@@ -164,7 +164,7 @@ class FullScreenAppointmentNotificationPage extends StatelessWidget {
                           left: 0,
                           right: 0,
                           top: 30,
-                          child: Lottie.asset(Assets.animationAlarmClock,
+                          child: Lottie.asset(Assets.animation.alarmClock,
                               width: AppSizes.height_28,
                               height: AppSizes.height_28)),
                       Positioned(
@@ -190,7 +190,7 @@ class FullScreenAppointmentNotificationPage extends StatelessWidget {
                               }
                             });
                           },
-                          child: Image.asset(Assets.iconsIcShare,
+                          child: Image.asset(Assets.icons.icShare.path,
                               height: AppSizes.width_11,
                               width: AppSizes.width_11),
                         ),

@@ -3,75 +3,76 @@ import 'package:get/get.dart';
 import 'package:medinest/Widgets/common_text.dart';
 import 'package:medinest/utils/sizer_utils.dart';
 
+/// Primary action button used app-wide.
+///
+/// Premium "liquid" treatment to match the glass bottom nav: a glossy primary
+/// gradient (light → base → dark for a 3-D sheen), a soft coloured shadow for
+/// lift, and a real ripple on every tap. Same size + API as before, so it is a
+/// drop-in for every existing call site.
 class CommonButton extends StatelessWidget {
   final void Function() onTap;
-
   final String text;
   final Color? backgroundColor;
   final Color? foregroundColor;
-   const CommonButton({super.key, required this.onTap, required this.text, this.backgroundColor, this.foregroundColor});
+
+  const CommonButton({
+    super.key,
+    required this.onTap,
+    required this.text,
+    this.backgroundColor,
+    this.foregroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: AppSizes.fullWidth-50,
+    final ColorScheme scheme = Get.theme.colorScheme;
+    final Color base = backgroundColor ?? scheme.primary;
+    final BorderRadius radius = BorderRadius.circular(14);
+
+    return Container(
+      width: AppSizes.fullWidth - 50,
       height: AppSizes.height_7,
-      child: ElevatedButton(
-        onPressed: onTap,
-        // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor?? Get.theme.colorScheme.primary,
-          foregroundColor: foregroundColor?? Get.theme.colorScheme.background,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          splashFactory: InkSplash.splashFactory,
+      decoration: BoxDecoration(
+        borderRadius: radius,
+        color: backgroundColor,
+        gradient: backgroundColor == null
+            ? LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color.lerp(base, Colors.white, 0.18)!,
+                  base,
+                  Color.lerp(base, Colors.black, 0.16)!,
+                ],
+                stops: const [0.0, 0.55, 1.0],
+              )
+            : null,
+        boxShadow: [
+          BoxShadow(
+            color: base.withOpacity(0.35),
+            blurRadius: 14,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: radius,
+          splashColor: Colors.white.withOpacity(0.22),
+          highlightColor: Colors.white.withOpacity(0.08),
+          onTap: onTap,
+          child: Center(
+            child: CommonText(
+              text: text,
+              textColor: foregroundColor ?? scheme.inversePrimary,
+              textAlign: TextAlign.center,
+              fontSize: AppFontSize.size_14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
-        child: CommonText(
-            text: text,
-            textColor: Get.theme.colorScheme.inversePrimary,
-            textAlign: TextAlign.center,
-            fontSize: AppFontSize.size_14,
-            fontWeight: FontWeight.w600),
       ),
     );
-    // return InkWell(
-    //   onTap: onTap,
-    //   child: SizedBox(
-    //     width: AppSizes.fullWidth,
-    //     height: AppSizes.height_9,
-    //     child: Stack(
-    //       alignment: Alignment.topCenter,
-    //       children: [
-    //         Container(
-    //           margin: const EdgeInsets.only(top: 4),
-    //           width: AppSizes.fullWidth - 40,
-    //           height: AppSizes.height_8,
-    //           decoration: ShapeDecoration(
-    //             color: Get.theme.colorScheme.errorContainer,
-    //             shape: RoundedRectangleBorder(
-    //               borderRadius: BorderRadius.circular(1000),
-    //             ),
-    //           ),
-    //         ),
-    //         Container(
-    //           width: AppSizes.fullWidth - 40,
-    //           height: AppSizes.height_8,
-    //           alignment: Alignment.center,
-    //           decoration: ShapeDecoration(
-    //             color: Get.theme.colorScheme.secondary,
-    //             shape: RoundedRectangleBorder(
-    //               borderRadius: BorderRadius.circular(100),
-    //             ),
-    //           ),
-    //           child: CommonText(
-    //               text: text,
-    //               textColor: Get.theme.colorScheme.background,
-    //               fontWeight: FontWeight.w700,
-    //               fontSize: AppFontSize.size_14),
-    //         )
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

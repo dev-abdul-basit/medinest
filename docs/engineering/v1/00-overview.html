@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>v1 — Overview — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1</span>
+<h1>v1 — Overview</h1>
+<h2>What v1 is</h2>
+<p>A frozen contract between Abdul (product owner) and Claude (Flutter engineer) for shipping the next ~6 months of MediNest features. v1 is intentionally tight: it locks the conventions that already exist in the codebase so we don't burn engineering hours debating where a controller goes — and it spells out 12 features in enough detail that Claude can implement each one without re-asking architectural questions.</p>
+<h2>What v1 explicitly does NOT cover</h2>
+<ul><li><strong>No architectural rewrites.</strong> GetX stays. Sqflite stays. Mixed <code>*_logic.dart</code> / <code>*_controller.dart</code> naming stays (we don't refactor working code in v1).</li><li><strong>No new state management.</strong> No <code>Riverpod</code>, no <code>Bloc</code>, no <code>Provider</code>. Even if a feature would benefit, v1 keeps the existing pattern.</li><li><strong>No new languages or frameworks.</strong> Dart + Flutter only. No Kotlin/Swift native code unless the feature spec explicitly says so (Health Connect is one such case).</li><li><strong>No new tests infrastructure.</strong> v1 does not introduce <code>test/</code> setup or CI. We rely on <strong>manual device QA</strong> as the gate (see <code>04-definition-of-done.md</code>). We add tests in v2 only if v1 ships at least 8 features without a critical regression.</li></ul>
+<h2>Why this works</h2>
+<p>The codebase is solo-developer Flutter — moderate complexity, no test suite, manual release workflow. The biggest risk to velocity isn't bugs; it's <strong>invented conventions</strong>. Every time a contributor (human or LLM) creates a new pattern, the codebase fragments and future changes cost 2× more.</p>
+<p>v1 fixes that risk by writing down what exists and refusing to deviate.</p>
+<h2>How to use this folder</h2>
+<h3>Starting a new implementation session</h3>
+<p>Tell Claude:</p>
+<blockquote><p><em>"Read <code>docs/engineering/v1/01-claude-flutter-engineer-role.md</code>, then implement <code>docs/engineering/v1/features/F0X-...md</code>."</em></p>
+</blockquote>
+<p>Claude will:</p>
+<ol><li>Reload the role</li><li>Read the architecture canon to refresh conventions</li><li>Read the spec</li><li>Confirm scope with you</li><li>Implement</li><li>Hand back the diff + manual test plan</li></ol>
+<h3>When a spec is wrong or outdated</h3>
+<p>The codebase is the truth. If a spec references a file that no longer exists or a pattern that has changed, <strong>fix the spec first</strong> before implementing. Keeping specs accurate is part of the work.</p>
+<h3>Adding a new feature to v1</h3>
+<p>Don't, unless it's truly scope-equivalent to something already in <code>features/</code>. Larger features go in <code>v2/</code> to avoid invalidating frozen specs. If you're not sure: ask before adding.</p>
+<h2>Estimating</h2>
+<p>Each feature spec includes an <strong>effort</strong> field (<code>½ day</code>, <code>1 day</code>, <code>1 week</code>, <code>2 weeks</code>). These are <em>senior solo dev</em> estimates, assuming:</p>
+<ul><li>Working from the spec, no design churn</li><li>No test suite to write</li><li>Single platform (Android Play Store)</li><li>One round of QA on physical device</li></ul>
+<p>Multiply by 1.5–2× if you ship to iOS in the same cycle.</p>
+<h2>Single-thread rule</h2>
+<p><strong>Implement one feature at a time.</strong> Two features in flight = unattributable bugs and review-thread chaos. Even quick wins go through one at a time. Kill any pull-toward-parallelism.</p>
+<h2>What "version code" means in this folder</h2>
+<p>Every feature, when shipped, names the <strong>Android <code>versionCode</code></strong> it landed in (e.g., <code>versionCode 12</code>). This is the unambiguous reference for "which build did X go out in". Don't use <code>versionName</code> (1.0.9, 1.0.10) for this — <code>versionName</code> can lie; <code>versionCode</code> cannot.</p>
+<p>Current <code>versionCode</code> at v1 freeze: <strong>11</strong> (<code>pubspec.yaml</code>: <code>version: 1.0.8+11</code>).</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>v1 — Overview</code></div>
+</div>
+</body>
+</html>

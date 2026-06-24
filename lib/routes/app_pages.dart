@@ -15,6 +15,8 @@ import 'package:medinest/ui/doctors_screen/doctors_screen_binding.dart';
 import 'package:medinest/ui/doctors_screen/doctors_screen_view.dart';
 import 'package:medinest/ui/family_member_screen/family_member_screen_binding.dart';
 import 'package:medinest/ui/family_member_screen/family_member_screen_view.dart';
+import 'package:medinest/ui/first_medicine/first_medicine_binding.dart';
+import 'package:medinest/ui/first_medicine/first_medicine_view.dart';
 
 import 'package:medinest/ui/full_screen_appointment_notification/full_screen_appointment_notification_binding.dart';
 import 'package:medinest/ui/full_screen_appointment_notification/full_screen_appointment_notification_view.dart';
@@ -78,6 +80,12 @@ class AppPages {
       name: AppRoutes.getStarted,
       page: () => const GetStartedScreenPage(),
       binding: GetStartedScreenBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.firstMedicine,
+      page: () => const FirstMedicineScreen(),
+      binding: FirstMedicineBinding(),
     ),
 
     GetPage(

@@ -69,7 +69,7 @@ class SelectSoundAppointmentScreenPage extends StatelessWidget {
                               if (logic.pickedTempRingtoneUri == null &&
                                   !logic.isRingPlaying)
                                 Image.asset(
-                                  Assets.iconsIcFile,
+                                  Assets.icons.icFile.path,
                                   width: AppSizes.height_2,
                                 ),
                               const SizedBox(

@@ -45,7 +45,7 @@ class GetStartedScreenPage extends StatelessWidget {
                       children: [
                         SizedBox(height: AppSizes.height_3_5),
                         Image.asset(
-                          Assets.imagesGetStarted,
+                          Assets.images.getStarted.path,
                           width: AppSizes.fullWidth / 1.55,
                           fit: BoxFit.cover,
                         ),
@@ -54,15 +54,18 @@ class GetStartedScreenPage extends StatelessWidget {
                           children: [
                             SizedBox(height: AppSizes.height_5_5),
                             CommonText(
-                              text: 'txtWelcomeBack'.tr,
+                              text: 'txtGetStartedTitle'.tr,
                               textColor: Get.theme.colorScheme.background,
+                              textAlign: TextAlign.center,
                               fontWeight: FontWeight.w600,
                               fontSize: AppFontSize.size_28,
                             ),
                             SizedBox(height: AppSizes.height_1),
                             CommonText(
-                              text: 'txtSigningToYourAccount'.tr,
+                              text: 'txtGetStartedSubtitle'.tr,
                               textColor: Get.theme.colorScheme.background,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
                               fontWeight: FontWeight.w300,
                               fontSize: AppFontSize.size_14,
                             ),
@@ -74,16 +77,24 @@ class GetStartedScreenPage extends StatelessWidget {
                   ),
 
                   SizedBox(height: AppSizes.height_5),
+                  CommonButton(
+                    onTap: () =>
+                        Get.find<GetStartedScreenLogic>().continueAsGuest(),
+                    text: 'txtContinueWithoutAccount'.tr,
+                  ),
+                  SizedBox(height: AppSizes.height_3),
                   CommonText(
-                    text: 'Continue With Google'.tr,
-                    textColor: Get.theme.colorScheme.onPrimary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: AppFontSize.size_20,
+                    text: 'txtOrSignInToSync'.tr,
+                    textColor: Get.theme.colorScheme.onSurface,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    fontWeight: FontWeight.w400,
+                    fontSize: AppFontSize.size_13,
                   ),
                   SizedBox(height: AppSizes.height_2),
                   const SocialLogin(),
 
-                  SizedBox(height: AppSizes.height_3),
+                  SizedBox(height: AppSizes.height_5),
 
                   SizedBox(height: AppSizes.height_6),
                   Column(
@@ -165,7 +176,7 @@ class SocialLogin extends StatelessWidget {
             InkWell(
               onTap: () => logic.loginWithGoogle(context),
               child: Image.asset(
-                Assets.imagesImgGoogle,
+                Assets.images.imgGoogle.path,
                 height: AppSizes.height_7,
                 width: AppSizes.height_7,
               ),
@@ -173,7 +184,7 @@ class SocialLogin extends StatelessWidget {
             if (Platform.isIOS) SizedBox(width: AppSizes.width_3),
             // if (Platform.isIOS)InkWell(
             //   onTap: ()=>logic.loginWithApple(context),
-            //   child: Image.asset(Assets.imagesImgApple,
+            //   child: Image.asset(Assets.images.imgApple.path,
             //       height: AppSizes.height_7,
             //       width: AppSizes.height_7),
             // ),

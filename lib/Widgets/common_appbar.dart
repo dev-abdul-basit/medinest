@@ -14,12 +14,17 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onActionTap;
   final Widget? actionWidget;
 
+  /// Top-level screens (e.g. Home) should hide the back arrow. Defaults to
+  /// showing it for the many standalone screens that push onto the stack.
+  final bool showBack;
+
   const CommonAppBar({
     super.key,
     required this.title,
     this.onBackTap,
     this.onActionTap,
     this.actionWidget,
+    this.showBack = true,
   });
 
   @override
@@ -36,6 +41,14 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
           bottomStart: Radius.circular(30),
           bottomEnd: Radius.circular(30),
         ),
+        // Soft, modern lift — replaces the harsh elevation-10 drop shadow.
+        boxShadow: [
+          BoxShadow(
+            color: Get.theme.colorScheme.primary.withOpacity(0.07),
+            blurRadius: 18,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: AppBar(
         backgroundColor: Get.context!.theme.colorScheme.inversePrimary,
@@ -45,40 +58,39 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
             bottomEnd: Radius.circular(30),
           ),
         ),
-        elevation: 10,
+        elevation: 0,
         surfaceTintColor: Get.context!.theme.colorScheme.inversePrimary,
-        shadowColor: Get.theme.colorScheme.primary.withOpacity(0.3),
+        shadowColor: Colors.transparent,
         centerTitle: false,
+        automaticallyImplyLeading: false,
         title: CommonText(
             text: title,
             textColor: Get.theme.colorScheme.onPrimary,
             fontWeight: FontWeight.w600,
             fontSize: AppFontSize.size_18),
-        titleSpacing: AppSizes.width_1,
-        leading: RotatedBox(
-          quarterTurns:
-              lagType == 'ar' || lagType == 'ur' || lagType == 'fa' ? 90 : 0,
-          child: Container(
-            margin:  EdgeInsetsDirectional.only(start: AppSizes.width_3),
-            child: IconButton(
-              icon: Image.asset(Assets.iconsIcBackArrow,
-                  color: Get.theme.colorScheme.onPrimary,
-                  height: AppSizes.height_2_5,
-                  width: AppSizes.height_2_5,
-                  fit: BoxFit.contain),
-              onPressed: onBackTap ?? () {
-                // Get.find<MedicineScreenLogic>().onTabSelected(0);
-                // Get.find<AppointmentScreenLogic>().onTabSelected(0);
-                // Get.find<AppointmentScreenLogic>().update([Constant.idHome,Constant.idAppointmentList, Constant.idAppointmentScreenTab]);
-                // Get.find<MedicineScreenLogic>().update([Constant.idHome,Constant.idMedicineList, Constant.idMedicineScreenTab]);
-                // Get.find<AppointmentScreenLogic>().getAllFamilyMembers();
-                // Get.find<MedicineScreenLogic>().getAllFamilyMembers();
-                Get.forceAppUpdate();
-                Get.back();
-              },
-            ),
-          ),
-        ),
+        titleSpacing: showBack ? AppSizes.width_1 : AppSizes.width_5,
+        leading: !showBack
+            ? null
+            : RotatedBox(
+                quarterTurns: lagType == 'ar' || lagType == 'ur' || lagType == 'fa'
+                    ? 90
+                    : 0,
+                child: Container(
+                  margin: EdgeInsetsDirectional.only(start: AppSizes.width_3),
+                  child: IconButton(
+                    icon: Image.asset(Assets.icons.icBackArrow.path,
+                        color: Get.theme.colorScheme.onPrimary,
+                        height: AppSizes.height_2_5,
+                        width: AppSizes.height_2_5,
+                        fit: BoxFit.contain),
+                    onPressed: onBackTap ??
+                        () {
+                          Get.forceAppUpdate();
+                          Get.back();
+                        },
+                  ),
+                ),
+              ),
         actions: [
           if (actionWidget != null)
             // Container(

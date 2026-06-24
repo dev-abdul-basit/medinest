@@ -59,7 +59,107 @@ class NotificationHelper {
           notificationPayload: notificationPayload);
     }
     await reScheduleAppointmentNotification();
+    await scheduleWinBackNotifications();
     checkPendingNotificationRequests();
+  }
+
+  /// F16 — schedule the offline win-back notifications. Called at the end of
+  /// [scheduleMedicineNotification] (which `cancelAll()`s first), so every app
+  /// open / medicine edit resets the "we miss you" countdown. An active user
+  /// never sees these; a user who stops opening MediNest does. Zero backend.
+  Future<void> scheduleWinBackNotifications() async {
+    // Record this open — resets the resurrection countdown (F15 key).
+    await Preference.shared
+        .setLastOpenTs(DateTime.now().millisecondsSinceEpoch);
+
+    // Restart both timers from now.
+    await flutterLocalNotificationsPlugin
+        .cancel(Constant.winBackD1NotificationId);
+    await flutterLocalNotificationsPlugin
+        .cancel(Constant.winBackD2NotificationId);
+
+    await _scheduleWinBack(
+      id: Constant.winBackD1NotificationId,
+      afterDays: Constant.winBackD1AfterDays,
+      title: 'txtWinBackD1Title'.tr,
+      body: 'txtWinBackD1Body'.tr,
+    );
+    await _scheduleWinBack(
+      id: Constant.winBackD2NotificationId,
+      afterDays: Constant.winBackD2AfterDays,
+      title: 'txtWinBackD2Title'.tr,
+      body: 'txtWinBackD2Body'.tr,
+    );
+  }
+
+  /// F18 — show an immediate engagement notification (e.g. a streak milestone)
+  /// on the calm engagement channel. Gating (quiet hours / caps) is the caller's
+  /// job via [EngagementService]; this just renders.
+  Future<void> showEngagementNotification({
+    required int id,
+    required String title,
+    required String body,
+  }) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      Constant.engagementNotificationChannelId,
+      Constant.engagementNotificationChannelName,
+      channelDescription: 'Gentle nudges from MediNest',
+      importance: Importance.defaultImportance,
+      priority: Priority.defaultPriority,
+      visibility: NotificationVisibility.public,
+    );
+    const DarwinNotificationDetails iosDetails =
+        DarwinNotificationDetails(presentSound: true);
+    await flutterLocalNotificationsPlugin.show(
+      id,
+      title,
+      body,
+      const NotificationDetails(android: androidDetails, iOS: iosDetails),
+      payload: Constant.engagementPayload,
+    );
+  }
+
+  Future<void> _scheduleWinBack({
+    required int id,
+    required int afterDays,
+    required String title,
+    required String body,
+  }) async {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime fireDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      Constant.winBackFireHour,
+    ).add(Duration(days: afterDays));
+    // Safety: never schedule in the past.
+    if (fireDate.isBefore(now)) {
+      fireDate = fireDate.add(const Duration(days: 1));
+    }
+
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      Constant.engagementNotificationChannelId,
+      Constant.engagementNotificationChannelName,
+      channelDescription: 'Gentle nudges to return to MediNest',
+      importance: Importance.defaultImportance,
+      priority: Priority.defaultPriority,
+      visibility: NotificationVisibility.public,
+    );
+    const DarwinNotificationDetails iosDetails =
+        DarwinNotificationDetails(presentSound: true);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      fireDate,
+      const NotificationDetails(android: androidDetails, iOS: iosDetails),
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      payload: Constant.winBackPayload,
+    );
   }
 
   reScheduleAppointmentNotification() async {
@@ -414,18 +514,18 @@ class NotificationHelper {
       actions: <AndroidNotificationAction>[
         AndroidNotificationAction(
           takenId,
-          'Taken',
+          'txtTaken'.tr,
           titleColor: Get.theme.colorScheme.primary,
         ),
         AndroidNotificationAction(
           skipId,
-          'Skip',
+          'txtSkip'.tr,
           titleColor: Get.theme.colorScheme.primary,
           // icon: DrawableResourceAndroidBitmap('secondary_icon'),
         ),
         AndroidNotificationAction(
           snoozeId,
-          'Snooze for 5 minutes',
+          'txtSnoozeForFiveMinutes'.tr,
           titleColor: Get.theme.colorScheme.secondary,
           // icon: DrawableResourceAndroidBitmap('secondary_icon'),
         ),

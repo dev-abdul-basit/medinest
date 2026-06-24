@@ -32,7 +32,7 @@ class SettingScreenPage extends StatelessWidget {
                       onTap: () {
                         Get.toNamed(AppRoutes.proVersion);
                       },
-                      icon: Assets.iconsIcKing,
+                      icon: Assets.icons.icKing.path,
                       width: AppSizes.fullWidth - 50,
                       iconSize: AppSizes.width_9,
                       fontSize: AppFontSize.size_16,
@@ -50,7 +50,8 @@ class SettingScreenPage extends StatelessWidget {
                       height: AppSizes.height_2,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
                       decoration: BoxDecoration(
                         color: Get.theme.colorScheme.surfaceVariant,
                         borderRadius:
@@ -61,15 +62,14 @@ class SettingScreenPage extends StatelessWidget {
                                 .withOpacity(0.2),
                             spreadRadius: 0.5,
                             blurRadius: 7,
-                            offset: const Offset(
-                                0, 0), // changes position of shadow
+                            offset: const Offset(0, 0),
                           ),
                         ],
                       ),
                       child: Wrap(
                         children: [
                           menuItem(
-                              icon: Assets.iconsIcEditProfile,
+                              icon: Assets.icons.icEditProfile.path,
                               text: "txtEditProfile".tr,
                               onTap: () {
                                 logic.goToProfile();
@@ -78,11 +78,23 @@ class SettingScreenPage extends StatelessWidget {
                             height: AppSizes.height_6_5,
                           ),
                           menuItem(
-                              icon: Assets.iconsIcLanguages,
+                              icon: Assets.icons.icLanguages.path,
                               text: "txtChangeLanguages".tr,
                               onTap: () {
                                 logic.goToChangeLanguage();
                               }),
+                          SizedBox(height: AppSizes.height_6_5),
+                          // F11 — caregiver mode toggle (Stage 1)
+                          menuItem(
+                              icon: Assets.icons.icFamilyMember.path,
+                              text: 'txtCaregiverModeSettingTitle'.tr,
+                              isLast: true,
+                              isSwitch: true,
+                              switchValue: logic.caregiverMode,
+                              onTap: () {
+                                logic.onCaregiverModeChange(!logic.caregiverMode);
+                              },
+                              onChanged: logic.onCaregiverModeChange),
                           //TODO: 1:Uncomment to enable Dark/light theme
                           // SizedBox(
                           //   height: AppSizes.height_6_5,
@@ -91,7 +103,7 @@ class SettingScreenPage extends StatelessWidget {
                           //     id: Constant.idDarkThemSwitch,
                           //     builder: (logic) {
                           //       return menuItem(
-                          //           icon: Assets.iconsIcTheme,
+                          //           icon: Assets.icons.icTheme.path,
                           //           text: "txtDarkTheme".tr,
                           //           isLast: true,
                           //           onTap: () {},
@@ -116,7 +128,8 @@ class SettingScreenPage extends StatelessWidget {
                       height: AppSizes.height_2,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
                       decoration: BoxDecoration(
                         color: Get.theme.colorScheme.surfaceVariant,
                         borderRadius:
@@ -127,15 +140,14 @@ class SettingScreenPage extends StatelessWidget {
                                 .withOpacity(0.2),
                             spreadRadius: 0.5,
                             blurRadius: 7,
-                            offset: const Offset(
-                                0, 0), // changes position of shadow
+                            offset: const Offset(0, 0),
                           ),
                         ],
                       ),
                       child: Wrap(
                         children: [
                           menuItem(
-                              icon: Assets.iconsIcFeedback,
+                              icon: Assets.icons.icFeedback.path,
                               text: "txtSendUsFeedBack".tr,
                               onTap: () {
                                 logic.onClickFeedback();
@@ -144,7 +156,7 @@ class SettingScreenPage extends StatelessWidget {
                             height: AppSizes.height_6_5,
                           ),
                           menuItem(
-                              icon: Assets.iconsIcRateUs,
+                              icon: Assets.icons.icRateUs.path,
                               text: "txtRateThisApp".tr,
                               onTap: () {
                                 logic.onClickRateMyApp();
@@ -153,7 +165,7 @@ class SettingScreenPage extends StatelessWidget {
                             height: AppSizes.height_6_5,
                           ),
                           menuItem(
-                              icon: Assets.iconsIcTermsCondition,
+                              icon: Assets.icons.icTermsCondition.path,
                               text: "txtTermConditions".tr,
                               onTap: () {
                                 Utils.urlLauncher(
@@ -163,7 +175,7 @@ class SettingScreenPage extends StatelessWidget {
                             height: AppSizes.height_6_5,
                           ),
                           menuItem(
-                              icon: Assets.iconsIcPrivacyPolicy,
+                              icon: Assets.icons.icPrivacyPolicy.path,
                               text: "txtPrivacyPolicy".tr,
                               onTap: () {
                                 Utils.urlLauncher(Constant.privacyPolicyURL);
@@ -172,7 +184,7 @@ class SettingScreenPage extends StatelessWidget {
                             height: AppSizes.height_6_5,
                           ),
                           menuItem(
-                              icon: Assets.iconsIcAboutus,
+                              icon: Assets.icons.icAboutus.path,
                               text: "txtAboutUs".tr,
                               onTap: () {
                                 Utils.urlLauncher(Constant.aboutUsURL);
@@ -187,7 +199,9 @@ class SettingScreenPage extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                       decoration: BoxDecoration(
-                        color: Get.theme.colorScheme.onSecondary,
+                        color: logic.isLoggedIn
+                            ? Get.theme.colorScheme.onSecondary
+                            : Get.theme.colorScheme.primary,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
@@ -201,15 +215,27 @@ class SettingScreenPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: menuItem(
-                          icon: Assets.iconsIcLogout,
-                          iConColor: Get.theme.colorScheme.inverseSurface,
-                          text: "txtLogout".tr,
-                          onTap: () {
-                            logic.onTapSingOut();
-                          },
-                          isLast: true,
-                          whiteText: true),
+                      // Signed-in users can log out (non-destructive — local data
+                      // stays). Guests are offered sign-in to back up & sync.
+                      child: logic.isLoggedIn
+                          ? menuItem(
+                              icon: Assets.icons.icLogout.path,
+                              iConColor: Get.theme.colorScheme.inverseSurface,
+                              text: "txtLogout".tr,
+                              onTap: () {
+                                logic.onTapSingOut();
+                              },
+                              isLast: true,
+                              whiteText: true)
+                          : menuItem(
+                              icon: Assets.icons.icUserName.path,
+                              iConColor: Get.theme.colorScheme.inverseSurface,
+                              text: "txtSignInBackupTitle".tr,
+                              onTap: () {
+                                logic.signInToBackup(context);
+                              },
+                              isLast: true,
+                              whiteText: true),
                     )
                   ],
                 ),
@@ -250,7 +276,7 @@ class SettingScreenPage extends StatelessWidget {
                 fontWeight: FontWeight.w400,
                 fontSize: AppFontSize.size_13,
                 textColor: whiteText
-                    ? Get.theme.colorScheme.error
+                    ? Colors.white
                     : Get.theme.colorScheme.onPrimary,
               )),
               (isSwitch)
@@ -272,7 +298,7 @@ class SettingScreenPage extends StatelessWidget {
                       flipX:
                           lagType == 'ar' || lagType == 'ur' || lagType == 'fa',
                       child: Image.asset(
-                        Assets.iconsIcRightArrow,
+                        Assets.icons.icRightArrow.path,
                         width: AppSizes.height_3,
                         height: AppSizes.height_3,
                         color: whiteText ? Get.theme.colorScheme.error : null,

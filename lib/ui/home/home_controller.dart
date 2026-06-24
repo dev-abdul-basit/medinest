@@ -25,8 +25,14 @@ import 'package:medinest/google_ads/ad_helper.dart';
 import 'package:medinest/in_app_purchase/iap_callback.dart';
 import 'package:medinest/in_app_purchase/in_app_purchase_helper.dart';
 import 'package:medinest/main.dart';
+import 'package:medinest/Widgets/adherence_card.dart';
 import 'package:medinest/notification/notification_helper.dart';
 import 'package:medinest/routes/app_routes.dart';
+import 'package:medinest/services/adherence_service.dart';
+import 'package:medinest/services/engagement_scheduler.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:medinest/services/today_plan_service.dart';
+import 'package:medinest/services/review_prompt_service.dart';
 import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
 import 'package:medinest/ui/get_started_screen/get_started_screen_logic.dart';
 import 'package:medinest/ui/medicine_screen/medicine_screen_logic.dart';
@@ -45,7 +51,6 @@ class HomeController extends GetxController
   InterstitialAd? interstitialAd;
   bool isInterstitialAdLoaded = false;
   bool canPop = false;
-  bool isDrawerOpen = false;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   UserTable? userData;
@@ -55,14 +60,28 @@ class HomeController extends GetxController
 
   TabController? mainTabController;
 
+  /// F08 — adherence card state
+  AdherenceSummary? adherenceSummary;
+  bool adherenceCardHidden = Preference.shared.getAdherenceCardHidden();
+
+  /// "Today" engagement summary (doses scheduled/taken today + next dose).
+  TodayPlan? todayPlan;
+
   @override
   Future<void> onInit() async {
     update([Constant.idHome]);
+    /// F14 — three tabs: Reminders (0) · Journal (1) · Family (2).
     mainTabController =
-        mainTabController ?? TabController(length: 2, vsync: this);
+        mainTabController ?? TabController(length: 3, vsync: this);
     Debug.printLog("isFromLogin: ${data[Constant.idIsFromLogIn]}");
     isFromLogin = data[Constant.idIsFromLogIn] == 'true';
-    if (isFullScreenNotification && selectedNotificationPayload != null) {
+    if (isFullScreenNotification &&
+        selectedNotificationPayload != null &&
+        // F16/F18 — a win-back or milestone tap just opens the app to Home;
+        // never route it into the full-screen medicine reminder (its payload
+        // isn't a medicine JSON).
+        !selectedNotificationPayload!.contains(Constant.winBackPayload) &&
+        !selectedNotificationPayload!.contains(Constant.engagementPayload)) {
       if (selectedNotificationPayload!
           .contains(DataBaseHelper().appointmentId)) {
         Get.toNamed(AppRoutes.fullScreenAppointmentNotification,
@@ -79,11 +98,29 @@ class HomeController extends GetxController
     await DataBaseHelper.instance
         .getUserData(Preference.shared.getString(Preference.firebaseEmail))
         .then((value) {
-      userData = value.first;
+      // F07 — guests (deferred sign-in) have no user row yet; don't assume one.
+      userData = value.isNotEmpty ? value.first : null;
     });
+    // Guarantee the "Me" self profile exists & its id is resolved, so users who
+    // reached Home without onboarding (e.g. straight Google sign-in) can still
+    // own medicines and edit themselves from the Family tab / Edit Profile.
+    await DataBaseHelper.instance
+        .ensureSelfMember(selfName: 'txtSelfProfileName'.tr);
+    // Backfill data ownership for users who were already signed in before
+    // account-isolation existed, so a later account switch correctly isolates.
+    if (Preference.shared.getIsUserLogin() &&
+        Preference.shared.getDataOwnerUid() == null) {
+      final String? uid = Preference.shared.getString(Preference.firebaseAuthUid);
+      if (uid != null && uid.isNotEmpty) {
+        Preference.shared.setDataOwnerUid(uid);
+      }
+    }
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
-    if (await InternetConnectivity.isInternetConnect(Get.context!)) {
+    // F07 — guests (deferred sign-in) have no Firebase auth, so a Firestore
+    // sync would fail with PERMISSION_DENIED. Only sync when signed in.
+    if (Preference.shared.getIsUserLogin() &&
+        await InternetConnectivity.isInternetConnect(Get.context!)) {
       syncDataToFirebase();
     }
     InAppPurchaseHelper().getAlreadyPurchaseItems(this);
@@ -97,34 +134,93 @@ class HomeController extends GetxController
 
     super.onInit();
   }
+
+  @override
+  void onReady() {
+    super.onReady();
+    /// F02 — review-prompt: gate-checked inside the service. 3 s delay so it
+    /// never collides with launch-time dialogs (full-screen reminder, sign-in).
+    Future.delayed(const Duration(seconds: 3), () {
+      ReviewPromptService.maybeShow();
+    });
+    refreshAdherence();
+    _maybeShowFirstMedicineTooltip();
+  }
+
+  /// F07 — one-shot confirmation after the onboarding first-medicine flow, so
+  /// the user lands on Home knowing the reminder is set. Fires at most once.
+  void _maybeShowFirstMedicineTooltip() {
+    if (Preference.shared.getFirstMedicineCreated() &&
+        !Preference.shared.getSeenFirstMedicineTooltip()) {
+      Preference.shared.setSeenFirstMedicineTooltip(true);
+      Future.delayed(const Duration(milliseconds: 700), () {
+        Get.snackbar(
+          'txtFirstMedTooltipTitle'.tr,
+          'txtFirstMedTooltipBody'.tr,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Get.theme.colorScheme.primary,
+          colorText: Colors.white,
+          margin: EdgeInsets.all(AppSizes.width_3),
+          borderRadius: 12,
+          duration: const Duration(seconds: 4),
+        );
+      });
+    }
+  }
+
+  /// F08 — refresh adherence + the "Today" summary card data.
+  Future<void> refreshAdherence() async {
+    adherenceSummary = await AdherenceService().compute();
+    final List<MedicineTable> meds =
+        await DataBaseHelper.instance.getMedicineData();
+    todayPlan = TodayPlanService()
+        .compute(medicines: meds, adherence: adherenceSummary!);
+    update([Constant.idAdherenceCard]);
+    // F18 — celebrate a streak milestone if the engagement budget allows.
+    await EngagementScheduler().evaluate(summary: adherenceSummary!);
+  }
+
+  void hideAdherenceCard() {
+    adherenceCardHidden = true;
+    Preference.shared.setAdherenceCardHidden(true);
+    update([Constant.idAdherenceCard]);
+  }
+
+  void openAdherenceWeek(BuildContext context) {
+    if (adherenceSummary == null) return;
+    Get.bottomSheet(
+      AdherenceWeekSheet(summary: adherenceSummary!),
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+    );
+  }
+
+  /// F17 — notification permission rescue. A denied permission silently kills
+  /// every reminder, so instead of a placeholder loop we explain why and deep-
+  /// link to OS settings (the only thing that re-enables notifications after a
+  /// denial on Android 13+).
   showAlertDialog(BuildContext context) {
-    Widget okButton = TextButton(
-      child:  Text("txtOk".tr),
-      onPressed: () async {
-        await _requestPermissions().then((value) {
-          if (value) {
-            Get.back();
-            reScheduleNotifications();
-          } else {
-            showAlertDialog(Get.context!);
-          }
-        });
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      content: const Text("This is my message."),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
     showDialog(
-      barrierDismissible: false,
+      barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return alert;
+        return AlertDialog(
+          title: Text('txtPermRescueTitle'.tr),
+          content: Text('txtPermRescueBody'.tr),
+          actions: [
+            TextButton(
+              child: Text('txtNotNow'.tr),
+              onPressed: () => Get.back(),
+            ),
+            TextButton(
+              child: Text('txtOpenSettings'.tr),
+              onPressed: () async {
+                Get.back();
+                await openAppSettings();
+              },
+            ),
+          ],
+        );
       },
     );
   }
@@ -198,6 +294,13 @@ class HomeController extends GetxController
   void _configureSelectNotificationSubject() {
     selectNotificationStream.stream.listen((String? payload) async {
       ///IN android Notification Tap will get here Second
+      // F16/F18 — win-back or milestone tap while app is alive: nothing to
+      // route, already on Home.
+      if (payload != null &&
+          (payload.contains(Constant.winBackPayload) ||
+              payload.contains(Constant.engagementPayload))) {
+        return;
+      }
       if (payload != null && payload.contains(DataBaseHelper().appointmentId)) {
         Get.toNamed(AppRoutes.fullScreenAppointmentNotification,
             arguments: [payload]);
@@ -208,22 +311,15 @@ class HomeController extends GetxController
   }
 
   void onWillPop(didPop) {
-    if (isDrawerOpen) {
-      Debug.printLog("isDrawerOpen : $isDrawerOpen ");
-      // canPop = true;
-      // update([Constant.idHome]);
-      // Navigator.of(Get.context!).pop();
-    } else if (!isDrawerOpen) {
-      DateTime now = DateTime.now();
-      if (currentBackPressTime == null ||
-          now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
-        currentBackPressTime = now;
-        Fluttertoast.showToast(msg: 'txtPressBackAgainToExitTheApp'.tr);
-        canPop = true;
-        // }
-      } else {
-        canPop = false;
-      }
+    /// F14 — drawer is gone; only the press-back-twice-to-exit branch remains.
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(msg: 'txtPressBackAgainToExitTheApp'.tr);
+      canPop = true;
+    } else {
+      canPop = false;
     }
     update([Constant.idHome]);
   }
@@ -307,8 +403,8 @@ class HomeController extends GetxController
             description: 'txtLogOutDescription'.tr,
             buttonText: 'txtLogOut'.tr,
             image: Utils.isLightTheme()
-                ? Assets.iconsIcLogoutImg
-                : Assets.iconsIcLogoutImgDark,
+                ? Assets.icons.icLogoutImg.path
+                : Assets.icons.icLogoutImgDark.path,
             imageHeight: AppSizes.height_21,
             imageWidth: AppSizes.height_21,
             onTapDelete: () {
@@ -326,6 +422,9 @@ class HomeController extends GetxController
   }
 
   Future<void> syncDataToFirebase() async {
+    // No Firebase auth for guest users → skip cloud sync entirely (data stays
+    // safe in the local SQLite source of truth and syncs once they sign in).
+    if (!Preference.shared.getIsUserLogin()) return;
     List<MedicineTable> medicineList =
         await DataBaseHelper.instance.getMedicineData(isNotSynced: true);
     if (medicineList.isNotEmpty) {
@@ -497,15 +596,19 @@ class HomeController extends GetxController
         });
       }
     } else {
+      Preference.shared
+          .setLastPaywallTs(DateTime.now().millisecondsSinceEpoch);
       showModalBottomSheet(
           backgroundColor: Colors.transparent,
           context: context,
           isScrollControlled: true,
           builder: (context) => CommonSubscriptionDialog(
-                title: 'txtSubscribeNow'.tr,
-                description:
-                    'You have reached the limit.\nPlease subscribe to the plan.\n(In the free version, you only have a limit of 10 medicines and appointments.)',
-                image: Assets.imagesImgSuscription,
+                title: 'txtPaywallTitleMedicines'.tr,
+                description: 'txtPaywallBodyMedicines'.tr,
+                buttonText: 'txtPaywallCtaUpgrade'.tr,
+                ctaSubtext: 'txtPaywallCtaSubtext'.tr,
+                priceLabel: InAppPurchaseHelper().monthlyPriceLabel,
+                image: Assets.images.imgSuscription.path,
                 imageWidth: AppSizes.height_35,
                 onTapDelete: () {
                   Get.back();
@@ -533,15 +636,19 @@ class HomeController extends GetxController
             Get.find<JournalScreenLogic>().getAllFamilyMembers());
       }
     } else {
+      Preference.shared
+          .setLastPaywallTs(DateTime.now().millisecondsSinceEpoch);
       showModalBottomSheet(
           backgroundColor: Colors.transparent,
           context: context,
           isScrollControlled: true,
           builder: (context) => CommonSubscriptionDialog(
-                title: 'txtSubscribeNow'.tr,
-                description:
-                    'You have reached the limit.\nPlease subscribe to the plan.\n(In the free version, you only have a limit of 10 medicines and appointments.)',
-                image: Assets.imagesImgSuscription,
+                title: 'txtPaywallTitleAppointments'.tr,
+                description: 'txtPaywallBodyAppointments'.tr,
+                buttonText: 'txtPaywallCtaUpgrade'.tr,
+                ctaSubtext: 'txtPaywallCtaSubtext'.tr,
+                priceLabel: InAppPurchaseHelper().monthlyPriceLabel,
+                image: Assets.images.imgSuscription.path,
                 imageWidth: AppSizes.height_35,
                 onTapDelete: () {
                   Get.back();
@@ -549,12 +656,6 @@ class HomeController extends GetxController
                 },
               ));
     }
-  }
-
-  void onDrawerChanged(bool isOpened) {
-    isDrawerOpen = isOpened;
-    canPop = false;
-    update([Constant.idHome]);
   }
 
   Future<void> reScheduleNotifications() async {
@@ -607,7 +708,7 @@ class HomeController extends GetxController
     await DataBaseHelper.instance
         .getUserData(Preference.shared.getString(Preference.firebaseEmail))
         .then((value) {
-      userData = value.first;
+      userData = value.isNotEmpty ? value.first : null;
       update([Constant.idHome, Constant.idDrawerSheet]);
     });
   }
@@ -622,6 +723,21 @@ class HomeController extends GetxController
     });
   }
 
+  /// F14 — Family is now a tab. FAB on the Family tab calls this to push
+  /// the Add Family Member screen and refresh dependent lists on return.
+  void gotoAddFamilyMember(BuildContext context) {
+    if (!Preference.shared.getIsPurchase()) {
+      showAd();
+    }
+    Get.toNamed(AppRoutes.addOrEditFamilyMember)!.then((value) {
+      Get.find<MedicineScreenLogic>().getAllFamilyMembers();
+      Get.find<JournalScreenLogic>().getAllFamilyMembers();
+    });
+  }
+
+  /// Deprecated — Doctor screen is out of MVP scope (2026-05-10).
+  /// Kept because notification deep-links may still reach this controller
+  /// method via legacy payloads. Don't surface in nav.
   void gotoDoctorScreen() {
     if (!Preference.shared.getIsPurchase()) {
       showAd();

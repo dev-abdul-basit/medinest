@@ -8,6 +8,8 @@ import 'package:medinest/utils/sizer_utils.dart';
 class CommonSubscriptionDialog extends StatelessWidget {
   final String? title;
   final String? description, image, buttonText;
+  final String? ctaSubtext;
+  final String? priceLabel;
   final double? imageWidth, imageHeight;
 
   final void Function() onTapDelete;
@@ -19,6 +21,8 @@ class CommonSubscriptionDialog extends StatelessWidget {
       required this.onTapDelete,
       this.image,
       this.buttonText,
+      this.ctaSubtext,
+      this.priceLabel,
       this.imageWidth,
       this.imageHeight,});
 
@@ -54,7 +58,7 @@ class CommonSubscriptionDialog extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Get.theme.colorScheme.onSecondary
                 ),
-                child: Image.asset(Assets.iconsIcDeleteAlert,
+                child: Image.asset(Assets.icons.icDeleteAlert.path,
                     height: AppSizes.height_6,
                     width: AppSizes.height_6),
               ),
@@ -74,7 +78,7 @@ class CommonSubscriptionDialog extends StatelessWidget {
                 children: [
                   SizedBox(width: AppSizes.width_7),
                   Image.asset(
-                    Assets.iconsIcDoneSubscription,
+                    Assets.icons.icDoneSubscription.path,
                     color: Get.theme.colorScheme.onPrimary,
                     height: AppSizes.height_2_5,
                   ),
@@ -92,7 +96,7 @@ class CommonSubscriptionDialog extends StatelessWidget {
                 children: [
                   SizedBox(width: AppSizes.width_7),
                   Image.asset(
-                    Assets.iconsIcDoneSubscription,
+                    Assets.icons.icDoneSubscription.path,
                     color: Get.theme.colorScheme.onPrimary,
                     height: AppSizes.height_2_5,
                   ),
@@ -104,34 +108,24 @@ class CommonSubscriptionDialog extends StatelessWidget {
                       fontSize: AppFontSize.size_12),
                 ],
               ),
-              SizedBox(height: AppSizes.width_3),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: AppSizes.width_7),
-                  Image.asset(
-                    Assets.iconsIcDoneSubscription,
-                    color: Get.theme.colorScheme.onPrimary,
-                    height: AppSizes.height_2_5,
-                  ),
-                  SizedBox(width: AppSizes.width_3),
-                  CommonText(
-                      text: 'txtAddUnlimitedAppointment'.tr,
-                      textColor: Get.theme.colorScheme.onPrimary,
-                      fontWeight: FontWeight.w400,
-                      fontSize: AppFontSize.size_12),
-                ],
-              ),
               SizedBox(height: AppSizes.width_5),
               CommonButtonWithImage(
                       onTap: onTapDelete,
-                      icon: Assets.iconsIcKing,
+                      icon: Assets.icons.icKing.path,
                       width: AppSizes.fullWidth - 50,
                       iconSize: AppSizes.width_9,
                       fontSize: AppFontSize.size_16,
-                      text: "txtSubscribeNow".tr.toUpperCase(),
+                      text: _buildCtaText(),
                     ),
-
+              if (ctaSubtext != null) ...[
+                SizedBox(height: AppSizes.height_1_5),
+                CommonText(
+                    text: ctaSubtext!,
+                    textColor: Get.theme.colorScheme.onPrimary,
+                    fontWeight: FontWeight.w400,
+                    textAlign: TextAlign.center,
+                    fontSize: AppFontSize.size_10),
+              ],
               SizedBox(
                 height: AppSizes.height_5,
               ),
@@ -140,5 +134,16 @@ class CommonSubscriptionDialog extends StatelessWidget {
         )
       ],
     );
+  }
+
+  String _buildCtaText() {
+    final base = (buttonText != null && buttonText!.trim().isNotEmpty)
+        ? buttonText!
+        : "txtSubscribeNow".tr;
+    final cta = base.toUpperCase();
+    if (priceLabel != null && priceLabel!.trim().isNotEmpty) {
+      return "$cta — ${priceLabel!}";
+    }
+    return cta;
   }
 }

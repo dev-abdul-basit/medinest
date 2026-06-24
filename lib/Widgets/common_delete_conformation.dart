@@ -57,7 +57,7 @@ class DeleteConformation extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Get.theme.colorScheme.onSecondary
                 ),
-                child: Image.asset(Assets.iconsIcDeleteAlert,
+                child: Image.asset(Assets.icons.icDeleteAlert.path,
                     height: AppSizes.height_6,
                     width: AppSizes.height_6),
               ),
@@ -77,7 +77,7 @@ class DeleteConformation extends StatelessWidget {
               isSubscription
                   ? CommonButtonWithImage(
                       onTap: onTapDelete,
-                      icon: Assets.iconsIcKing,
+                      icon: Assets.icons.icKing.path,
                       width: AppSizes.fullWidth - 50,
                       iconSize: AppSizes.width_9,
                       fontSize: AppFontSize.size_16,

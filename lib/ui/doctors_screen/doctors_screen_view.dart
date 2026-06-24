@@ -45,8 +45,8 @@ class DoctorsScreenPage extends StatelessWidget {
                         )
                       : NoDataWidget(
                           image: Utils.isLightTheme()
-                              ? Assets.imagesImgNoFamilyMember
-                              : Assets.imagesImgNoFamilyMemberDark,
+                              ? Assets.images.imgNoFamilyMember.path
+                              : Assets.images.imgNoFamilyMemberDark.path,
                           text: 'txtYouDontHaveAnyDoctor'.tr,
                         ));
             }),

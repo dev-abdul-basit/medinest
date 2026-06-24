@@ -7,21 +7,27 @@ import 'package:intl/intl.dart';
 import 'package:medinest/Widgets/common_appbar.dart';
 import 'package:medinest/Widgets/common_button_one.dart';
 import 'package:medinest/Widgets/common_text.dart';
-import 'package:medinest/Widgets/custom_drop_down.dart';
 import 'package:medinest/Widgets/custom_drop_down_select_doctor.dart';
 import 'package:medinest/Widgets/custom_drop_down_select_member.dart';
+import 'package:medinest/Widgets/dosage_bottom_sheet.dart';
+import 'package:medinest/Widgets/picker_bottom_sheet.dart';
 import 'package:medinest/Widgets/text_form_field.dart';
 import 'package:medinest/Widgets/progress_dialog.dart';
 import 'package:medinest/generated/assets.dart';
 import 'package:medinest/ui/add_medicine/add_medicine_controller.dart';
 import 'package:medinest/utils/asset.dart';
-import 'package:medinest/utils/color.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
-import 'package:medinest/utils/font_style.dart';
-import 'package:medinest/utils/preference.dart';
+import 'package:medinest/utils/glass_tokens.dart';
 import 'package:medinest/utils/sizer_utils.dart';
 
+/// Add / Edit medicine — Apple-inspired, liquid-glass redesign.
+///
+/// Progressive disclosure: only Name + Dose + Time are required; the form opens
+/// pre-filled with sensible defaults (handled in [AddMedicineController]).
+/// Advanced, rarely-touched options (end date, sound, doctor, status) live under
+/// a collapsible section so the core flow stays short. All controller logic and
+/// `GetBuilder` ids are unchanged — this is a pure view rewrite.
 class AddMedicineScreen extends StatelessWidget {
   final AddMedicineController addMedicineController =
       Get.find<AddMedicineController>();
@@ -30,627 +36,683 @@ class AddMedicineScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final logic = addMedicineController;
     return Stack(
       children: [
         Scaffold(
           backgroundColor: Get.theme.colorScheme.onBackground,
           appBar: CommonAppBar(
-            title: addMedicineController.isEdit
-                ? 'txtEditMedicine'.tr
-                : 'txtAddMedicine'.tr,
+            title: logic.isEdit ? 'txtEditMedicine'.tr : 'txtAddMedicine'.tr,
           ),
-          body: SingleChildScrollView(
-            child: Form(
-              key: addMedicineController.formKey,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 25,
-                  vertical: 10,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: AppSizes.height_2_2),
-                    CommonText(
-                      text: 'txtMedicine'.tr,
-                      textColor: Get.theme.colorScheme.primary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: AppFontSize.size_18,
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idUserNameInput,
-                      builder: (logic) {
-                        return CommonTextFormFieldWithSuffix(
-                          controller: logic.medicineNameController,
-                          hintText: '${'txtEnterMedicineName'.tr} *',
-                          maxLength: 30,
-                          fillColor: Get.theme.colorScheme.surfaceVariant,
-                          prefixIcon: Assets.iconsIcMedicineName,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                              RegExp("[a-z A-Z 0-9]"),
-                            ),
-                          ],
-                          validatorText: 'txtEnterMedicineName'.tr,
-                        );
-                      },
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idUserNameInput,
-                      builder: (logic) {
-                        return CommonTextFormFieldWithSuffix(
-                          controller: logic.dosageController,
-                          hintText: '${'txtAddDosage'.tr} *',
-                          fillColor: Get.theme.colorScheme.surfaceVariant,
-                          prefixIcon: Assets.iconsIcDosage,
-                          keyboardType: TextInputType.number,
-                          validatorText: 'txtAddDosage'.tr,
-                        );
-                      },
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idSelectUnit,
-                      builder: (logic) {
-                        return DropdownWithPrefix(
-                          prefix: Padding(
-                            padding: EdgeInsetsDirectional.only(
-                              start: AppSizes.width_4,
-                              end: AppSizes.width_4,
-                            ),
-                            child: Image.asset(
-                              Assets.iconsIcUnits,
-                              width: AppSizes.width_6,
-                              height: AppSizes.width_6,
-                            ),
-                          ),
-                          items: Constant.dosageDataList,
-                          selectedItem: logic.dosageChoose,
-                          hintText: '${'txtAddUnits'.tr} *',
-                          onChanged: (value) {
-                            logic.dosageChoose = value!;
-                            logic.update([Constant.idSelectUnit]);
-                          },
-                        );
-                      },
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idSelectedShape,
-                      builder: (logic) {
-                        return _settingItem(
-                          icon: Assets.iconsIcShape,
-                          text: logic.selectedShape != null
-                              ? logic.selectedShape!.shapeName
-                              : '${"txtSelectShape".tr} *',
-                          onTap: () => logic.gotoSelectShape(context),
-                          defaultIcon: Assets.iconsIcRightArrow,
-                          image: logic.selectedShape?.shapeImage,
-                        );
-                      },
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idSelectedColor,
-                      builder: (logic) {
-                        return _settingItem(
-                          icon: Assets.iconsIcColor,
-                          text: '${"txtChooseColor".tr} *',
-                          onTap: () => logic.gotoSelectColor(context),
-                          defaultIcon: Assets.iconsIcRightArrow,
-                          color: logic.shadeColor,
-                        );
-                      },
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idSelectBeforeOrAfterMeal,
-                      builder: (logic) {
-                        return DropdownWithPrefix(
-                          prefix: Padding(
-                            padding: EdgeInsetsDirectional.only(
-                              start: AppSizes.width_5,
-                              end: AppSizes.width_4,
-                            ),
-                            child: Image.asset(
-                              Assets.iconsIcMeal,
-                              width: AppSizes.width_5,
-                              height: AppSizes.width_5,
-                            ),
-                          ),
-                          items: Constant.beforeOrAfterMeal,
-                          selectedItem: logic.beforeOrAfterMeal,
-                          hintText: '${'txtSelectHowToTakeYourMedicine'.tr} *',
-                          onChanged: (value) {
-                            logic.beforeOrAfterMeal = value!;
-                            logic.update([Constant.idSelectBeforeOrAfterMeal]);
-                          },
-                        );
-                      },
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    CommonText(
-                      text: 'txtSetReminders'.tr,
-                      textColor: Get.theme.colorScheme.primary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: AppFontSize.size_18,
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idSelectStartDate,
-                      builder: (logic) {
-                        return _settingItem(
-                          icon: Assets.iconsIcCalendar,
-                          text: logic.startDate != null
-                              ? "txtStartDate".tr
-                              : '${'txtSelectStartDate'.tr} *',
-                          onTap: logic.selectStartDate,
-                          defaultIcon: Assets.iconsIcDropdown,
-                          defaultText: logic.startDate != null
-                              ? DateFormat(
-                                  'd MMM, yyyy',
-                                ).format(logic.startDate!)
-                              : null,
-                        );
-                      },
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idSelectEndDate,
-                      builder: (logic) {
-                        return _settingItem(
-                          icon: Assets.iconsIcCalendar,
-                          text: logic.endDate != null
-                              ? "txtEndDate".tr
-                              : '${'txtSelectEndDate'.tr} *',
-                          isHint: logic.isNoEndDate,
-                          onTap: logic.isNoEndDate
-                              ? null
-                              : logic.selectEndDateDate,
-                          defaultIcon: Assets.iconsIcDropdown,
-                          defaultText: logic.endDate != null
-                              ? DateFormat('d MMM, yyyy').format(logic.endDate!)
-                              : null,
-                        );
-                      },
-                    ),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idNoEndDate,
-                      builder: (logic) {
-                        return CheckboxListTile(
-                          title: CommonText(
-                            text: 'txtNoEndDate'.tr,
-                            textColor: Get.theme.colorScheme.onSurface,
-                            fontWeight: FontWeight.w300,
-                            fontSize: AppFontSize.size_10,
-                          ),
-                          value: logic.isNoEndDate,
-                          activeColor: Get.theme.colorScheme.onSecondary,
-                          onChanged: (newValue) {
-                            logic.isNoEndDate = newValue!;
-                            logic.update([
-                              Constant.idNoEndDate,
-                              Constant.idSelectEndDate,
-                            ]);
-                          },
-                          contentPadding: EdgeInsets.zero,
-                          controlAffinity: ListTileControlAffinity
-                              .trailing, //  <-- leading Checkbox
-                        );
-                      },
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
+          body: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(
+                    AppSizes.width_4,
+                    AppSizes.height_2,
+                    AppSizes.width_4,
+                    AppSizes.height_3,
+                  ),
+                  child: Form(
+                    key: logic.formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GetBuilder<AddMedicineController>(
-                          id: Constant.idSelectedTime,
-                          builder: (logic) {
-                            return Expanded(
-                              child: _settingItem(
-                                icon: Assets.iconsIcWatch,
-                                text: '${"txtSetTime".tr} *',
-                                defaultText: '',
-                                onTap: () => logic.selectTime(context),
-                              ),
-                            );
-                          },
-                        ),
-                        // SizedBox(
-                        //   width: AppSizes.width_2,
-                        // ),
-                        // InkWell(
-                        //   onTap: () => Get.find<AddMedicineController>().addTimeToList(context),
-                        //   child: Image.asset(
-                        //     Assets.iconsIcPlus,
-                        //     gaplessPlayback: true,
-                        //     height: AppSizes.width_10,
-                        //   ),
-                        // ),
+                        _medicineSection(context, logic),
+                        SizedBox(height: AppSizes.height_2_5),
+                        _scheduleSection(context, logic),
+                        SizedBox(height: AppSizes.height_2_5),
+                        _whoSection(logic),
+                        SizedBox(height: AppSizes.height_2_5),
+                        _advancedSection(context, logic),
+                        SizedBox(height: AppSizes.height_2),
                       ],
                     ),
-                    SizedBox(height: AppSizes.height_1),
-                    buildSelectedTimeList(),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idSelectedTime,
-                      builder: (logic) {
-                        return logic.selectedTimeList.isNotEmpty
-                            ? SizedBox(height: AppSizes.height_1)
-                            : SizedBox(height: AppSizes.height_2_2);
-                      },
-                    ),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.idSelectFrequency,
-                      builder: (logic) {
-                        return _settingItem(
-                          icon: AppAsset.icFrequency,
-                          text: logic.frequency != null
-                              ? 'txtFrequency'.tr
-                              : '${'txtSelectFrequency'.tr} *',
-                          isHint: logic.frequency == null,
-                          onTap: logic.selectFrequency,
-                          defaultIcon: Assets.iconsIcRightArrow,
-                          defaultText: logic.frequency,
-                        );
-                      },
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    if (Platform.isAndroid)
-                      GetBuilder<AddMedicineController>(
-                        id: Constant.idSelectAlertSound,
-                        builder: (logic) {
-                          return _settingItem(
-                            icon: Assets.iconsIcSound,
-                            text: '${"txtChooseSound".tr} *',
-                            isHint: logic.pickedSoundTitle == null,
-                            defaultIcon: Assets.iconsIcRightArrow,
-                            onTap: logic.gotoSelectAlertSound,
-                            defaultText: logic.pickedSoundTitle,
-                          );
-                        },
-                      ),
-                    if (Platform.isAndroid)
-                      SizedBox(height: AppSizes.height_2_2),
-                    CommonText(
-                      text: 'txtAddMemberDoctor'.tr,
-                      textColor: Get.theme.colorScheme.primary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: AppFontSize.size_18,
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        GetBuilder<AddMedicineController>(
-                          id: Constant.idSelectMember,
-                          builder: (logic) {
-                            return Expanded(
-                              child: DropdownWithPrefixSelectMember(
-                                prefix: Padding(
-                                  padding: EdgeInsetsDirectional.only(
-                                    start: AppSizes.width_4_5,
-                                    end: AppSizes.width_4,
-                                  ),
-                                  child: Image.asset(
-                                    Assets.iconsIcUserName,
-                                    width: AppSizes.width_5_5,
-                                    height: AppSizes.width_5_5,
-                                  ),
-                                ),
-                                hintText: '${'txtSelectMember'.tr} *',
-                                familyMemberItems: logic
-                                    .familyMembersList
-                                    .reversed
-                                    .toList()
-                                    .where((element) => element.mIsDeleted != 1)
-                                    .toList(),
-                                selectedFamilyMemberItem:
-                                    logic.selectedFamilyMembers,
-                                onChangedFamilyMember: (value) {
-                                  logic.selectedFamilyMembers = value!;
-                                  logic.update([Constant.idSelectMember]);
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(width: AppSizes.width_2),
-                        InkWell(
-                          onTap: () =>
-                              Get.find<AddMedicineController>().goToAddMember(),
-                          child: Image.asset(
-                            Assets.iconsIcPlus,
-                            gaplessPlayback: true,
-                            height: AppSizes.width_10,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: AppSizes.height_0_5),
-                    Row(
-                      children: [
-                        CommonText(
-                          text: 'txtClick'.tr,
-                          textColor: Get.theme.colorScheme.surface,
-                          fontWeight: FontWeight.w400,
-                          fontSize: AppFontSize.size_10,
-                        ),
-                        CommonText(
-                          text: '+',
-                          textColor: Get.theme.colorScheme.onSecondary,
-                          fontWeight: FontWeight.w800,
-                          fontSize: AppFontSize.size_12,
-                        ),
-                        CommonText(
-                          text: 'txtToAddMember'.tr,
-                          textColor: Get.theme.colorScheme.surface,
-                          fontWeight: FontWeight.w400,
-                          fontSize: AppFontSize.size_10,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        GetBuilder<AddMedicineController>(
-                          id: Constant.idSelectDoctor,
-                          builder: (logic) {
-                            return Expanded(
-                              child: DropdownWithPrefixSelectDoctor(
-                                prefix: Padding(
-                                  padding: EdgeInsetsDirectional.only(
-                                    start: AppSizes.width_5,
-                                    end: AppSizes.width_4,
-                                  ),
-                                  child: Image.asset(
-                                    Assets.iconsIcDoctorName,
-                                    width: AppSizes.width_5_5,
-                                    height: AppSizes.width_5_5,
-                                  ),
-                                ),
-
-                                doctorsListItems: logic.doctorsList.reversed
-                                    .toList(),
-                                selectedDoctorItem: logic.selectedDoctorItem,
-                                onChangedDoctor: (value) {
-                                  logic.selectedDoctorItem = value!;
-                                  logic.update([Constant.idSelectDoctor]);
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(width: AppSizes.width_2),
-                        InkWell(
-                          onTap: () =>
-                              Get.find<AddMedicineController>().goToAddDoctor(),
-                          child: Image.asset(
-                            Assets.iconsIcPlus,
-                            gaplessPlayback: true,
-                            height: AppSizes.width_10,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: AppSizes.height_0_5),
-                    Row(
-                      children: [
-                        CommonText(
-                          text: 'txtClick'.tr,
-                          textColor: Get.theme.colorScheme.surface,
-                          fontWeight: FontWeight.w400,
-                          fontSize: AppFontSize.size_10,
-                        ),
-                        CommonText(
-                          text: '+',
-                          textColor: Get.theme.colorScheme.onSecondary,
-                          fontWeight: FontWeight.w800,
-                          fontSize: AppFontSize.size_12,
-                        ),
-                        CommonText(
-                          text: 'txtToAddDoctor'.tr,
-                          textColor: Get.theme.colorScheme.surface,
-                          fontWeight: FontWeight.w400,
-                          fontSize: AppFontSize.size_10,
-                        ),
-                      ],
-                    ),
-                    GetBuilder<AddMedicineController>(
-                      id: Constant.isUserActive,
-                      builder: (logic) {
-                        return Row(
-                          children: [
-                            CommonText(
-                              text: 'txtStatus'.tr,
-                              textColor: Get.theme.colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                              fontSize: AppFontSize.size_12,
-                            ),
-                            SizedBox(width: AppSizes.width_1),
-                            Expanded(
-                              child: CommonText(
-                                text: logic.isUserActive ? 'Active' : 'Suspend',
-                                textAlign: TextAlign.start,
-                                textColor: logic.isUserActive
-                                    ? AppColor.colorGreen
-                                    : AppColor.colorOrange,
-                                fontWeight: FontWeight.w600,
-                                fontSize: AppFontSize.size_12,
-                              ),
-                            ),
-                            SizedBox(width: AppSizes.width_5),
-                            Transform.scale(
-                              scaleX: 0.9,
-                              scaleY: 0.8,
-                              child: Switch(
-                                overlayColor: MaterialStatePropertyAll<Color>(
-                                  Get.theme.colorScheme.onSecondary,
-                                ),
-                                activeColor: Get.theme.colorScheme.onSecondary,
-                                inactiveThumbColor:
-                                    Get.theme.colorScheme.onSurface,
-                                inactiveTrackColor: Get
-                                    .theme
-                                    .colorScheme
-                                    .onSurface
-                                    .withOpacity(0.5),
-                                value: logic.isUserActive,
-                                onChanged: logic.onChangedActiveStatus,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CommonButtonOne(
-                          onTap: () {
-                            Get.find<AddMedicineController>().clearData();
-                          },
-                          backgroundColor: Get.theme.colorScheme.background,
-                          text: 'txtReset'.tr,
-                        ),
-                        SizedBox(width: AppSizes.height_2),
-                        CommonButtonOne(
-                          onTap: () async {
-                            if (Get.find<AddMedicineController>().isEdit) {
-                              Get.find<AddMedicineController>()
-                                  .updateMedicineToDatabase(Get.context);
-                            } else {
-                              Get.find<AddMedicineController>()
-                                  .insertMedicineToDatabase(Get.context);
-                            }
-                          },
-                          text: Get.find<AddMedicineController>().isEdit
-                              ? 'txtUpdateNow'.tr
-                              : 'txtSave'.tr,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: AppSizes.height_2_2),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              _bottomBar(context, logic),
+            ],
           ),
         ),
         GetBuilder<AddMedicineController>(
           id: Constant.idProVersionProgress,
-          builder: (logic) {
-            return ProgressDialog(
-              inAsyncCall: logic.isShowProgress,
-              child: const SizedBox(),
-            );
-          },
+          builder: (logic) => ProgressDialog(
+            inAsyncCall: logic.isShowProgress,
+            child: const SizedBox(),
+          ),
         ),
       ],
     );
   }
 
-  _settingItem({
-    String? icon,
-    String? text,
-    bool isHint = false,
-    String? defaultText,
-    String? defaultIcon,
-    Uint8List? image,
-    Color? color,
-    Function()? onTap,
+  // ───────────────────────────── Sections ─────────────────────────────
+
+  Widget _medicineSection(BuildContext context, AddMedicineController logic) {
+    return _section(
+      title: 'txtMedicine'.tr,
+      children: [
+        GetBuilder<AddMedicineController>(
+          id: Constant.idUserNameInput,
+          builder: (logic) => CommonTextFormFieldWithSuffix(
+            controller: logic.medicineNameController,
+            hintText: '${'txtEnterMedicineName'.tr} *',
+            maxLength: 30,
+            fillColor: _fieldFill,
+            prefixIcon: Assets.icons.icMedicineName.path,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[a-z A-Z 0-9]")),
+            ],
+            validatorText: 'txtEnterMedicineName'.tr,
+          ),
+        ),
+        _gap,
+        // Dosage = amount + unit, captured together in one guided sheet (clearer
+        // than a bare "Add Dosage" number field).
+        GetBuilder<AddMedicineController>(
+          id: Constant.idSelectUnit,
+          builder: (logic) {
+            final String amount = logic.dosageController.text.trim();
+            final String unit = (logic.dosageChoose ?? '').capitalizeFirst ?? '';
+            return PickerField(
+              prefix: Padding(
+                padding: EdgeInsetsDirectional.only(start: AppSizes.width_3),
+                child: Image.asset(
+                  Assets.icons.icDosage.path,
+                  width: AppSizes.width_5_5,
+                  height: AppSizes.width_5_5,
+                ),
+              ),
+              hintText: '${'txtSetDosage'.tr} *',
+              valueText: amount.isEmpty ? null : '$amount $unit'.trim(),
+              onTap: () async {
+                final DosageResult? res = await showDosageSheet(
+                  amount: logic.dosageController.text,
+                  unit: logic.dosageChoose,
+                  units: Constant.dosageDataList,
+                );
+                if (res != null) {
+                  logic.dosageController.text = res.amount;
+                  logic.dosageChoose = res.unit;
+                  logic.update([Constant.idSelectUnit]);
+                }
+              },
+            );
+          },
+        ),
+        _gap,
+        Row(
+          children: [
+            Expanded(
+              child: GetBuilder<AddMedicineController>(
+                id: Constant.idSelectedShape,
+                builder: (logic) => _compactPicker(
+                  icon: Assets.icons.icShape.path,
+                  label: logic.selectedShape?.shapeName ?? 'txtSelectShape'.tr,
+                  image: logic.selectedShape?.shapeImage,
+                  onTap: () => logic.gotoSelectShape(context),
+                ),
+              ),
+            ),
+            SizedBox(width: AppSizes.width_3),
+            Expanded(
+              child: GetBuilder<AddMedicineController>(
+                id: Constant.idSelectedColor,
+                builder: (logic) => _compactPicker(
+                  icon: Assets.icons.icColor.path,
+                  label: 'txtChooseColor'.tr,
+                  swatch: logic.shadeColor,
+                  onTap: () => logic.gotoSelectColor(context),
+                ),
+              ),
+            ),
+          ],
+        ),
+        _gap,
+        _label('txtSelectHowToTakeYourMedicine'.tr),
+        SizedBox(height: AppSizes.height_1),
+        GetBuilder<AddMedicineController>(
+          id: Constant.idSelectBeforeOrAfterMeal,
+          builder: (logic) => _mealSegmented(logic),
+        ),
+      ],
+    );
+  }
+
+  Widget _scheduleSection(BuildContext context, AddMedicineController logic) {
+    return _section(
+      title: 'txtSetReminders'.tr,
+      children: [
+        Row(
+          children: [
+            Expanded(child: _label('${'txtSetTime'.tr} *')),
+            GetBuilder<AddMedicineController>(
+              id: Constant.idSelectedTime,
+              builder: (logic) => _addPill(
+                label: 'txtAddTime'.tr,
+                onTap: () => logic.selectTime(context),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: AppSizes.height_1_5),
+        buildSelectedTimeList(),
+        _gap,
+        GetBuilder<AddMedicineController>(
+          id: Constant.idSelectFrequency,
+          builder: (logic) => _rowPicker(
+            icon: AppAsset.icFrequency,
+            label: logic.frequency ?? 'txtSelectFrequency'.tr,
+            onTap: logic.selectFrequency,
+          ),
+        ),
+        _gap,
+        GetBuilder<AddMedicineController>(
+          id: Constant.idSelectStartDate,
+          builder: (logic) => _rowPicker(
+            icon: Assets.icons.icCalendar.path,
+            label: 'txtStartDate'.tr,
+            valueText: logic.startDate != null
+                ? DateFormat('d MMM, yyyy').format(logic.startDate!)
+                : 'txtSelectStartDate'.tr,
+            onTap: logic.selectStartDate,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _whoSection(AddMedicineController logic) {
+    return _section(
+      title: 'txtAddMemberDoctor'.tr,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: GetBuilder<AddMedicineController>(
+                id: Constant.idSelectMember,
+                builder: (logic) => DropdownWithPrefixSelectMember(
+                  prefix: Padding(
+                    padding: EdgeInsetsDirectional.only(start: AppSizes.width_3),
+                    child: Image.asset(
+                      Assets.icons.icUserName.path,
+                      width: AppSizes.width_5_5,
+                      height: AppSizes.width_5_5,
+                    ),
+                  ),
+                  hintText: '${'txtSelectMember'.tr} *',
+                  familyMemberItems: logic.familyMembersList.reversed
+                      .toList()
+                      .where((element) => element.mIsDeleted != 1)
+                      .toList(),
+                  selectedFamilyMemberItem: logic.selectedFamilyMembers,
+                  onChangedFamilyMember: (value) {
+                    logic.selectedFamilyMembers = value!;
+                    logic.update([Constant.idSelectMember]);
+                  },
+                ),
+              ),
+            ),
+            SizedBox(width: AppSizes.width_2),
+            _plusButton(onTap: logic.goToAddMember),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _advancedSection(BuildContext context, AddMedicineController logic) {
+    return _glass(
+      padding: EdgeInsets.zero,
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          dividerColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: ExpansionTile(
+          tilePadding: EdgeInsets.symmetric(horizontal: AppSizes.width_4),
+          childrenPadding: EdgeInsets.fromLTRB(
+            AppSizes.width_4,
+            0,
+            AppSizes.width_4,
+            AppSizes.width_4,
+          ),
+          iconColor: Get.theme.colorScheme.primary,
+          collapsedIconColor: Get.theme.colorScheme.primary,
+          leading: Icon(
+            Icons.tune_rounded,
+            color: Get.theme.colorScheme.primary,
+            size: AppFontSize.size_20,
+          ),
+          title: CommonText(
+            text: 'txtAdvancedOptions'.tr,
+            textColor: Get.theme.colorScheme.primary,
+            fontWeight: FontWeight.w600,
+            fontSize: AppFontSize.size_15,
+          ),
+          children: [
+            // End date + "no end date"
+            GetBuilder<AddMedicineController>(
+              id: Constant.idSelectEndDate,
+              builder: (logic) => _rowPicker(
+                icon: Assets.icons.icCalendar.path,
+                label: 'txtEndDate'.tr,
+                disabled: logic.isNoEndDate,
+                valueText: logic.endDate != null && !logic.isNoEndDate
+                    ? DateFormat('d MMM, yyyy').format(logic.endDate!)
+                    : 'txtSelectEndDate'.tr,
+                onTap: logic.isNoEndDate ? null : logic.selectEndDateDate,
+              ),
+            ),
+            GetBuilder<AddMedicineController>(
+              id: Constant.idNoEndDate,
+              builder: (logic) => CheckboxListTile(
+                title: CommonText(
+                  text: 'txtNoEndDate'.tr,
+                  textColor: Get.theme.colorScheme.onSurface,
+                  fontWeight: FontWeight.w400,
+                  fontSize: AppFontSize.size_12,
+                ),
+                value: logic.isNoEndDate,
+                activeColor: Get.theme.colorScheme.secondary,
+                onChanged: (newValue) {
+                  logic.isNoEndDate = newValue!;
+                  logic.update([Constant.idNoEndDate, Constant.idSelectEndDate]);
+                },
+                contentPadding: EdgeInsets.zero,
+                controlAffinity: ListTileControlAffinity.trailing,
+              ),
+            ),
+            if (Platform.isAndroid) ...[
+              _gap,
+              GetBuilder<AddMedicineController>(
+                id: Constant.idSelectAlertSound,
+                builder: (logic) => _rowPicker(
+                  icon: Assets.icons.icSound.path,
+                  label: logic.pickedSoundTitle ?? 'txtChooseSound'.tr,
+                  onTap: logic.gotoSelectAlertSound,
+                ),
+              ),
+            ],
+            _gap,
+            Row(
+              children: [
+                Expanded(
+                  child: GetBuilder<AddMedicineController>(
+                    id: Constant.idSelectDoctor,
+                    builder: (logic) => DropdownWithPrefixSelectDoctor(
+                      prefix: Padding(
+                        padding: EdgeInsetsDirectional.only(
+                          start: AppSizes.width_3,
+                        ),
+                        child: Image.asset(
+                          Assets.icons.icDoctorName.path,
+                          width: AppSizes.width_5_5,
+                          height: AppSizes.width_5_5,
+                        ),
+                      ),
+                      doctorsListItems: logic.doctorsList.reversed.toList(),
+                      selectedDoctorItem: logic.selectedDoctorItem,
+                      onChangedDoctor: (value) {
+                        logic.selectedDoctorItem = value!;
+                        logic.update([Constant.idSelectDoctor]);
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(width: AppSizes.width_2),
+                _plusButton(onTap: logic.goToAddDoctor),
+              ],
+            ),
+            _gap,
+            GetBuilder<AddMedicineController>(
+              id: Constant.isUserActive,
+              builder: (logic) => Row(
+                children: [
+                  CommonText(
+                    text: 'txtStatus'.tr,
+                    textColor: Get.theme.colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: AppFontSize.size_13,
+                  ),
+                  SizedBox(width: AppSizes.width_2),
+                  Expanded(
+                    child: CommonText(
+                      text: logic.isUserActive
+                          ? 'txtActive'.tr
+                          : 'txtSuspend'.tr,
+                      textAlign: TextAlign.start,
+                      textColor: logic.isUserActive
+                          ? Get.theme.colorScheme.primary
+                          : Get.theme.colorScheme.onSurface,
+                      fontWeight: FontWeight.w600,
+                      fontSize: AppFontSize.size_13,
+                    ),
+                  ),
+                  Switch.adaptive(
+                    activeColor: Get.theme.colorScheme.secondary,
+                    inactiveThumbColor: Get.theme.colorScheme.onSurface,
+                    inactiveTrackColor:
+                        Get.theme.colorScheme.onSurface.withOpacity(0.4),
+                    value: logic.isUserActive,
+                    onChanged: logic.onChangedActiveStatus,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ───────────────────────────── Building blocks ─────────────────────────────
+
+  Color get _fieldFill => Get.theme.colorScheme.surfaceVariant;
+  Widget get _gap => SizedBox(height: AppSizes.height_2);
+
+  /// A titled liquid-glass section card.
+  Widget _section({required String title, required List<Widget> children}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            left: AppSizes.width_2,
+            bottom: AppSizes.height_1,
+          ),
+          child: CommonText(
+            text: title,
+            textColor: Get.theme.colorScheme.primary,
+            fontWeight: FontWeight.w700,
+            fontSize: AppFontSize.size_15,
+          ),
+        ),
+        _glass(
+          padding: EdgeInsets.all(AppSizes.width_4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Outlined section card — border only, no background shade/fill (per design
+  /// request). The inner inputs keep their own subtle fills.
+  Widget _glass({required Widget child, required EdgeInsetsGeometry padding}) {
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      padding: padding,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(GlassTokens.radiusLg),
+        border: Border.all(
+          color: Get.theme.colorScheme.primary.withOpacity(0.22),
+          width: 1,
+        ),
+      ),
+      child: child,
+    );
+  }
+
+  Widget _label(String text) {
+    return CommonText(
+      text: text,
+      textColor: Get.theme.colorScheme.surface,
+      fontWeight: FontWeight.w500,
+      fontSize: AppFontSize.size_12,
+    );
+  }
+
+  /// Full-width tappable picker row (frequency, dates, sound).
+  Widget _rowPicker({
+    required String icon,
+    required String label,
+    String? valueText,
+    bool disabled = false,
+    VoidCallback? onTap,
   }) {
-    String lagType =
-        Preference.shared.getString(Preference.selectedLanguage) ??
-        Constant.languageEn;
+    final scheme = Get.theme.colorScheme;
+    final Color fg = disabled ? scheme.surface : scheme.primary;
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: EdgeInsets.symmetric(
-          vertical: AppSizes.width_3_8,
-          horizontal: 12,
+          vertical: AppSizes.width_3_5,
+          horizontal: AppSizes.width_3,
         ),
         decoration: BoxDecoration(
-          color: Get.theme.colorScheme.surfaceVariant,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            width: 1,
-            color: Get.theme.colorScheme.surfaceTint,
-          ),
+          color: _fieldFill,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(width: 1, color: scheme.surfaceTint),
         ),
         child: Row(
           children: [
-            SizedBox(width: AppSizes.width_2),
-            Image.asset(
-              icon!,
-              gaplessPlayback: true,
-              height: AppSizes.width_5_5,
-              width: AppSizes.width_5_5,
-            ),
-            SizedBox(width: AppSizes.width_3_2),
+            Image.asset(icon,
+                width: AppSizes.width_5_5, height: AppSizes.width_5_5),
+            SizedBox(width: AppSizes.width_3),
             Expanded(
-              child: Text(
-                text!,
-                style: AppFontStyle.styleW400(
-                  color != null || image != null || defaultText != null
-                      ? isHint
-                            ? Get.context!.theme.colorScheme.surface
-                            : Get.context!.theme.colorScheme.primary
-                      : Get.context!.theme.colorScheme.surface,
-                  AppFontSize.size_11,
-                ),
+              child: CommonText(
+                text: label,
+                textColor: disabled ? scheme.surface : scheme.onSurface,
+                fontWeight: FontWeight.w500,
+                fontSize: AppFontSize.size_13,
               ),
             ),
-            if (defaultText != null) ...{
+            if (valueText != null)
               CommonText(
-                text: defaultText,
-                textColor: isHint
-                    ? Get.context!.theme.colorScheme.surface
-                    : Get.theme.colorScheme.primary,
+                text: valueText,
+                textColor: fg,
+                fontWeight: FontWeight.w600,
                 fontSize: AppFontSize.size_12,
-                fontWeight: FontWeight.w400,
-                fontFamily: Constant.fontFamilyNunitoSans,
               ),
-              // Text(
-              //   defaultText,
-              //   style: AppFontStyle.styleW500(
-              //     isHint?Get.context!.theme.colorScheme.surface:Get.context!.theme.primaryColor,
-              //     AppFontSize.size_12,
-              //     fontWeight: FontWeight.w400,
-              //   ),
-              // ),
-            },
-            if (image != null) ...{
-              Image.memory(
-                image,
-                fit: BoxFit.cover,
-                height: AppSizes.width_7,
-                width: AppSizes.width_7,
+            SizedBox(width: AppSizes.width_1),
+            Icon(Icons.chevron_right_rounded, color: fg, size: AppFontSize.size_22),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Half-width compact picker (shape, colour).
+  Widget _compactPicker({
+    required String icon,
+    required String label,
+    Uint8List? image,
+    Color? swatch,
+    required VoidCallback onTap,
+  }) {
+    final scheme = Get.theme.colorScheme;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: AppSizes.width_3_5,
+          horizontal: AppSizes.width_3,
+        ),
+        decoration: BoxDecoration(
+          color: _fieldFill,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(width: 1, color: scheme.surfaceTint),
+        ),
+        child: Row(
+          children: [
+            Image.asset(icon,
+                width: AppSizes.width_5, height: AppSizes.width_5),
+            SizedBox(width: AppSizes.width_2),
+            Expanded(
+              child: CommonText(
+                text: label,
+                maxLines: 1,
+                textColor: scheme.onSurface,
+                fontWeight: FontWeight.w500,
+                fontSize: AppFontSize.size_12,
               ),
-            },
-            if (color != null) ...{
+            ),
+            if (image != null)
+              Image.memory(image,
+                  width: AppSizes.width_6, height: AppSizes.width_6,
+                  fit: BoxFit.cover),
+            if (swatch != null)
               Container(
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                ),
                 width: AppSizes.width_6,
                 height: AppSizes.width_6,
-              ),
-            },
-            SizedBox(width: AppSizes.width_2),
-            if (defaultIcon != null)
-              Transform.flip(
-                flipX: lagType == 'ar' || lagType == 'ur' || lagType == 'fa',
-                child: Image.asset(
-                  defaultIcon,
-                  fit: BoxFit.contain,
-                  width: AppSizes.height_2_6,
+                decoration: BoxDecoration(
+                  color: swatch,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: scheme.surfaceTint),
                 ),
               ),
-            SizedBox(width: AppSizes.width_0_8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 3-way segmented meal selector (After / Before / Any).
+  Widget _mealSegmented(AddMedicineController logic) {
+    final scheme = Get.theme.colorScheme;
+    final options = <Map<String, String>>[
+      {'value': 'Take After A Meal', 'label': 'txtMealAfter'.tr},
+      {'value': 'Take Before A Meal', 'label': 'txtMealBefore'.tr},
+      {'value': 'Take Any Time', 'label': 'txtMealAny'.tr},
+    ];
+    return Container(
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: _fieldFill,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(width: 1, color: scheme.surfaceTint),
+      ),
+      child: Row(
+        children: options.map((o) {
+          final bool selected = logic.beforeOrAfterMeal == o['value'];
+          return Expanded(
+            child: GestureDetector(
+              onTap: () {
+                logic.beforeOrAfterMeal = o['value'];
+                logic.update([Constant.idSelectBeforeOrAfterMeal]);
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                padding: EdgeInsets.symmetric(vertical: AppSizes.width_2_5),
+                decoration: BoxDecoration(
+                  color: selected ? scheme.secondary : Colors.transparent,
+                  borderRadius: BorderRadius.circular(9),
+                ),
+                child: CommonText(
+                  text: o['label']!,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  textColor: selected ? Colors.white : scheme.onSurface,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                  fontSize: AppFontSize.size_12,
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _addPill({required String label, required VoidCallback onTap}) {
+    final scheme = Get.theme.colorScheme;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSizes.width_3,
+          vertical: AppSizes.width_1_5,
+        ),
+        decoration: BoxDecoration(
+          color: scheme.primary.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.add_rounded,
+                color: scheme.primary, size: AppFontSize.size_18),
+            SizedBox(width: AppSizes.width_1),
+            CommonText(
+              text: label,
+              textColor: scheme.primary,
+              fontWeight: FontWeight.w600,
+              fontSize: AppFontSize.size_12,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _plusButton({required VoidCallback onTap}) {
+    final scheme = Get.theme.colorScheme;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        height: AppSizes.height_6_5,
+        width: AppSizes.height_6_5,
+        decoration: BoxDecoration(
+          color: scheme.primary,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(Icons.add_rounded,
+            color: Colors.white, size: AppFontSize.size_24),
+      ),
+    );
+  }
+
+  Widget _bottomBar(BuildContext context, AddMedicineController logic) {
+    final scheme = Get.theme.colorScheme;
+    return Container(
+      padding: EdgeInsets.fromLTRB(
+        AppSizes.width_4,
+        AppSizes.height_1_5,
+        AppSizes.width_4,
+        AppSizes.height_1_5,
+      ),
+      decoration: BoxDecoration(
+        color: scheme.onBackground,
+        boxShadow: [
+          BoxShadow(
+            color: scheme.primary.withOpacity(0.08),
+            blurRadius: 16,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: Row(
+          children: [
+            CommonButtonOne(
+              onTap: logic.clearData,
+              backgroundColor: scheme.background,
+              text: 'txtReset'.tr,
+            ),
+            SizedBox(width: AppSizes.width_3),
+            Expanded(
+              child: CommonButtonOne(
+                onTap: () {
+                  if (logic.isEdit) {
+                    logic.updateMedicineToDatabase(Get.context);
+                  } else {
+                    logic.insertMedicineToDatabase(Get.context);
+                  }
+                },
+                text: logic.isEdit ? 'txtUpdateNow'.tr : 'txtSave'.tr,
+              ),
+            ),
           ],
         ),
       ),
@@ -661,30 +723,48 @@ class AddMedicineScreen extends StatelessWidget {
     return GetBuilder<AddMedicineController>(
       id: Constant.idSelectedTime,
       builder: (logic) {
+        if (logic.selectedTimeList.isEmpty) {
+          return CommonText(
+            text: 'txtNoTimesYet'.tr,
+            textColor: Get.theme.colorScheme.surface,
+            fontWeight: FontWeight.w400,
+            fontSize: AppFontSize.size_11,
+          );
+        }
         return Wrap(
-          spacing: 5,
-          runSpacing: -5,
+          spacing: 8,
+          runSpacing: 8,
           children: List.generate(logic.selectedTimeList.length, (index) {
             final time = logic.selectedTimeList[index];
-            return InputChip(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              labelPadding: EdgeInsets.zero,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
+            return Container(
+              padding: const EdgeInsets.fromLTRB(14, 7, 8, 7),
+              decoration: BoxDecoration(
+                color: Get.theme.colorScheme.secondary,
+                borderRadius: BorderRadius.circular(20),
               ),
-              label: CommonText(
-                text: time.format(Get.context!),
-                textColor: Get.theme.colorScheme.background,
-                fontWeight: FontWeight.w600,
-                fontSize: AppFontSize.size_12,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CommonText(
+                    text: time.format(Get.context!),
+                    textColor: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: AppFontSize.size_12,
+                  ),
+                  SizedBox(width: AppSizes.width_1),
+                  GestureDetector(
+                    onTap: () {
+                      Debug.printLog(":: onDeleted :::");
+                      logic.deleteTimeFormList(index);
+                    },
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: AppFontSize.size_16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-              onSelected: (bool selected) {},
-              backgroundColor: Get.theme.colorScheme.onSecondary,
-              deleteIconColor: Colors.white,
-              onDeleted: () {
-                Debug.printLog(":: onDeleted :::");
-                logic.deleteTimeFormList(index);
-              },
             );
           }),
         );

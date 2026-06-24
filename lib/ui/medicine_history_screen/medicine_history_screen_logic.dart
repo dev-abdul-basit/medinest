@@ -12,6 +12,7 @@ import 'package:medinest/database/tables/medicine_history_table.dart';
 import 'package:medinest/database/tables/medicine_table.dart';
 import 'package:medinest/database/tables/shape_table.dart';
 import 'package:medinest/generated/assets.dart';
+import 'package:medinest/in_app_purchase/in_app_purchase_helper.dart';
 import 'package:medinest/routes/app_routes.dart';
 import 'package:medinest/ui/medicine_screen/medicine_screen_logic.dart';
 import 'package:medinest/utils/constant.dart';
@@ -63,15 +64,19 @@ class MedicineHistoryScreenLogic extends GetxController {
         Get.find<MedicineScreenLogic>().getAllFamilyMembers();
       });
     } else {
+      Preference.shared
+          .setLastPaywallTs(DateTime.now().millisecondsSinceEpoch);
       showModalBottomSheet(
           backgroundColor: Colors.transparent,
           context: context,
           isScrollControlled: true,
           builder: (context) => CommonSubscriptionDialog(
-                title: 'txtSubscribeNow'.tr,
-                description:
-                    'You have reached the limit.\nPlease subscribe to the plan.\n(In the free version, you only have a limit of 10 medicines and appointments.)',
-                image: Assets.imagesImgSuscription,
+                title: 'txtPaywallTitleMedicines'.tr,
+                description: 'txtPaywallBodyMedicines'.tr,
+                buttonText: 'txtPaywallCtaUpgrade'.tr,
+                ctaSubtext: 'txtPaywallCtaSubtext'.tr,
+                priceLabel: InAppPurchaseHelper().monthlyPriceLabel,
+                image: Assets.images.imgSuscription.path,
                 imageWidth: AppSizes.height_35,
                 onTapDelete: () {
                   Get.back();
@@ -122,6 +127,13 @@ class MedicineHistoryScreenLogic extends GetxController {
     medicineHistoryData.isTaken = isTaken ? 1 : 0;
     medicineHistoryData.isSkipped = isTaken ? 0 : 1;
     medicineHistoryData.mIsSynced = 0;
+
+    /// F02 — count taken doses for the review-prompt gate.
+    if (isTaken) {
+      await Preference.shared
+          .setDosesMarkedTaken(Preference.shared.getDosesMarkedTaken() + 1);
+    }
+
     await DataBaseHelper.instance
         .updateHistoryTableData(medicineHistoryData.hId!, medicineHistoryData)
         .then((value) async {
@@ -158,8 +170,8 @@ class MedicineHistoryScreenLogic extends GetxController {
               title: 'txtDeleteHistory'.tr,
               description: 'txtMedicineHistoryDeleteDescription'.tr,
               image: Utils.isLightTheme()
-                  ? Assets.imagesImgDeleteHistory
-                  : Assets.imagesImgDeleteHistoryDark,
+                  ? Assets.images.imgDeleteHistory.path
+                  : Assets.images.imgDeleteHistoryDark.path,
               imageWidth: AppSizes.height_35,
               onTapDelete: deleteHistoryOfSelectedDate,
             ));

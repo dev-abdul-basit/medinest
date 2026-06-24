@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F18 · Streak Milestone Celebration — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F18 · Streak Milestone Celebration</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>engagement-system.md §4 C1 (build-order #3, milestone half)</td></tr><tr><td>Effort</td><td>½–1 day</td></tr><tr><td>Risk</td><td>low</td></tr><tr><td>Schema change</td><td>no (new <code>Preference</code> key only)</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no</td></tr><tr><td>ASO signals moved</td><td>R (stickiness) — celebration reinforces the adherence habit that drives D7+ retention</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>Stickiness in week 2–4 comes from making the formed habit <em>feel</em> rewarding (engagement-system.md §1 Stickiness, §4 C1). We already compute <code>currentStreakDays</code> in <code>AdherenceService</code> (F08). This feature fires a calm one-off celebration when the user crosses a milestone — and it's the <strong>first real consumer of <code>EngagementService.canFire</code>/<code>recordFired</code></strong> (F15), so it proves the budget guardrail end-to-end: a milestone celebration respects quiet hours and the daily/weekly cap like any other engagement nudge.</p>
+<h2>2. What changes for the user</h2>
+<p>When the user's streak reaches 3 / 7 / 14 / 30 / 100 days (the locked ladder), the next time adherence is computed (Home open) they get one notification:</p>
+<blockquote><p><strong>You're on a streak! 🔥</strong> — 7 days on track. Keep it going!</p>
+</blockquote>
+<p>Each milestone fires at most once (tracked), and only if the engagement budget allows (not in quiet hours, under the cap). No guilt, no "you broke your streak", no points — same calm stance as F08.</p>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/services/engagement_scheduler.dart</code></strong> <em>(new)</em> — orchestrator tying <code>AdherenceService</code> results → <code>EngagementService</code> budget → <code>NotificationHelper</code>. Pure-ish: takes the already-computed <code>AdherenceSummary</code> (no recompute) and an injectable <code>now</code>. Single entry: <code>evaluate({required AdherenceSummary summary, DateTime? at})</code>.</li><li><strong><code>lib/notification/notification_helper.dart</code></strong> — add <code>showEngagementNotification({id, title, body})</code> — an immediate <code>show()</code> on the calm engagement channel (reused from F16), payload = <code>Constant.engagementPayload</code>.</li><li><strong><code>lib/utils/constant.dart</code></strong> — add <code>milestoneNotificationId</code> + <code>engagementPayload</code>.</li><li><strong><code>lib/utils/preference.dart</code></strong> — add <code>lastCelebratedMilestone</code> (int) + accessors.</li><li><strong><code>lib/ui/home/home_controller.dart</code></strong> — in <code>refreshAdherence()</code> (after <code>adherenceSummary</code> is computed), call <code>EngagementScheduler().evaluate(summary: adherenceSummary!)</code>. Extend the two payload guards (added in F16) to also treat <code>engagementPayload</code> as "just open the app".</li></ul>
+<h2>4. Data model</h2>
+<p>No schema change. New <code>Preference</code> key:</p>
+<pre><code class="lang-dart">static const String lastCelebratedMilestone = "LAST_CELEBRATED_MILESTONE";
+int getLastCelebratedMilestone() =&gt; _pref!.read(lastCelebratedMilestone) ?? 0;
+Future&lt;void&gt; setLastCelebratedMilestone(int v) =&gt; _pref!.write(lastCelebratedMilestone, v);</code></pre>
+<p>New <code>Constant</code> values:</p>
+<pre><code class="lang-dart">static const int milestoneNotificationId = 990003;
+static const String engagementPayload = "engagement";</code></pre>
+<p>Logic: find the highest milestone <code>reached</code> such that <code>currentStreakDays &gt;= reached</code>; if <code>reached &gt; 0</code> and <code>lastCelebratedMilestone &lt; reached</code> and <code>EngagementService.canFire(now, kind: milestone).allowed</code>, fire it, set <code>lastCelebratedMilestone = reached</code>, and <code>recordFired(now)</code>. Storing the highest-reached value means a user who jumps past a milestone offline still celebrates the latest one once, never re-celebrates a lower one.</p>
+<h2>5. Locale keys</h2>
+<pre><code class="lang-">'txtStreakMilestoneTitle': "You're on a streak! 🔥",
+'txtStreakMilestoneBody': "days on track. Keep it going!",</code></pre>
+<p>Rendered as <code>'$reached ${'txtStreakMilestoneBody'.tr}'</code> → "7 days on track. Keep it going!", matching the direct-interpolation convention used in <code>adherence_card.dart</code> (no placeholder substitution). Added to all 52 files with English fallback.</p>
+<h2>6. Routing</h2>
+<p>No new route. A milestone tap opens the app to Home (guarded like the win-back — never routes to the medicine full-screen).</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Add <code>Preference.lastCelebratedMilestone</code> + accessors.</li><li>Add <code>Constant.milestoneNotificationId</code> + <code>Constant.engagementPayload</code>.</li><li>Add 2 locale keys to all 52 files.</li><li>Add <code>NotificationHelper.showEngagementNotification(...)</code>.</li><li>Create <code>lib/services/engagement_scheduler.dart</code> with <code>evaluate(...)</code> + <code>_maybeCelebrateStreak(...)</code>.</li><li>Call <code>EngagementScheduler().evaluate(...)</code> at the end of <code>home_controller.refreshAdherence()</code>.</li><li>Extend both F16 payload guards to also skip <code>engagementPayload</code>.</li><li><code>flutter analyze</code> the changed files.</li></ol>
+<h2>8. Manual test plan</h2>
+<ul><li><strong>Golden path:</strong> build a 7-day ≥80% history (or temporarily lower <code>AdherenceService.streakThreshold</code>). Open Home → one milestone notification "7 days on track…". Reopen Home → no second notification (already celebrated 7).</li><li><strong>Budget — quiet hours:</strong> set device clock to 22:30, trigger a milestone → no notification (quiet hours); <code>lastCelebratedMilestone</code> unchanged so it celebrates later. Verify via log reason <code>quiet-hours</code>.</li><li><strong>Budget — daily cap:</strong> after one engagement notification today, a second eligible milestone is suppressed (<code>daily-cap</code>).</li><li><strong>No regression on lower milestones:</strong> with <code>lastCelebratedMilestone = 7</code>, a streak of 6 (dropped) does not re-fire; a later 14 does.</li><li><strong>Tap routing:</strong> tap a milestone (foreground + cold) → lands on Home, never the medicine full-screen.</li><li><strong>Regression check:</strong> adherence card still renders correct numbers; medicine reminders unaffected.</li></ul>
+<h2>9. Rollout</h2>
+<ul><li>No flag. Roll-back: revert the new service + the five edits + locale keys. <code>milestoneNotificationId</code> is unique; no orphans after next <code>cancelAll()</code>.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>Each milestone fires at most once; budget (quiet hours + caps) respected.</li><li>Milestone tap lands on Home, never the medicine full-screen.</li><li><code>flutter analyze</code> clean on changed files.</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Evening <strong>adherence tip</strong> (B1) + <strong>streak-at-risk</strong> (C2) scheduled nudges → <strong>F19</strong> (they schedule a future fire and exercise <code>canFire</code> against a candidate time + reminder spacing).</li><li>In-app confetti / animation on the adherence card — notification only in v1.</li><li>Journal prompt (B2) — parked (engagement-system.md §9).</li></ul>
+<h2>12. Open questions</h2>
+<p>None — milestone ladder + caps locked in engagement-system.md §9.</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>F18 · Streak Milestone Celebration</code></div>
+</div>
+</body>
+</html>

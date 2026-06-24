@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F11 · Caregiver Mode Toggle — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F11 · Caregiver Mode Toggle</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>T1-5</td></tr><tr><td>Effort</td><td>1–2 weeks</td></tr><tr><td>Risk</td><td>low</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no (claims a keyword + a positioning lane; gating it would defeat the purpose)</td></tr><tr><td>ASO signals moved</td><td>KW (<code>caregiver app</code>, <code>family medication app</code>), $$, R</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>We already have multi-profile family-member support, but we don't <em>call</em> it caregiver mode anywhere. The keyword <code>caregiver app</code> has Tier-2 demand (<code>../../aso/02-keyword-research.md</code>) and we're already a perfect match. This is mostly a copy + onboarding flow change with one flag.</p>
+<h2>2. What changes for the user</h2>
+<ul><li>During onboarding (<code>F07</code> already lands), a new question: <strong>"Who is this for?"</strong> with two options:</li><li>"Just me" — current default behavior</li><li>"Me and my family" / "I'm helping someone else" — switches the app into caregiver mode</li><li>In caregiver mode:</li><li>The home tab shows a profile switcher more prominently</li><li>The "Add medicine" flow defaults the <code>family member</code> field instead of skipping it</li><li>Settings has an "I'm a caregiver" toggle (changeable any time)</li><li>Specific copy adjusts (<code>Your medicines</code> → <code>Their medicines</code> when viewing a family-member profile)</li><li>A free 8-page in-app guide ("Tips for caregivers") is unlocked — content sourced separately, lives as a single locale-string-based static screen.</li></ul>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/utils/preference.dart</code></strong> — add <code>caregiverModeEnabled</code> bool.</li><li><strong><code>lib/utils/constant.dart</code></strong> — add <code>Constant.idCaregiverMode</code> GetX update id.</li><li><strong><code>lib/ui/first_medicine/first_medicine_view.dart</code></strong> <em>(from F07)</em> — add the "Who is this for?" question before the medicine input.</li><li><strong><code>lib/ui/setting/setting_screen_view.dart</code></strong> — add toggle row.</li><li><strong><code>lib/ui/home/home_screens.dart</code></strong> — when caregiver mode is on, render the family-member tab strip more prominently (larger avatars, profile names visible — currently subtle).</li><li><strong><code>lib/ui/medicine_screen/medicine_screen_view.dart</code></strong> — title-line copy adjusts based on selected family member ("Your meds" / "Mom's meds").</li><li><strong>NEW: <code>lib/ui/caregiver_tips/caregiver_tips_view.dart</code></strong> <em>(new file)</em> — static scrollable view with 8 short tip pages (locale-key driven).</li><li><strong><code>lib/routes/app_routes.dart</code></strong> + <strong><code>app_pages.dart</code></strong> — register caregiver tips route.</li><li><strong>Locale files</strong> — new keys, including the 8 tip pages.</li></ul>
+<h2>4. Data model</h2>
+<p>No SQLite schema changes.</p>
+<p>New <code>Preference</code> key:</p>
+<pre><code class="lang-dart">static const String caregiverModeEnabled = "CAREGIVER_MODE_ENABLED";
+Future&lt;void&gt; setCaregiverMode(bool v) =&gt; _pref!.write(caregiverModeEnabled, v);
+bool getCaregiverMode()              =&gt; _pref!.read(caregiverModeEnabled) ?? false;</code></pre>
+<h2>5. Locale keys</h2>
+<p>Onboarding question:</p>
+<pre><code class="lang-">'txtCaregiverIntroQuestion': "Who is MediNest for?",
+'txtCaregiverIntroOptionMe': "Just me",
+'txtCaregiverIntroOptionFamily': "Me and my family",
+'txtCaregiverIntroOptionOther': "I'm helping someone else",</code></pre>
+<p>Settings + UI:</p>
+<pre><code class="lang-">'txtCaregiverModeSettingTitle': "Caregiver mode",
+'txtCaregiverModeSettingSubtitle': "Show family-member features more prominently.",
+'txtCaregiverHisMeds': "{name}'s medicines",
+'txtCaregiverYourMeds': "Your medicines",
+'txtCaregiverTipsLink': "Tips for caregivers",</code></pre>
+<p>Tips content (8 pages × ~60 words each — sourced separately, placeholders here):</p>
+<pre><code class="lang-">'txtCaregiverTip1Title': "Set up the app for them, not for you",
+'txtCaregiverTip1Body':  "[60-word body]",
+... through txtCaregiverTip8.</code></pre>
+<h2>6. Routing</h2>
+<p>Add <code>caregiverTips</code> route.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Add <code>Preference</code> accessors.</li><li>Add <code>Constant.idCaregiverMode</code>.</li><li>Add locale keys (onboarding + settings + 8 tip pages). Replicate.</li><li>Update <code>first_medicine_view.dart</code> (from F07): inject the "Who is MediNest for?" prompt. On selection, set <code>caregiverModeEnabled</code> accordingly.</li><li>Add settings toggle.</li><li>In <code>home_screens.dart</code>: visual treatment of the family-member tab strip switches based on <code>caregiverModeEnabled</code>.</li><li>Adjust <code>medicine_screen_view.dart</code> title line.</li><li>Create <code>caregiver_tips_view.dart</code> with a <code>PageView</code> of 8 cards. Use existing widget primitives.</li><li>Wire route + Settings entry point ("Tips for caregivers" link, only visible when <code>caregiverModeEnabled</code>).</li><li>QA.</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path:</strong></p>
+<ol><li>Fresh install, onboarding.</li><li>On "Who is MediNest for?" choose "Me and my family".</li><li><strong>Expected:</strong> caregiver-mode flag set; Home tab shows enhanced profile switcher; Settings has the toggle ON.</li></ol>
+<p><strong>Edge case 1 — Switch back:</strong></p>
+<ol><li>Settings → toggle OFF.</li><li><strong>Expected:</strong> UI reverts. Family-member profiles are still in the database (don't delete them); they're just less prominent.</li></ol>
+<p><strong>Edge case 2 — Just-me user discovers caregiving need later:</strong></p>
+<ol><li>"Just me" user. Two months in, a parent gets sick. Settings → toggle ON.</li><li><strong>Expected:</strong> caregiver mode UI activates. Tips link appears. No data loss.</li></ol>
+<p><strong>Edge case 3 — Tips content readability:</strong></p>
+<ol><li>Open Tips screen. Swipe through all 8.</li><li><strong>Expected:</strong> all readable, no truncation, RTL works for Arabic.</li></ol>
+<p><strong>Regression check:</strong></p>
+<p>Family member CRUD still works in both modes.</p>
+<h2>9. Rollout</h2>
+<ul><li>Standard release.</li><li>Roll-back: revert toggle path. Setting key remains in storage harmlessly.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>All 8 tip pages have real content (not lorem ipsum)</li><li>Onboarding answer correctly sets the preference</li><li>Caregiver-mode UI difference is <em>noticeable but calm</em> (not gimmicky)</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>"Caregiver-mode-only" features behind a new paywall (don't gate this; gating defeats the keyword claim)</li><li>Real-time sync between caregiver and patient devices — that's F18 (<code>family-sync</code>)</li><li>Voice / speech features for accessibility — separate spec</li></ul>
+<h2>12. Open questions</h2>
+<ol><li>Source of the 8 caregiver tips content. Recommendation: write internally based on real caregiver Reddit threads (per the strategies doc). Don't copy-paste from web articles. ~60 words each, helpful tone.</li><li>Should the "Tips for caregivers" link be visible to non-caregiver-mode users too (as discoverability for the feature)? Recommendation: no — would clutter Settings for solo users.</li></ol>
+<hr>
+<h2>Implemented — STAGE 1 (foundation only)</h2>
+<ul><li>Date: 2026-05-09</li><li>versionCode shipped: pending</li><li><strong>Stage 1 (this pass) — DONE:</strong></li><li><code>lib/utils/preference.dart</code> — <code>caregiverModeEnabled</code> key + <code>getCaregiverMode/setCaregiverMode</code> accessors</li><li><code>lib/localization/languages/language_en.dart</code> — <code>txtCaregiverModeSettingTitle</code>, <code>txtCaregiverModeSettingSubtitle</code></li><li>51 other locale files — same 2 keys with English fallback</li><li><code>lib/ui/setting/setting_screen_logic.dart</code> — <code>caregiverMode</code> field + <code>onCaregiverModeChange()</code></li><li><code>lib/ui/setting/setting_screen_view.dart</code> — toggle row in the General section with <code>Assets.icons.icFamilyMember</code></li><li><strong>Stage 2 (deferred — needs your input):</strong></li><li>8 caregiver tips content. Spec is explicit: do NOT generate from web articles or LLM. Source from real Reddit threads in r/Caregivers per <code>docs/strategies/reddit/</code>. Estimate 2 hours of writing time.</li><li>Caregiver tips screen (<code>lib/ui/caregiver_tips/</code>) + route + binding — straightforward once content exists.</li><li>UI prominence shift in <code>home_screens.dart</code> family-member tab strip when <code>caregiverMode == true</code> — needs design decision (bigger avatars? different layout?).</li><li>Conditional copy in <code>medicine_screen_view.dart</code> ("Mom's medicines" vs "Your medicines") — depends on <code>family_member_table.name</code> being set; needs UX agreement.</li><li>Onboarding question — blocked by F07.</li><li>The Stage-1 toggle is functional: it persists and is queryable from anywhere via <code>Preference.shared.getCaregiverMode()</code>. Future code can gate features on this without further infra. The user just doesn't see any in-UI difference yet beyond the toggle itself.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F11 · Caregiver Mode Toggle</code></div>
+</div>
+</body>
+</html>

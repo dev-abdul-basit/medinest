@@ -62,7 +62,7 @@ class AppointmentHistoryScreenPage extends StatelessWidget {
                           return InkWell(
                             onTap: logic.filteredAppointmentHistoryTableList.isNotEmpty?logic.onDeleteHistory:null,
                             child: Image.asset(
-                              Assets.iconsIcDeleteHistory,
+                              Assets.icons.icDeleteHistory.path,
                               color: logic.filteredAppointmentHistoryTableList.isNotEmpty?Get.theme.colorScheme.secondary:Get.theme.colorScheme.surface,
                               height: AppSizes.width_5_5,
                               width: AppSizes.width_5_5,
@@ -89,7 +89,7 @@ class AppointmentHistoryScreenPage extends StatelessWidget {
                     },
                   )
                       : NoHistoryWidget(
-                    image: Assets.imagesImgNoHistory,
+                    image: Assets.images.imgNoHistory.path,
                     text: 'txtHistoryNotFound'.tr,
                     description: 'txtHistoryNotFoundDescription'.tr,
                     buttonText: 'txtCreateAppointment'.tr,
@@ -177,7 +177,7 @@ class AppointmentHistoryScreenPage extends StatelessWidget {
                         SizedBox(height: AppSizes.height_1),
                         Row(
                           children: [
-                            Image.asset(Assets.iconsIcUserName,
+                            Image.asset(Assets.icons.icUserName.path,
                                 color: Get.theme.colorScheme.onSurface,
                                 height: AppSizes.width_4_5,
                                 width: AppSizes.width_4_5),
@@ -197,7 +197,7 @@ class AppointmentHistoryScreenPage extends StatelessWidget {
                         SizedBox(height: AppSizes.height_1),
                         Row(
                           children: [
-                            Image.asset(Assets.iconsIcWatch,
+                            Image.asset(Assets.icons.icWatch.path,
                                 color: Get.theme.colorScheme.onSurface,
                                 height: AppSizes.width_4_5,
                                 width: AppSizes.width_4_5),
@@ -214,8 +214,8 @@ class AppointmentHistoryScreenPage extends StatelessWidget {
                   ),
                   Image.asset(
                     appointmentHistoryTable.isAccept == 1
-                        ? Assets.iconsIcActive
-                        : Assets.iconsIcReSchedule,
+                        ? Assets.icons.icActive.path
+                        : Assets.icons.icReSchedule.path,
                     width: AppSizes.width_6,
                     height: AppSizes.width_6,
                   ),

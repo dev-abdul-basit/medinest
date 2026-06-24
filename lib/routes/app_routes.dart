@@ -12,6 +12,7 @@ class AppRoutes {
   static const String historyScreen = '/historyScreen';
   static const String proVersion = '/proVersion';
   static const String getStarted = '/getStarted';
+  static const String firstMedicine = '/firstMedicine';
   static const String introduction = '/introduction';
   static const String forgotPassword = '/forgotPassword';
   static const String addOrEditProfile = '/addOrEditProfile';

@@ -1,16 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medinest/Widgets/common_delete_conformation.dart';
 import 'package:medinest/Widgets/common_text.dart';
 import 'package:medinest/Widgets/doctor_detail_dialog.dart';
 import 'package:medinest/Widgets/family_member_detail_dialog.dart';
+import 'package:medinest/Widgets/member_avatar.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/generated/assets.dart';
 import 'package:medinest/ui/doctors_screen/doctors_screen_logic.dart';
 import 'package:medinest/ui/family_member_screen/family_member_screen_logic.dart';
-import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/sizer_utils.dart';
 
 class ItemPerson extends StatelessWidget {
@@ -83,65 +82,12 @@ class ItemPerson extends StatelessWidget {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Get.theme.colorScheme.errorContainer),
-                      child: familyMember?.profileImage != null
-                          ? CachedNetworkImage(
-                              imageUrl: familyMember!.profileImage!,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: imageProvider, fit: BoxFit.cover),
-                                ),
-                              ),
-                              placeholder: (context, url) => Padding(
-                                padding: const EdgeInsets.all(18),
-                                child: Image.asset(Constant.genderIconList[
-                                    Constant.genderList.indexOf(familyMember!.gender ??
-                                                Constant.genderList[0])]),
-                              ),
-                              errorWidget: (context, url, error) => Padding(
-                                padding: const EdgeInsets.all(18),
-                                child: Image.asset(Constant.genderIconList[
-                                    Constant.genderList.indexOf(familyMember!.gender ??
-                                                Constant.genderList[0])]),
-                              ),
-                            )
-                          :doctor?.profileImage != null?
-                      CachedNetworkImage(
-                        imageUrl: doctor!.profileImage!,
-                        imageBuilder: (context, imageProvider) =>
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image: imageProvider, fit: BoxFit.cover),
-                              ),
-                            ),
-                        placeholder: (context, url) => Padding(
-                          padding: const EdgeInsets.all(18),
-                          child: Image.asset(Constant.genderIconList[
-                          Constant.genderList.indexOf(doctor!.gender ??
-                              Constant.genderList[0])]),
-                        ),
-                        errorWidget: (context, url, error) => Padding(
-                          padding: const EdgeInsets.all(18),
-                          child: Image.asset(Constant.genderIconList[
-                          Constant.genderList.indexOf(doctor!.gender ??
-                              Constant.genderList[0])]),
-                        ),
-                      )
-                          : Padding(
-                              padding: const EdgeInsets.all(18),
-                              child: Image.asset(Constant.genderIconList[
-                                  Constant.genderList.indexOf(
-                                      familyMember != null
-                                          ? familyMember!.gender ??
-                                              Constant.genderList[0]
-                                          : doctor!.gender ??
-                                              Constant.genderList[0])]),
-                            ),
-                  ),
+                      child: MemberAvatar(
+                        size: AppSizes.height_9,
+                        profileImage:
+                            familyMember?.profileImage ?? doctor?.profileImage,
+                        gender: familyMember?.gender ?? doctor?.gender,
+                      )),
                   SizedBox(
                     width: AppFontSize.size_10,
                   ),
@@ -212,7 +158,7 @@ class ItemPerson extends StatelessWidget {
                         : Get.find<DoctorsScreenLogic>()
                         .gotoEditDoctor(doctor!),
                     child: Image.asset(
-                      Assets.iconsIcEdit,
+                      Assets.icons.icEdit.path,
                       color: Get.theme.colorScheme.primary,
                       width: AppSizes.height_2,
                       height: AppSizes.height_2,
@@ -239,7 +185,7 @@ class ItemPerson extends StatelessWidget {
                       deleteBottomSheet(context);
                     },
                     child: Image.asset(
-                      Assets.iconsIcDelete,
+                      Assets.icons.icDelete.path,
                       width: AppSizes.height_2,
                       height: AppSizes.height_2,
                     )),

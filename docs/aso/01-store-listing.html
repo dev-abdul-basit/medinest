@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Store Listing v1 — Recommended Replacement for the Live Listing — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="README.md">← back to docs index</a>
+  <span class="kicker">ASO</span>
+<h1>Store Listing v1 — Recommended Replacement for the Live Listing</h1>
+<blockquote><p><strong>MVP scope (2026-05-10):</strong> product pillars are <strong>pill reminder + health journal + family medication support</strong>. Doctor profiles and appointment reminders were removed from MVP. This listing reflects that. Future re-introduction tracked in <code>../feature-improvements/feature-roadmap.md</code>.</p>
+</blockquote>
+<blockquote><p><strong>Do not paste any of this into Play Console yet.</strong> Read the change rationale, push back where you disagree, and only then run a Store Listing Experiment. Listing changes are A/B-able in Play Console — never push direct to 100 % of users.</p>
+</blockquote>
+<p>Linked references:</p>
+<ul><li>Live (v0): <code>store_listing_desc.txt</code></li><li>Why these keywords: <code>02-keyword-research.md</code></li><li>Why these patterns: <code>03-competitor-analysis.md</code></li><li>Why these screenshots: <code>04-screenshot-strategy.md</code></li></ul>
+<hr>
+<h2>Title — recommended</h2>
+<p><strong><code>Medinest: Pill &amp; Med Reminder</code></strong> (29 chars / 30 max)</p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Live (v0)</td><td><code>Medinest – Pill Reminder</code> (24 chars)</td></tr><tr><td>Recommended (v1)</td><td><code>Medinest: Pill &amp; Med Reminder</code> (29 chars)</td></tr><tr><td>Change</td><td>+<code>Med</code> head term, swap em-dash for colon</td></tr></tbody></table>
+<p>Why:</p>
+<ul><li><strong>Adds a second indexed head term</strong> (<code>Med</code>) without losing brand. <code>Med</code> is a separate query from <code>Medicine</code> and <code>Medication</code> and shorter to fit. Pattern lifted from Medisafe (<code>Medisafe Pill &amp; Med Reminder</code>).</li><li><strong>Colon over em-dash.</strong> Em-dash is fine cosmetically but Play Store search query parsing is whitespace-tolerant, not punctuation-tolerant. Colon + space is the safest delimiter for both indexing and visual scan.</li><li><strong>Stays under 30 chars</strong> — Play truncates with ellipsis at 30. We hit 29.</li></ul>
+<h3>Title — alternates to A/B test against v1</h3>
+<table><thead><tr><th>Variant</th><th>Chars</th><th>Hypothesis</th><th>Risk</th></tr></thead><tbody><tr><td><code>Medinest: Pill Reminder &amp; Log</code></td><td>28</td><td>Adds <code>log</code> keyword (journal feature)</td><td>Loses <code>Med</code> head term</td></tr><tr><td><code>Pill Reminder &amp; Tracker — Medinest</code></td><td>33</td><td>Pure-keyword lead, brand demoted</td><td><strong>Over 30 chars, do not ship</strong></td></tr><tr><td><code>Pill Reminder, Med &amp; Family</code></td><td>28</td><td>Lead with keyword, add caregiver hook</td><td>Drops <code>Medinest</code> brand entirely — only test once we have brand-search volume</td></tr></tbody></table>
+<blockquote><p>Run v1 vs v0 first. Run alternates only after a winner is declared.</p>
+</blockquote>
+<hr>
+<h2>Short description — recommended</h2>
+<p><strong><code>Pill reminder, medication tracker &amp; journal. Never miss a dose. Family support.</code></strong> (79 chars / 80 max)</p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Live (v0)</td><td><code>Never miss your pills. Smart reminders, personal journals, and family support.</code> (78 chars)</td></tr><tr><td>Recommended (v1)</td><td><code>Pill reminder, medication tracker &amp; journal. Never miss a dose. Family support.</code> (79 chars)</td></tr><tr><td>Change</td><td>Lead with two head keywords + journal as the third, keep benefit. <strong>Doctor feature removed</strong> since it is no longer in the MVP.</td></tr></tbody></table>
+<p>Why:</p>
+<ul><li>The first 80 chars is double-indexed (short description <strong>and</strong> above-the-fold preview text). Putting <code>pill reminder</code> + <code>medication tracker</code> + <code>journal</code> here gives those three keywords short-description weight in addition to whatever long-description weight they get.</li><li><code>Never miss a dose</code> is the proven benefit phrase in this category. (Medisafe has used variants of it for years. There is no penalty for using category-standard phrasing — these are not trademarked.)</li><li><code>Family support</code> is the third feature claim. The previous v1 also tried <code>doctor support</code> — that's been pulled because doctor profiles are out of MVP. Once doctor returns post-MVP, A/B <code>Family &amp; doctor support</code> against <code>Family support</code>.</li></ul>
+<h3>Short description — alternates to A/B test</h3>
+<table><thead><tr><th>Variant</th><th>Chars</th><th>Hypothesis</th></tr></thead><tbody><tr><td><code>Pill reminder for you &amp; your family. Track meds, log doses, never miss again.</code></td><td>77</td><td>Lead with audience (family) instead of feature</td></tr><tr><td><code>Free pill reminder &amp; med tracker. Reminders, dose log, family &amp; doctors.</code></td><td>73</td><td>Adds <code>Free</code> — known CVR booster on Play</td></tr><tr><td><code>Smart pill reminder &amp; medicine tracker. Doses, family meds, doctor notes.</code></td><td>74</td><td><code>Smart</code> removed — <code>Smart</code> doesn't beat plain language in pill-reminder SERPs</td></tr></tbody></table>
+<hr>
+<h2>Full description — recommended</h2>
+<p>This block is the source of truth. Paste verbatim into Play Console after review. Character count: ~2 600 of 4 000 budget — leaves room for Play Console's mandatory disclosures and gives us slack for future feature additions.</p>
+<pre><code class="lang-">Never miss a dose again.
+
+Medinest is a clean, reliable pill reminder and medication tracker that helps you take medicines on time, log every dose, and keep a personal health journal — for yourself and your family — all in one app.
+
+Whether you handle a single daily pill or coordinate medicines for parents, kids, or a partner, Medinest keeps the routine simple and stress-free.
+
+🔔 Smart Pill Reminders
+Set medicines with dosage, time, and frequency. Daily, custom, or recurring schedules. Reliable on-time notifications even when the app is closed. Choose from 11 alert sounds — gentle bells, alarm clock, classic ringtone, or silent.
+
+📋 Medication Tracker &amp; Dose Log
+Mark doses as taken, missed, or skipped. Review your full medicine history at any time. A clear daily view shows what is due, what is done, and what is next.
+
+📓 Personal Health Journal
+Add notes alongside any medicine, or as standalone journal entries. Track how you feel, side effects, dose changes, or anything worth remembering for your next doctor visit. No fixed templates — write in your own words. The journal is what turns a reminder app into a record you can actually use.
+
+👨‍👩‍👧 Family Medication Support
+Add and manage medications for family members in one app. Useful for caregivers handling a parent's pills, a child's prescriptions, or a partner's chronic-condition routine — without mixing schedules.
+
+🌍 Works in Your Language
+Medinest is available in 50+ languages including English, Arabic, Hindi, Urdu, Indonesian, Spanish, Portuguese, Turkish, French, German, Russian, Japanese, Korean, Chinese, Vietnamese, Bengali, Tamil, Telugu, and many more.
+
+Why Medinest
+
+• Simple — designed for a single screen, not buried menus
+• Reliable — local notifications run even offline
+• Private — your data stays on your device, with optional secure cloud backup
+• Family-friendly — multiple profiles, one app
+• Lightweight — fast on older phones, low battery use
+
+Premium
+
+Free version includes core reminders, full medication history, full health journal, and family support — up to 10 medicines.
+
+Upgrade to Premium for:
+• Ad-free experience
+• Unlimited medicines
+• Unlimited reminders
+• Priority support
+
+🔐 Privacy
+Medinest does not provide medical advice, diagnosis, or treatment. We do not sell your data. Notifications and history live on your device. Cloud sync is opt-in and uses Google Sign-in for secure backup only.
+
+Built for people who want to take their medicine on time without thinking about it. Try Medinest free today.</code></pre>
+<h3>Why these specific changes from v0</h3>
+<table><thead><tr><th>Change</th><th>Reason</th></tr></thead><tbody><tr><td>Open with <code>Never miss a dose again.</code> not <code>Never Miss Your Medicine Again</code></td><td>Lowercase opener reads more conversational; <code>dose</code> is a higher-intent keyword than <code>medicine</code> for the head query.</td></tr><tr><td>Each feature block is <strong>3 sentences max</strong></td><td>v0 had 1–2 sentence blocks. Three sentences gives keyword surface area without becoming a wall of text. Optimal density per ASO testing in this category.</td></tr><tr><td>Sound list mentioned by name</td><td>Reviewers (and people typing <code>pill alarm</code> queries) search for sound-customization. Naming the sounds claims those long-tail queries.</td></tr><tr><td><code>Medication Tracker &amp; Dose Log</code> block</td><td>Net new — claims <code>medication tracker</code>, <code>dose log</code>, <code>dose tracker</code> — Tier 2 keywords from <code>02-keyword-research.md</code>.</td></tr><tr><td><code>Personal Health Journal</code> block expanded</td><td>Journal is the second MVP pillar. Block now ends on the strong line "the journal is what turns a reminder app into a record you can actually use" — that's the differentiator vs Medisafe and what the marketing copy on every other surface (X, LinkedIn) leans on.</td></tr><tr><td><strong>Doctor Profiles block REMOVED</strong></td><td>Doctor profiles are no longer in the MVP. Will return post-MVP once we ship the doctor-export PDF feature (see roadmap T1-4).</td></tr><tr><td><strong>Appointment Reminders block REMOVED</strong></td><td>Appointment reminders are no longer in the MVP. The decision: a unified reminder surface (only medicines) is a clearer product story than splitting medicines vs appointments. Re-introduction tracked in roadmap.</td></tr><tr><td>50+ languages block</td><td>Trust signal AND keyword-rich for non-English SERPs that Google may surface to multilingual users. Numbers ("50+") perform better than vague claims.</td></tr><tr><td><code>Why Medinest</code> is bullets, not a list of synonyms</td><td>v0 said "Clean and easy-to-use interface" — meaningless. v1 says "designed for a single screen, not buried menus" — concrete, defensible.</td></tr><tr><td>Premium block names the gate (10 medicines)</td><td>Pre-emptively answers the #1 1-star review pattern: "didn't know it was limited." Only one cap is mentioned because only one is part of the MVP.</td></tr><tr><td>Privacy block is shorter, says what we DON'T do</td><td>Compliance + trust. Required wording for medical-adjacent apps to avoid Play medical-claims policy hits.</td></tr></tbody></table>
+<hr>
+<h2>What does <em>not</em> go in the listing (and why)</h2>
+<ul><li><strong>No emoji-spam in the title.</strong> Play does not allow them in titles since 2021 anyway, but worth noting.</li><li><strong>No "#1 pill reminder app" or "best in class".</strong> Superlatives without substantiation can trigger rejection under Play's "Misleading claims" policy. Once you have a real award/press mention, those CAN be quoted in screenshot captions.</li><li><strong>No price claim in the description</strong> ("Only 5 SAR/month!"). Localized prices vary; Play renders the user's local price automatically. Hard-coding a number creates inconsistency.</li><li><strong>No "AI-powered"</strong> anywhere. We are not AI-powered. Play is increasingly aggressive about removing apps that misrepresent AI use.</li></ul>
+<hr>
+<h2>Listing fields beyond the three big ones</h2>
+<table><thead><tr><th>Field</th><th>Recommendation</th></tr></thead><tbody><tr><td>App category</td><td>Health &amp; Fitness (primary) — keep as-is</td></tr><tr><td>Tags (Play Console)</td><td><code>Reminders</code>, <code>Medication tracking</code>, <code>Family</code>, <code>Health journal</code>. Pick 5 from Play's tag list aligned to our keywords.</td></tr><tr><td>Contact email</td><td>Use a <code>support@</code> email, NOT personal Gmail. Reviewers downgrade trust on personal-email contacts.</td></tr><tr><td>Privacy policy URL</td><td>Required. If not hosted, one-page privacy site on GitHub Pages is fine for v1.</td></tr><tr><td>App icon</td><td>Keep current icon for now (assets/img_icon.png). Re-evaluate after first 90 days of CVR data.</td></tr><tr><td>Feature graphic</td><td><code>docs/MediNest/Medinest Playstore grahics/Medinest Pill Reminder and Health Journal feature graphic.png</code> — review with screenshot strategy in <code>04-screenshot-strategy.md</code>.</td></tr></tbody></table>
+<hr>
+<h2>Localized listings — which markets to ship first</h2>
+<p>Order is opinionated. Justification in <code>02-keyword-research.md</code> and <code>feature-improvements/ranking-tactics.md</code>.</p>
+<ol><li><strong>ar-SA</strong> — pricing already in SAR. Translation exists in app. Easiest win.</li><li><strong>id-ID</strong> — Indonesia is highest-volume English/local-dual market with low ASO competition.</li><li><strong>hi-IN</strong> — India volume is enormous; competition is real but the long tail (<code>दवा रिमाइंडर</code>) is open.</li><li><strong>ur-PK</strong> — Pakistan volume is meaningful, very low competition.</li><li><strong>es-419</strong> — Latin America Spanish (NOT es-ES — separate listing).</li><li><strong>pt-BR</strong> — Brazil only.</li><li><strong>tr-TR</strong>, <strong>ru-RU</strong>, <strong>fr-FR</strong>, <strong>de-DE</strong> — slower to convert but stable rankings once placed.</li></ol>
+<p>For each, deliver to a translator:</p>
+<ul><li>The English long description above</li><li>The keyword tier-5 table from <code>02-keyword-research.md</code> for that locale</li><li>Instruction: "Do not literal-translate. Localize the title and short description so a native speaker would actually type and tap them. Long description should read naturally."</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>Store Listing v1 — Recommended Replacement for the Live Listing</code></div>
+</div>
+</body>
+</html>

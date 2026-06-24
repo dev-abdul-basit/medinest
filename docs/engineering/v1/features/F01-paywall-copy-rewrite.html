@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F01 · Paywall Copy Rewrite — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F01 · Paywall Copy Rewrite</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>QW-1</td></tr><tr><td>Effort</td><td>½ day</td></tr><tr><td>Risk</td><td>low</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no (this <em>is</em> the paywall)</td></tr><tr><td>ASO signals moved</td><td>$$, ★</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>Current paywall copy reads developer-style, doesn't name the upgrade benefit, and never anchors price. See <code>../../../context/monetization-snapshot.md</code> for the analysis. Three concrete issues identified there make this an obvious upgrade-rate lift; rewrite is half a day.</p>
+<h2>2. What changes for the user</h2>
+<p>User hits the medicine-count or appointment-count cap and sees <code>CommonSubscriptionDialog</code>.</p>
+<p><strong>Before:</strong> <em>"You have reached the limit. Please subscribe to the plan. (In the free version, you only have a limit of 10 medicines and appointments.)"</em></p>
+<p><strong>After (English source — translators handle the rest):</strong></p>
+<ul><li><strong>Title:</strong> <em>"Unlock unlimited medicines"</em></li><li><strong>Body:</strong> <em>"You're using all 10 free medicines. Upgrade to Premium for unlimited medicines, unlimited reminders, and an ad-free experience."</em></li><li><strong>CTA button:</strong> <em>"Upgrade — only 5 SAR / month"</em> (Note: do NOT hardcode the SAR price into the string. See section 5 for the fix.)</li><li><strong>Secondary line below CTA:</strong> <em>"Cancel anytime. No charge until you confirm."</em></li></ul>
+<p>A second variant is needed for the appointment-cap path:</p>
+<ul><li><strong>Title:</strong> <em>"Unlock unlimited appointments"</em></li><li><strong>Body:</strong> <em>"You're using all 10 free appointments. Upgrade to Premium for unlimited appointments, unlimited journals, and an ad-free experience."</em></li></ul>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/Widgets/common_subscribe_dialog.dart</code></strong> — extend the existing widget so it can show a CTA button label and a secondary subtext. Currently it accepts <code>title</code>, <code>description</code>, <code>image</code>, <code>buttonText</code>, <code>onTapDelete</code> (sic — keep the existing param name to avoid breaking callers; rename in v2). Add: <code>ctaSubtext</code> (optional), <code>priceLabel</code> (optional, dynamic — rendered next to <code>buttonText</code>).</li><li><strong><code>lib/ui/home/home_controller.dart</code></strong> — replace the two existing <code>CommonSubscriptionDialog</code> invocations (medicine-cap, appointment-cap) with the new copy via locale keys. <strong>Do not touch the trigger logic.</strong></li><li><strong><code>lib/ui/medicine_history_screen/medicine_history_screen_logic.dart</code></strong> — same change to its <code>CommonSubscriptionDialog</code> call.</li><li><strong><code>lib/ui/appointment_history_screen/appointment_history_screen_logic.dart</code></strong> — same.</li><li><strong><code>lib/localization/languages/language_en.dart</code></strong> — new keys (section 5).</li><li><strong><code>lib/localization/languages/language_*.dart</code></strong> — new keys with English fallback (every other locale file).</li></ul>
+<h2>4. Data model</h2>
+<p>No schema changes. No new <code>Preference</code> keys.</p>
+<h2>5. Locale keys</h2>
+<p>Add to <code>language_en.dart</code> and replicate (with English fallback) into every other <code>language_*.dart</code>:</p>
+<pre><code class="lang-">'txtPaywallTitleMedicines': "Unlock unlimited medicines",
+'txtPaywallBodyMedicines': "You're using all 10 free medicines. Upgrade to Premium for unlimited medicines, unlimited reminders, and an ad-free experience.",
+'txtPaywallTitleAppointments': "Unlock unlimited appointments",
+'txtPaywallBodyAppointments': "You're using all 10 free appointments. Upgrade to Premium for unlimited appointments, unlimited journals, and an ad-free experience.",
+'txtPaywallCtaUpgrade': "Upgrade",
+'txtPaywallCtaSubtext': "Cancel anytime. No charge until you confirm.",</code></pre>
+<p>Note: the price (<code>5 SAR</code>) is <strong>not</strong> in any locale string. Reason: Play Store renders the user's local price automatically once the dialog reads the IAP product price from <code>InAppPurchaseHelper</code>. The CTA renders as <code>"Upgrade — {localizedPrice} / month"</code> in code, where <code>{localizedPrice}</code> comes from the <code>ProductDetails.price</code> field already exposed by the IAP helper.</p>
+<p>If <code>ProductDetails.price</code> is unavailable at the time the dialog opens (e.g., IAP not initialized), fall back to rendering the CTA as just <code>txtPaywallCtaUpgrade</code> without the price suffix. <strong>Do not show a placeholder like "$X.XX".</strong></p>
+<h2>6. Routing</h2>
+<p>No routing changes.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Read <code>lib/Widgets/common_subscribe_dialog.dart</code> end-to-end to confirm the parameter names.</li><li>Add two optional params to <code>CommonSubscriptionDialog</code>: <code>ctaSubtext</code> (String?) and <code>priceLabel</code> (String?). Render <code>ctaSubtext</code> below the CTA button; render <code>priceLabel</code> appended to <code>buttonText</code> if non-null.</li><li>Add the 6 locale keys to <code>language_en.dart</code> (in alphabetical / logical block — match existing style).</li><li>Replicate the 6 keys into every other <code>language_*.dart</code> file with the English value as fallback. Bash one-liner is acceptable here:</li></ol>
+<p>   ``<code>bash    for f in lib/localization/languages/language_*.dart; do      [ "$f" = "lib/localization/languages/language_en.dart" ] &amp;&amp; continue      # insert the 6 keys near the top of the map    done    </code>``    Hand-verify Arabic and Hindi — those files are non-trivial.</p>
+<ol><li>Update the medicine-cap call site in <code>home_controller.dart</code>:</li></ol>
+<ul><li><code>title: 'txtPaywallTitleMedicines'.tr</code></li><li><code>description: 'txtPaywallBodyMedicines'.tr</code></li><li><code>buttonText: 'txtPaywallCtaUpgrade'.tr</code></li><li><code>ctaSubtext: 'txtPaywallCtaSubtext'.tr</code></li><li><code>priceLabel: </code> — pull from <code>InAppPurchaseHelper</code>'s monthly product details. If null, pass null.</li></ul>
+<ol><li>Same for the appointment-cap call site (use <code>txtPaywallTitleAppointments</code> / <code>txtPaywallBodyAppointments</code>).</li><li>Same for the medicine-history and appointment-history call sites.</li><li>Run <code>flutter analyze</code>. Address warnings on touched files only.</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path (medicine cap):</strong></p>
+<ol><li>Fresh install, sign in.</li><li>Add 10 medicines (any names, any times).</li><li>Tap "Add medicine" again.</li><li><strong>Expected:</strong> dialog with title <code>Unlock unlimited medicines</code>, body about all 10 free medicines used, CTA <code>Upgrade — {price} / month</code> if IAP loaded else <code>Upgrade</code>, subtext <code>Cancel anytime. No charge until you confirm.</code></li><li>Tap CTA → routed to <code>proVersion</code> screen (existing behavior, unchanged).</li></ol>
+<p><strong>Golden path (appointment cap):</strong></p>
+<ol><li>Same approach, add 10 appointments.</li><li><strong>Expected:</strong> dialog with appointment-specific title and body.</li></ol>
+<p><strong>Edge case 1 — IAP product not yet loaded:</strong></p>
+<ol><li>Force quit the app, immediately reopen, immediately trigger paywall (e.g., add 11th medicine while offline).</li><li><strong>Expected:</strong> CTA shows <code>Upgrade</code> without price. No layout glitch. No null exception.</li></ol>
+<p><strong>Edge case 2 — Premium user:</strong></p>
+<ol><li>Subscribe (real purchase, sandbox account).</li><li>Try to hit the cap.</li><li><strong>Expected:</strong> no paywall, all features unlocked.</li></ol>
+<p><strong>Edge case 3 — Arabic locale:</strong></p>
+<ol><li>Switch app locale to Arabic from Settings → Language.</li><li>Trigger paywall.</li><li><strong>Expected:</strong> dialog renders RTL, no truncation, key fallback works (English text shown until translator delivers Arabic, but no raw <code>txtPaywall...</code> keys visible).</li></ol>
+<p><strong>Regression check:</strong></p>
+<p>Open the paywall through the medicine-history screen path. Verify no other dialog uses of <code>CommonSubscriptionDialog</code> (e.g., delete confirmations) broke. Specifically: trigger a medicine-delete; the <code>CommonDeleteConfirmation</code> widget is separate but uses similar visual language — confirm no shared style regressed.</p>
+<h2>9. Rollout</h2>
+<ul><li>Ship in the next release (versionCode bump). No flag.</li><li>Roll-back: revert the four call-site files; revert the locale-key additions. Widget changes are additive (new optional params) so reverting only the callers leaves the widget tolerant of old-style calls.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically must hold:</p>
+<ul><li>All 6 locale keys present in every <code>language_*.dart</code></li><li><code>priceLabel</code> null-safe path verified manually</li><li>Arabic (RTL) layout still works</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Paywall trigger logic (when to show) — unchanged</li><li>Free tier limits (10/10) — unchanged</li><li>IAP receipt validation — unchanged</li><li>Adding analytics on paywall-shown / paywall-dismissed — separate spec, see future v2</li></ul>
+<h2>12. Open questions</h2>
+<p>None — spec is unblocked. Implementation can begin.</p>
+<hr>
+<h2>Implemented</h2>
+<ul><li>Date: 2026-05-09</li><li>versionCode shipped: pending Abdul's release</li><li>Commit SHA: pending Abdul's commit</li><li>Deviations from spec:</li><li>Added one accessor to <code>InAppPurchaseHelper</code> — <code>String? get monthlyPriceLabel</code>. Spec said avoid substantive IAP changes; this is a one-line read-only getter, additive. Justified for clean call sites.</li><li>The <code>buttonText</code> parameter on <code>CommonSubscriptionDialog</code> was previously <strong>declared but unused</strong> — the CTA hardcoded <code>txtSubscribeNow</code>. Fixed it to actually use <code>buttonText</code> when provided, falling back to <code>txtSubscribeNow</code>. This is a latent-bug fix scoped to F01's intent.</li><li>Files changed:</li><li><code>lib/Widgets/common_subscribe_dialog.dart</code> — added <code>ctaSubtext</code> and <code>priceLabel</code> params, rendered subtext block, made <code>buttonText</code> honored, appended price label to CTA.</li><li><code>lib/in_app_purchase/in_app_purchase_helper.dart</code> — added <code>monthlyPriceLabel</code> getter.</li><li><code>lib/localization/languages/language_en.dart</code> — added 6 keys.</li><li><code>lib/localization/languages/language_*.dart</code> × 51 — same 6 keys with English fallback (commented <code>// F01 — paywall copy rewrite (English fallback — translate)</code> marker).</li><li><code>lib/ui/home/home_controller.dart</code> — both medicine-cap and appointment-cap call sites use new keys + price label.</li><li><code>lib/ui/medicine_history_screen/medicine_history_screen_logic.dart</code> — call site updated (added IAP helper import).</li><li><code>lib/ui/appointment_history_screen/appointment_history_screen_logic.dart</code> — same.</li><li>Translation pipeline note: 6 new keys × 51 locale files need native-fluent translation. Top priority for ar-SA, id-ID, hi-IN, ur-PK, es-419, pt-BR per the localization roadmap.</li><li>Pre-existing diagnostic noted (not changed): <code>home_controller.dart:592</code> unused <code>appointmentDataList</code> — predates F01.</li><li>Lessons / notes for v2: the dialog's <code>image: Assets.images.imgSuscription.path</code> is still hardcoded across 4 call sites. Acceptable in v1 — same image always shown — but worth a single default if more call sites appear.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F01 · Paywall Copy Rewrite</code></div>
+</div>
+</body>
+</html>

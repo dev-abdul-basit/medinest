@@ -26,6 +26,42 @@ class Preference {
   static const String fcmToken  = "fcmToken";
   static const String notificationTimeStamp = "notificationTimeStamp";
 
+  // F02 — review-prompt gating
+  static const String dosesMarkedTaken   = "DOSES_MARKED_TAKEN";
+  static const String lastReviewPromptTs = "LAST_REVIEW_PROMPT_TS";
+  static const String firstInstallTs     = "FIRST_INSTALL_TS";
+  static const String lastPaywallTs      = "LAST_PAYWALL_TS";
+
+  // F08 — adherence card visibility
+  static const String adherenceCardHidden = "ADHERENCE_CARD_HIDDEN";
+
+  // F15 — engagement notification budget (guardrail for all non-medicine notifs)
+  static const String lastEngagementNotifTs = "LAST_ENGAGEMENT_NOTIF_TS";
+  static const String engagementWeekStartTs = "ENGAGEMENT_WEEK_START_TS";
+  static const String engagementWeekCount   = "ENGAGEMENT_WEEK_COUNT";
+  static const String lastOpenTs            = "LAST_OPEN_TS";
+
+  // F18 — highest streak milestone already celebrated (so each fires once)
+  static const String lastCelebratedMilestone = "LAST_CELEBRATED_MILESTONE";
+
+  // F11 — caregiver mode
+  static const String caregiverModeEnabled = "CAREGIVER_MODE_ENABLED";
+
+  // F07 — onboarding (first-medicine in <60s)
+  static const String seenFirstMedicineTooltip = "SEEN_FIRST_MEDICINE_TOOLTIP";
+  static const String firstMedicineCreated     = "FIRST_MEDICINE_CREATED";
+
+  // Self profile — fId of the implicit "Me" FamilyMemberTable row that owns the
+  // current user's own medicines/appointments. Persisted so "self" is never
+  // hardcoded to a brittle fId == 1 assumption.
+  static const String selfMemberId = "SELF_MEMBER_ID";
+
+  // The account (Firebase uid) that owns the current local data. Null = data was
+  // created as a guest and is not yet claimed by any account. Used to isolate
+  // accounts: when a DIFFERENT uid signs in, the local data is swapped for that
+  // account's data (the previous owner's data stays safe in their own cloud).
+  static const String dataOwnerUid = "DATA_OWNER_UID";
+
 
 
 
@@ -180,6 +216,78 @@ class Preference {
     return _pref!.write(notificationTimeStamp, value);
   }
 
+
+  /// F02 — review-prompt gating accessors
+  int getDosesMarkedTaken() => _pref!.read(dosesMarkedTaken) ?? 0;
+  Future<void> setDosesMarkedTaken(int value) =>
+      _pref!.write(dosesMarkedTaken, value);
+
+  int getLastReviewPromptTs() => _pref!.read(lastReviewPromptTs) ?? 0;
+  Future<void> setLastReviewPromptTs(int value) =>
+      _pref!.write(lastReviewPromptTs, value);
+
+  int getFirstInstallTs() => _pref!.read(firstInstallTs) ?? 0;
+  Future<void> setFirstInstallTs(int value) =>
+      _pref!.write(firstInstallTs, value);
+
+  int getLastPaywallTs() => _pref!.read(lastPaywallTs) ?? 0;
+  Future<void> setLastPaywallTs(int value) =>
+      _pref!.write(lastPaywallTs, value);
+
+  /// F08 — adherence card visibility
+  bool getAdherenceCardHidden() =>
+      _pref!.read(adherenceCardHidden) ?? false;
+  Future<void> setAdherenceCardHidden(bool value) =>
+      _pref!.write(adherenceCardHidden, value);
+
+  /// F15 — engagement notification budget accessors
+  int getLastEngagementNotifTs() => _pref!.read(lastEngagementNotifTs) ?? 0;
+  Future<void> setLastEngagementNotifTs(int value) =>
+      _pref!.write(lastEngagementNotifTs, value);
+
+  int getEngagementWeekStartTs() => _pref!.read(engagementWeekStartTs) ?? 0;
+  Future<void> setEngagementWeekStartTs(int value) =>
+      _pref!.write(engagementWeekStartTs, value);
+
+  int getEngagementWeekCount() => _pref!.read(engagementWeekCount) ?? 0;
+  Future<void> setEngagementWeekCount(int value) =>
+      _pref!.write(engagementWeekCount, value);
+
+  int getLastOpenTs() => _pref!.read(lastOpenTs) ?? 0;
+  Future<void> setLastOpenTs(int value) =>
+      _pref!.write(lastOpenTs, value);
+
+  /// F18 — streak milestone celebration
+  int getLastCelebratedMilestone() => _pref!.read(lastCelebratedMilestone) ?? 0;
+  Future<void> setLastCelebratedMilestone(int value) =>
+      _pref!.write(lastCelebratedMilestone, value);
+
+  /// F11 — caregiver mode
+  bool getCaregiverMode() => _pref!.read(caregiverModeEnabled) ?? false;
+  Future<void> setCaregiverMode(bool value) =>
+      _pref!.write(caregiverModeEnabled, value);
+
+  /// F07 — onboarding (first-medicine in <60s)
+  bool getSeenFirstMedicineTooltip() =>
+      _pref!.read(seenFirstMedicineTooltip) ?? false;
+  Future<void> setSeenFirstMedicineTooltip(bool value) =>
+      _pref!.write(seenFirstMedicineTooltip, value);
+
+  bool getFirstMedicineCreated() => _pref!.read(firstMedicineCreated) ?? false;
+  Future<void> setFirstMedicineCreated(bool value) =>
+      _pref!.write(firstMedicineCreated, value);
+
+  /// Self profile — fId of the "Me" family-member row. Null until resolved.
+  int? getSelfMemberId() => _pref!.read(selfMemberId);
+  Future<void> setSelfMemberId(int value) =>
+      _pref!.write(selfMemberId, value);
+  Future<void> clearSelfMemberId() => _pref!.remove(selfMemberId);
+
+  /// Account that owns the current local data (null = unclaimed guest data).
+  String? getDataOwnerUid() => _pref!.read(dataOwnerUid);
+  Future<void> setDataOwnerUid(String value) =>
+      _pref!.write(dataOwnerUid, value);
+  Future<void> clearDataOwnerUid() => _pref!.remove(dataOwnerUid);
 
   Future<void> remove(key, [multi = false]) async {
     GetStorage? pref = await instance();

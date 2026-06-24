@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F04 · ASO Strings on Key UI Screens — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F04 · ASO Strings on Key UI Screens</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>QW-4</td></tr><tr><td>Effort</td><td>½ day</td></tr><tr><td>Risk</td><td>low</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no</td></tr><tr><td>ASO signals moved</td><td>KW (weak/contested)</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>Google Play OCRs store screenshots and (anecdotally) uses the visible text as a soft ranking signal. Multiple ASO practitioners report this; Google won't confirm it. The cost to align is near-zero (a few string tweaks in screens that show up on screenshots), and the upside is a small but compounding boost on <code>pill reminder</code>, <code>medication tracker</code>, <code>dose log</code>. See <code>../../aso/02-keyword-research.md</code>.</p>
+<h2>2. What changes for the user</h2>
+<p>Almost imperceptible. Some screen titles or section headers tweak phrasing to use the keyword we're chasing in the store. Examples (final values to be picked during implementation, in collaboration with Abdul):</p>
+<ul><li>Home tab labels: <code>Medicine</code> → consider <code>Medicines</code> or keep as-is (consistency with current copy outweighs keyword stuffing). Most likely: <strong>no change here.</strong></li><li>Empty-state on home medicine list: confirm wording uses <code>pill reminder</code> or <code>medication reminder</code>.</li><li>Add Medicine screen subtitle: <code>Add medicine details</code> → <code>Set up your pill reminder</code>.</li><li>History screen empty state: confirm uses <code>dose log</code> or <code>medication history</code>.</li><li>Settings → premium upsell card: ensures <code>pill reminder</code>, <code>medication tracker</code>, <code>journal</code> appear naturally.</li></ul>
+<blockquote><p>Decision rule: only change strings where the new copy is at least as natural as the old. If a tweak reads forced, leave the original. Bad copy hurts more than the marginal SEO gain helps.</p>
+</blockquote>
+<h2>3. What changes in the code</h2>
+<p>This feature is a string-only change set. The candidate file list:</p>
+<ul><li><strong><code>lib/ui/home/home_screens.dart</code></strong> — empty state and section headers</li><li><strong><code>lib/ui/medicine_screen/medicine_list_screen.dart</code></strong> — empty state</li><li><strong><code>lib/ui/add_medicine/add_medicine_screens.dart</code></strong> — section labels</li><li><strong><code>lib/ui/medicine_history_screen/medicine_history_screen_view.dart</code></strong> — empty state and section headers</li><li><strong><code>lib/ui/setting/setting_screen_view.dart</code></strong> — premium card subtitle</li><li><strong><code>lib/localization/languages/language_en.dart</code></strong> — refresh values; possibly add 1–3 new keys</li><li><strong><code>lib/localization/languages/language_*.dart</code></strong> — propagate</li></ul>
+<h2>4. Data model</h2>
+<p>No schema changes.</p>
+<h2>5. Locale keys</h2>
+<p>To be finalized during implementation; we will <em>prefer reusing existing keys</em> and adjusting their English values.</p>
+<p>If new keys are needed, candidates (do not add unless used):</p>
+<pre><code class="lang-">'txtSetUpYourPillReminder': "Set up your pill reminder",
+'txtMedicationHistory':     "Medication history",
+'txtYourDoseLog':           "Your dose log",</code></pre>
+<h2>6. Routing</h2>
+<p>No routing changes.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Re-read <code>../../aso/02-keyword-research.md</code> Tier 1 + Tier 2 candidates (top 7 keywords). Familiarize.</li><li>For each candidate file in section 3, read end-to-end; identify the user-visible English strings (whether via <code>.tr</code> or hardcoded).</li><li>For each one, decide:</li></ol>
+<ul><li><strong>Keep</strong> — current copy is good</li><li><strong>Refresh value</strong> — change the value of the existing locale key (e.g., <code>txtAddMedicineDetails</code> value → <code>"Set up your pill reminder"</code>)</li><li><strong>New key</strong> — add a new key if the existing one is genuinely used elsewhere with the old meaning</li></ul>
+<ol><li>Walk Abdul through the proposed changes <strong>before</strong> writing them to language files. ASO copy is product-facing — Abdul has final say.</li><li>Apply the agreed changes. Replicate to every <code>language_*.dart</code>.</li><li>Run <code>flutter analyze</code>.</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path:</strong></p>
+<ol><li>Fresh install. Walk through onboarding to home.</li><li>Visit, in order: Home (empty), Add medicine, Medicine history (empty), Settings.</li><li><strong>Expected:</strong> new strings render. Layout unchanged. No truncation.</li></ol>
+<p><strong>Edge cases:</strong></p>
+<ul><li><strong>Long string overflow:</strong> the new copy may be longer than old. Test on a small phone (5.5"). Any clipping requires the change be backed out for that string.</li><li><strong>Arabic translation:</strong> because we're relying on English fallback until a translator delivers, verify the Arabic UI doesn't show raw <code>txtKey</code> strings. (English fallback is acceptable for v1.)</li><li><strong>Localized listings (later):</strong> once the translator delivers Arabic store-listing copy in <code>aso/01-store-listing.md</code> Week 4, the in-app strings should match the listing's keyword vocabulary in Arabic. Note in <code>Implemented</code> block: which keys need to be re-translated to align with the localized listing's vocabulary.</li></ul>
+<p><strong>Regression check:</strong></p>
+<p>Take fresh screenshots of the same screens shown in <code>docs/MediNest/Medinest Playstore grahics/</code>. Compare layout (not content). Confirm nothing visually broke.</p>
+<h2>9. Rollout</h2>
+<ul><li>Ship in next release.</li><li>No flag.</li><li>Rollback: revert the locale value changes.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>Abdul reviewed and approved each string change (this is a content decision, not a tech decision)</li><li>All locale files have any added keys</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Changing screenshots themselves (that's <code>aso/04-screenshot-strategy.md</code>'s job)</li><li>Changing the title / short / long description (that's <code>aso/01-store-listing.md</code>)</li><li>New features</li></ul>
+<h2>12. Open questions</h2>
+<ol><li>Final wording of each candidate string — to be agreed in implementation step 4.</li><li>Whether to coordinate this with the screenshot redesign so screenshots and in-app strings align — recommendation: yes; aim to ship F04 <em>before</em> the screenshot redesign so screenshots can capture the new strings.</li></ol>
+<hr>
+<h2>Implemented</h2>
+<ul><li>Date: 2026-05-09</li><li>versionCode shipped: pending</li><li>Conservative scope. Only <strong>3 string-value refreshes</strong> in <code>language_en.dart</code>. No new keys. The keys already exist in all 51 non-en locale files with their old translations — translators must re-translate via the same pipeline.</li></ul>
+<table><thead><tr><th>Key</th><th>Before</th><th>After</th><th>Rationale</th></tr></thead><tbody><tr><td><code>txtHistoryNotFound</code></td><td>"History Not Found...!"</td><td>"No medication history yet"</td><td>Better grammar; claims <code>medication history</code> (Tier-2 long-tail)</td></tr><tr><td><code>txtHistoryNotFoundDescription</code></td><td>"You don't have any medicine reminder!\nClick on below button to your first treatment."</td><td>"You don't have any pill reminders yet.\nTap below to add your first medicine."</td><td>Clean grammar; "tap" is mobile-idiomatic; carries <code>pill reminder</code> (Tier-1 keyword)</td></tr><tr><td><code>txtCreateMedicineReminder</code></td><td>"Create Medicine Reminder"</td><td>"Add Pill Reminder"</td><td>Shorter; carries <code>pill reminder</code></td></tr></tbody></table>
+<ul><li>Files changed:</li><li><code>lib/localization/languages/language_en.dart</code> — 3 value updates only</li><li>Files NOT changed (deliberately):</li><li><code>txtAppName</code> ("Pills Reminder") — left alone. Real Play Store app name is <code>Medinest – Pill Reminder</code> and is set in Play Console listing, not from this string.</li><li><code>txtAddMedicine</code> ("Add Medicine") — already optimal.</li><li>All 51 other <code>language_*.dart</code> — these keys already exist in those files; their translations are now stale relative to the new English source. Need re-translation in the next localization pass. Marked in <code>aso/05-aso-roadmap-90day.md</code> Week 4+ for the translator pipeline.</li><li>Reversal: each row above is reversible by reverting the single value. None of the changes affect logic.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F04 · ASO Strings on Key UI Screens</code></div>
+</div>
+</body>
+</html>

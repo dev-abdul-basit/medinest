@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F02 · Review-Prompt Timing Fix — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F02 · Review-Prompt Timing Fix</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>QW-2</td></tr><tr><td>Effort</td><td>½ day</td></tr><tr><td>Risk</td><td>low–med</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>no</td></tr><tr><td>ASO signals moved</td><td>★, R</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p><code>in_app_review</code> is wired but the trigger conditions need an audit. Current behavior likely fires too early or too often, hurting average rating. Improving when we ask is one of the highest-leverage 4-hour ASO wins because rating volume + freshness directly affect ranking. See <code>../../feature-improvements/feature-roadmap.md</code> QW-2.</p>
+<h2>2. What changes for the user</h2>
+<p>Before: User may be prompted to rate the app before they've successfully used it (annoying, often 1-stars).</p>
+<p>After: User is only prompted to rate after a positive interaction: they've marked <strong>≥3 doses as taken</strong> AND it's been at least 7 days since first install AND they haven't been shown a paywall in the last 24 hours AND they haven't been prompted in the last 90 days.</p>
+<p>The user sees the system rate-prompt on a <em>good</em> day, not a frustrating one.</p>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/utils/preference.dart</code></strong> — add three new keys + accessors (section 4).</li><li><strong><code>lib/ui/full_screen_notification/full_screen_notification_view.dart</code></strong> OR <code>..._controller.dart</code> — increment "doses taken" counter when the user taps <code>Taken</code> from the full-screen reminder. Find the existing tap handler.</li><li><strong><code>lib/ui/home/home_controller.dart</code></strong> — same: when "Taken" is tapped from the home list (find existing handler), increment counter.</li><li><strong><code>lib/ui/home/home_controller.dart</code></strong> — paywall trigger: set <code>lastPaywallTimestamp</code> whenever <code>CommonSubscriptionDialog</code> is shown.</li><li><strong>NEW: <code>lib/services/review_prompt_service.dart</code></strong> <em>(new file)</em> — single helper class with one entry point: <code>ReviewPromptService.maybeShow()</code>. Encapsulates all gating logic.</li><li><strong><code>lib/ui/home/home_controller.dart</code></strong> — call <code>ReviewPromptService.maybeShow()</code> in <code>onReady()</code>, behind a small delay (3 sec) so it never collides with app-launch or dialog flows.</li></ul>
+<h2>4. Data model</h2>
+<p>No SQLite schema changes.</p>
+<p>New <code>Preference</code> keys (in <code>lib/utils/preference.dart</code>):</p>
+<pre><code class="lang-dart">static const String dosesMarkedTaken     = "DOSES_MARKED_TAKEN";       // int counter
+static const String lastReviewPromptTs   = "LAST_REVIEW_PROMPT_TS";    // millis since epoch
+static const String firstInstallTs       = "FIRST_INSTALL_TS";         // millis since epoch
+static const String lastPaywallTs        = "LAST_PAYWALL_TS";          // millis since epoch</code></pre>
+<p>Accessors:</p>
+<pre><code class="lang-dart">int  getDosesMarkedTaken()                =&gt; _pref!.read(dosesMarkedTaken) ?? 0;
+Future&lt;void&gt; setDosesMarkedTaken(int v)   =&gt; _pref!.write(dosesMarkedTaken, v);
+int  getLastReviewPromptTs()              =&gt; _pref!.read(lastReviewPromptTs) ?? 0;
+Future&lt;void&gt; setLastReviewPromptTs(int v) =&gt; _pref!.write(lastReviewPromptTs, v);
+int  getFirstInstallTs()                  =&gt; _pref!.read(firstInstallTs) ?? 0;
+Future&lt;void&gt; setFirstInstallTs(int v)     =&gt; _pref!.write(firstInstallTs, v);
+int  getLastPaywallTs()                   =&gt; _pref!.read(lastPaywallTs) ?? 0;
+Future&lt;void&gt; setLastPaywallTs(int v)      =&gt; _pref!.write(lastPaywallTs, v);</code></pre>
+<p><code>firstInstallTs</code> is set in <code>main.dart</code> if not already set, on app boot:</p>
+<pre><code class="lang-dart">if (Preference.shared.getFirstInstallTs() == 0) {
+  Preference.shared.setFirstInstallTs(DateTime.now().millisecondsSinceEpoch);
+}</code></pre>
+<h2>5. Locale keys</h2>
+<p>None. The system review prompt is rendered by the OS, not the app.</p>
+<h2>6. Routing</h2>
+<p>No routing changes.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Add the 4 <code>Preference</code> keys + accessors per section 4. Place in alphabetical-ish order under existing keys.</li><li>Wire <code>firstInstallTs</code> set in <code>main.dart</code> boot sequence (after <code>Preference.shared.instance()</code> resolves).</li><li>Create <code>lib/services/review_prompt_service.dart</code>:</li></ol>
+<p>   ```dart    class ReviewPromptService {      static Future&lt;void&gt; maybeShow() async {        final p = Preference.shared;        final now = DateTime.now().millisecondsSinceEpoch;        const sevenDaysMs   = 7 <em> 24 </em> 60 <em> 60 </em> 1000;        const ninetyDaysMs  = 90 <em> 24 </em> 60 <em> 60 </em> 1000;        const oneDayMs      = 24 <em> 60 </em> 60 * 1000;</p>
+<p>       final daysSinceInstall   = now - p.getFirstInstallTs();        final daysSincePrompt    = now - p.getLastReviewPromptTs();        final daysSincePaywall   = now - p.getLastPaywallTs();</p>
+<p>       if (p.getDosesMarkedTaken() &lt; 3)            return;        if (daysSinceInstall  &lt; sevenDaysMs)        return;        if (daysSincePrompt   &lt; ninetyDaysMs)       return;        if (daysSincePaywall  &lt; oneDayMs)           return;        if (p.getIsPurchase())                      return; // never ask premium users to review free-tier                                                             // (optional — discuss with Abdul)</p>
+<p>       final InAppReview review = InAppReview.instance;        if (await review.isAvailable()) {          await review.requestReview();          await p.setLastReviewPromptTs(now);          Debug.printLog("ReviewPromptService: prompt requested at $now");        }      }    }    ```</p>
+<ol><li>In every place a dose is marked taken, increment <code>dosesMarkedTaken</code>. Audit:</li></ol>
+<ul><li><code>lib/ui/home/home_controller.dart</code> — search for "Taken" handler</li><li><code>lib/ui/full_screen_notification/full_screen_notification_view.dart</code> — same</li><li><code>lib/ui/medicine_history_screen/medicine_history_screen_logic.dart</code> — same</li></ul>
+<p>   Add: <code>await Preference.shared.setDosesMarkedTaken(Preference.shared.getDosesMarkedTaken() + 1);</code></p>
+<ol><li>In every place <code>CommonSubscriptionDialog</code> is shown (the same call sites as F01), set <code>lastPaywallTs</code>:</li></ol>
+<p>   ``<code>dart    await Preference.shared.setLastPaywallTs(DateTime.now().millisecondsSinceEpoch);    </code>``</p>
+<ol><li>In <code>home_controller.dart</code> <code>onReady()</code>, schedule the prompt with a 3 s delay:</li></ol>
+<p>   ``<code>dart    Future.delayed(const Duration(seconds: 3), () {      ReviewPromptService.maybeShow();    });    </code>``</p>
+<ol><li>Re-grep for any <em>other</em> call to <code>InAppReview</code> already in the codebase. If found, route through <code>ReviewPromptService.maybeShow()</code> instead.</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path:</strong></p>
+<ol><li>Fresh install, sign in.</li><li>Verify <code>firstInstallTs</code> is set in storage. (Use <code>Debug.printLog</code> to dump on next boot if no inspector handy.)</li><li>Mark 3 doses taken across 1 hour.</li><li>Force-quit and reopen. <strong>Expected:</strong> no review prompt yet (<code>&lt;7 days since install</code>).</li><li>Manually rewind storage by setting <code>firstInstallTs</code> to 8 days ago via debug helper or by changing system clock. Reopen.</li><li><strong>Expected:</strong> review prompt appears ~3 seconds after Home loads.</li></ol>
+<p><strong>Edge case 1 — paywall just shown:</strong></p>
+<ol><li>With all other gates passed, hit the medicine cap and dismiss the paywall.</li><li>Reopen the app within 24 h.</li><li><strong>Expected:</strong> no review prompt.</li></ol>
+<p><strong>Edge case 2 — premium user:</strong></p>
+<ol><li>Subscribe.</li><li>Pass all other gates.</li><li><strong>Expected:</strong> depending on the policy decision in step 3 of section 7, either prompt OR don't prompt premium users. Confirm intended behavior with Abdul; document the choice in the <code>Implemented</code> block.</li></ol>
+<p><strong>Edge case 3 — second review prompt within 90 days:</strong></p>
+<ol><li>Trigger a successful prompt.</li><li>Pass all other gates again.</li><li><strong>Expected:</strong> no second prompt.</li></ol>
+<p><strong>Edge case 4 — <code>InAppReview.isAvailable()</code> returns false:</strong></p>
+<ol><li>Run on emulator without Play Services.</li><li><strong>Expected:</strong> no prompt, no crash, log line written.</li></ol>
+<p><strong>Regression check:</strong></p>
+<p>Add a medicine, add a journal note, check appointment screen renders. None of these should be affected by the helper, but the helper runs on <code>onReady</code> so we want to confirm nothing UI-blocks during launch.</p>
+<h2>9. Rollout</h2>
+<ul><li>Ship in the next release.</li><li>No flag.</li><li>Rollback: revert the new file + the call-site additions. The <code>Preference</code> accessor additions are forward-compatible (extra keys in storage are harmless).</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>The four new <code>Preference</code> keys are typed-accessor only (no raw <code>_pref!.read</code>)</li><li><code>Debug.printLog</code> line confirms the prompt fires when expected</li><li>Premium-user behavior decision is documented</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Adding a custom in-app rating dialog (we use the OS prompt only)</li><li>Sentiment-gating the prompt (asking "are you enjoying the app?" first) — that pattern is now penalized by Apple and frowned-on by Google. Don't add it.</li><li>Analytics on prompts shown / responded — v2.</li></ul>
+<h2>12. Open questions</h2>
+<ol><li>Premium users: prompt or not? Recommendation: <strong>yes, do prompt</strong> — they're high-NPS users and a 5-star from a paying user is worth more. Final call from Abdul.</li></ol>
+<hr>
+<h2>Implemented</h2>
+<ul><li>Date: 2026-05-09</li><li>versionCode shipped: pending Abdul's release</li><li>Files changed:</li><li><code>lib/utils/preference.dart</code> — 4 new keys + 8 typed accessors.</li><li><code>lib/main.dart</code> — sets <code>firstInstallTs</code> once, immediately after <code>Preference().instance()</code>.</li><li><code>lib/services/review_prompt_service.dart</code> <em>(new)</em> — <code>ReviewPromptService.maybeShow()</code> with all gates and verbose <code>Debug.printLog</code> skip-reason output for QA visibility.</li><li><code>lib/ui/full_screen_notification/full_screen_notification_logic.dart</code> — increments <code>dosesMarkedTaken</code> on <code>takeMedicine(false)</code>. Added <code>Preference</code> import.</li><li><code>lib/ui/medicine_history_screen/medicine_history_screen_logic.dart</code> — increments <code>dosesMarkedTaken</code> on <code>updateHistory(isTaken: true)</code>. Also writes <code>lastPaywallTs</code> at paywall site.</li><li><code>lib/ui/appointment_history_screen/appointment_history_screen_logic.dart</code> — writes <code>lastPaywallTs</code> at paywall site.</li><li><code>lib/ui/home/home_controller.dart</code> — added <code>onReady</code> override that schedules <code>maybeShow()</code> 3 s after home loads. Writes <code>lastPaywallTs</code> at both paywall sites. Imports <code>review_prompt_service</code>.</li><li>Open question resolved as: <strong>premium users are still prompted</strong> (the service does not gate on <code>getIsPurchase()</code>). Rationale: a 5-star from a paying user is high-value; the gate set already filters out the frustrated-state edge cases. Easy to flip later with a one-liner in the service.</li><li>Pre-existing TODO comments in <code>*_logic.dart</code> files (<code>// TODO: implement onInit</code>) — left as-is per canon (boilerplate, not added by F02).</li><li>Pre-existing diagnostic in <code>home_controller.dart</code> line 596 (<code>appointmentDataList</code> unused inside a commented-out loop) — pre-existing, not changed.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F02 · Review-Prompt Timing Fix</code></div>
+</div>
+</body>
+</html>

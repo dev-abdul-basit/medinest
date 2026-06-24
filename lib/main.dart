@@ -389,6 +389,12 @@ void main() async {
   /// Initialize Shared Preference
   await Preference().instance();
 
+  /// F02 — first-install timestamp (for review-prompt gating). Set once, never overwritten.
+  if (Preference.shared.getFirstInstallTs() == 0) {
+    await Preference.shared
+        .setFirstInstallTs(DateTime.now().millisecondsSinceEpoch);
+  }
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: AppColor.transparent),
   );
@@ -470,15 +476,17 @@ class MyApp extends StatelessWidget {
           darkTheme: AppTheme.dark,
           defaultTransition: Transition.fade,
           transitionDuration: const Duration(milliseconds: 200),
-          initialRoute: isUserIntroduction
-              ? isUserGetStarted
-                    ? isUserLoggedIn
-                          ? isUserProfileAdded
+          initialRoute: !isUserIntroduction
+              ? AppRoutes.introduction
+              : !isUserGetStarted
+                    ? AppRoutes.getStarted
+                    : isUserLoggedIn
+                          ? (isUserProfileAdded
                                 ? AppRoutes.home
-                                : AppRoutes.addOrEditProfile
-                          : AppRoutes.getStarted
-                    : AppRoutes.getStarted
-              : AppRoutes.introduction,
+                                : AppRoutes.addOrEditProfile)
+                          // F07 — guest who finished onboarding without an
+                          // account lands on Home (sign-in is offered later).
+                          : AppRoutes.home,
         );
       },
     );

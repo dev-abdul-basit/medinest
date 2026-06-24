@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medinest/Widgets/common_delete_conformation.dart';
-import 'package:medinest/Widgets/no_data_widget.dart';
+import 'package:medinest/Widgets/illustrated_empty_state.dart';
+import 'package:medinest/Widgets/onboarding_illustrations.dart';
 import 'package:medinest/database/tables/journal_table.dart';
-import 'package:medinest/generated/assets.dart';
 import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
 import 'package:medinest/utils/constant.dart';
 
@@ -30,14 +30,15 @@ class JournalListScreen extends StatelessWidget {
             .toList();
 
         if (journals.isEmpty) {
-          return NoDataWidget(
-            image: Assets.imagesImgNoMedicine,
-            text: 'txtYouDontHaveAnyJournal'.tr,
+          return IllustratedEmptyState(
+            art: OnboardArt.journal,
+            title: 'txtNoJournalTitle'.tr,
+            subtitle: 'txtNoJournalSub'.tr,
           );
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 130),
           itemCount: journals.length,
           itemBuilder: (context, index) {
             return _JournalCard(journalTable: journals[index]!);

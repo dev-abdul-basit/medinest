@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>X (Twitter) Strategy — MediNest — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../README.md">← back to docs index</a>
+  <span class="kicker">X strategy</span>
+<h1>X (Twitter) Strategy — MediNest</h1>
+<blockquote><p>One purpose: drive cheap, repeatable installs from people who self-identify as caregivers, chronic-condition patients, or polypharmacy users. Not "build a big follower count". Don't measure success by followers.</p>
+</blockquote>
+<hr>
+<h2>What X is good at, for an app like this</h2>
+<ul><li><strong>Niche communities self-identify in their bios.</strong> Search <code>caregiver</code>, <code>MS warrior</code>, <code>t1d</code>, <code>polypharmacy</code>, <code>caretaker mom</code> — these are people MediNest helps.</li><li><strong>Reply-driven distribution.</strong> A useful reply on a viral health-anxiety thread will outperform any of your own posts for the first 6 months. Treat the reply field as your primary publishing surface.</li><li><strong>Direct DM installs.</strong> People will DM you for help with their parent's meds. Convert via DM &gt; convert via funnel.</li><li><strong>Build-in-public works in this niche.</strong> Solo developer + health utility = sympathy + curiosity. Both convert.</li></ul>
+<h2>What X is bad at</h2>
+<ul><li>Brand-awareness plays. Don't run "What is MediNest?" intro threads, nobody cares.</li><li>Rapid-fire inspirational quote tweets. Lower CVR, dilutes the niche signal.</li><li>Engagement-bait polls. Will get likes, won't get installs, will train the algorithm to show you to wrong audiences.</li></ul>
+<hr>
+<h2>Positioning (this is the brand voice on X)</h2>
+<blockquote><p><em>MediNest is the simple pill reminder built by one developer for people taking care of themselves and their families. Not a clinic. Not AI-powered. Just reminders that work.</em></p>
+</blockquote>
+<p>That's the lane. Every tweet should fit it. If a tweet would also work for a fitness app, a finance app, a productivity app — it's wrong for our X account.</p>
+<h3>Voice cues</h3>
+<ul><li>First person singular when it's me-the-builder talking.</li><li>First person plural ("we") almost never — single-dev projects sound less authentic with "we".</li><li>No emoji-stacked openings. One emoji max per tweet, in the body, never first character.</li><li>No "Hot take" / "Unpopular opinion" framing. Cheapens the niche.</li><li>Specifics &gt; generalities. "My mum is on 7 daily meds" beats "Many people forget meds".</li></ul>
+<hr>
+<h2>Account setup (one-time, before posting)</h2>
+<h3>Bio</h3>
+<pre><code class="lang-">Pill reminder &amp; medication tracker for you and your family.
+Built by one dev. Works offline. Free.
+↓
+play.google.com/store/apps/details?id=com.mednest.pill.reminder</code></pre>
+<h3>Header image</h3>
+<p>The <code>Medinest-x.png</code> graphic in <code>docs/MediNest/Medinest Playstore grahics/</code> is the right starting point. Update it once we have a hero screenshot from the redesign in <code>aso/04-screenshot-strategy.md</code>.</p>
+<h3>Pinned tweet</h3>
+<p>A "What MediNest is" thread, 4 tweets max:</p>
+<ol><li>The problem (one specific story — your own or your mum's)</li><li>What MediNest does (one sentence + 1 screenshot)</li><li>What it doesn't do (no AI, no medical advice — builds trust)</li><li>Free download link</li></ol>
+<h3>Profile checks</h3>
+<ul><li>Display name: <code>MediNest – Pill Reminder</code> (carries the keyword)</li><li>Username: <code>@medinestapp</code> if available</li><li>Location: empty or your city. Empty is fine.</li><li>Verified: skip until $X feels worth it; not needed for our use case.</li></ul>
+<hr>
+<h2>Cadence</h2>
+<table><thead><tr><th>Post type</th><th>Frequency</th><th>Why</th></tr></thead><tbody><tr><td>Replies in target threads</td><td>5–10 per day</td><td>This is the actual growth lever.</td></tr><tr><td>Original posts</td><td>3 per week</td><td>Just enough to give the profile substance for someone visiting from a reply.</td></tr><tr><td>Threads</td><td>1 per 2 weeks</td><td>Used sparingly. Threads compound only when the topic genuinely deserves a thread.</td></tr><tr><td>Build-in-public updates</td><td>1 per week</td><td>Solo-dev community loves these and shares.</td></tr><tr><td>Direct user-help DMs</td><td>All received</td><td>Open DMs. Respond to every one personally.</td></tr></tbody></table>
+<blockquote><p>Resist the urge to post daily original content. The replies are what matter. People who come to your profile from a sharp reply convert ~10× better than people who scroll your timeline.</p>
+</blockquote>
+<hr>
+<h2>What to post — content pillars</h2>
+<p>Every original post falls into one of five buckets. If a draft doesn't fit, don't post it.</p>
+<h3>Pillar 1 — Caregiver pain point</h3>
+<p>Specific stories or facts about taking care of a parent / partner / child. Always concrete. Always lands on what MediNest solves.</p>
+<blockquote><p><em>My mum sets her pill alarm on three different phones because each one fails differently. I built MediNest because I needed one alarm that just works.</em></p>
+</blockquote>
+<h3>Pillar 2 — Build-in-public (small, real)</h3>
+<p>What you shipped this week. Concrete numbers &gt; vague excitement.</p>
+<blockquote><p><em>Shipped: full-screen reminder for medications. Took 4 days. Why full-screen: lockscreen banners are too easy to swipe away when you're half-asleep at 6am.</em></p>
+</blockquote>
+<h3>Pillar 3 — One-feature-deep</h3>
+<p>Pick a feature, explain who needs it. Not the whole app. One feature.</p>
+<blockquote><p><em>MediNest's family profiles aren't user accounts — they're separate medicine lists in one app. Designed so a caregiver isn't logging in and out 6 times a day. Free in the base app.</em></p>
+</blockquote>
+<h3>Pillar 4 — Counter-position vs. category leaders</h3>
+<p>Honest, specific. Not "we're better than X". "We're different from X for these specific people."</p>
+<blockquote><p><em>MediNest is not Medisafe. Medisafe is excellent and has 100× the team. MediNest is for people who want a fast, lightweight reminder app and don't need the social / pharmacy tie-ins. Both apps deserve to exist.</em></p>
+</blockquote>
+<h3>Pillar 5 — The journal</h3>
+<p>Showcase the journal feature with realistic examples. This is our most differentiated feature.</p>
+<blockquote><p><em>The note I leave myself: "Tried switching to evening dose, nausea worse." Six months later that's the note that helps the doctor adjust the prescription.</em></p>
+</blockquote>
+<h3>Anti-pillars (do not post)</h3>
+<ul><li>Motivational quotes</li><li>"Today's question: what's the hardest part about [vague topic]?"</li><li>"[Industry] just announced X. Here's my take." — not our lane</li><li>AI takes</li><li>Crypto / web3 anything</li></ul>
+<hr>
+<h2>Replies — the actual growth engine</h2>
+<p>This is where 70 % of your X time goes. Two minutes a reply, 10 a day, 5 days a week = 50 high-quality replies per week. After 8 weeks that's a small body of work that builds real recognition in the niche.</p>
+<h3>What to look for</h3>
+<ul><li>Tweets that include any of: <code>polypharmacy</code>, <code>medication management</code>, <code>caregiver burnout</code>, <code>pill organizer</code>, <code>forgot to take my meds</code>, <code>T1D</code>, <code>MS</code>, <code>Crohn's</code>, <code>lupus</code>, <code>chronic illness</code>, <code>senior parent</code>, <code>dementia caregiver</code></li><li>Threads from chronic-illness creators</li><li>Reply guys who are already in the conversations you want to be in (study them; don't copy them)</li></ul>
+<h3>How to reply</h3>
+<p>Three patterns that work:</p>
+<p><strong>Pattern 1 — Useful, no link</strong> Your reply is the value. App link is in your bio. People click bios.</p>
+<blockquote><p><em>(thread about forgetting meds at night)</em> <em>Same problem. The fix that worked for me wasn't a smarter alarm — it was a full-screen alarm that I have to physically tap "Taken" on, instead of swiping a notification.</em></p>
+</blockquote>
+<p><strong>Pattern 2 — One question, builds the relationship</strong></p>
+<blockquote><p><em>Curious — did your pill tracker break, or did you stop opening it? In my experience the second one is much more common and almost no app addresses it.</em></p>
+</blockquote>
+<p><strong>Pattern 3 — Direct help, only when asked</strong></p>
+<blockquote><p><em>(reply guy says: "I wish there was an app that…")</em> <em>That's basically what I built MediNest for. Free, no signup. Link in bio. Happy to walk you through it via DM if you want.</em></p>
+</blockquote>
+<h3>What never to do in replies</h3>
+<ul><li>Drop the link unprompted in someone else's thread. Algorithm penalty + reputational damage.</li><li>Engagement-farm long replies on viral non-relevant threads (politics, tech drama). Trains the algorithm to misclassify your account.</li><li>Reply with "Great post!" — adds nothing, makes you look like a bot.</li></ul>
+<hr>
+<h2>Threads — the slow lever</h2>
+<p>Pick one of these, ship one every two weeks. Keep them under 8 tweets.</p>
+<ol><li><em>What I learned shipping a pill reminder app in 12 weeks</em></li><li><em>Why my mom uses 3 alarm apps and what I'm doing about it</em></li><li><em>Notification design for medication apps — a quiet design-systems thread</em></li><li><em>Pricing the app at 5 SAR/month: what I learned</em></li><li><em>The boring features that drive 80 % of MediNest's installs</em></li><li><em>I almost shipped this with AI features. Here's why I pulled back.</em></li><li><em>Caregiver UX: what I get wrong (so far)</em></li><li><em>50+ languages, one developer, no translation budget — here's the pipeline</em></li></ol>
+<hr>
+<h2>Outreach (low-volume, do not spam)</h2>
+<p>These are real outreach targets. Approach 1–3 per week, after Week 4. <strong>Do not pitch in the first DM.</strong></p>
+<table><thead><tr><th>Type</th><th>Example</th><th>First touch</th></tr></thead><tbody><tr><td>Caregiver creators</td><td>Accounts with 5–50k followers posting about caring for elderly parents</td><td>Reply meaningfully on 3 of their posts over 2 weeks. Then DM.</td></tr><tr><td>Chronic-illness micro-influencers</td><td>T1D, MS, IBD creators</td><td>Same pattern.</td></tr><tr><td>Mid-tier health-tech writers</td><td>Newsletter writers covering app reviews</td><td>Direct DM with a pre-written 3-sentence pitch + free premium offer</td></tr><tr><td>Indie-dev / build-in-public</td><td>Pieter Levels-adjacent solo devs</td><td>Genuine engagement on their work. They'll find yours.</td></tr></tbody></table>
+<hr>
+<h2>What to measure (and what to ignore)</h2>
+<h3>Track weekly</h3>
+<ul><li>Profile clicks (X analytics)</li><li>Bio link clicks</li><li>DM volume and quality</li><li>Replies in target threads (count yourself)</li><li>Installs from X UTM (set one up — <code>?utm_source=x&amp;utm_medium=bio</code> on the Play link in bio if Play accepts referrers)</li></ul>
+<h3>Ignore</h3>
+<ul><li>Followers (vanity for our use case)</li><li>Likes</li><li>Impressions (X impression count is largely meaningless; we care about clicks-to-app)</li></ul>
+<h3>Weekly review (5 minutes, every Friday)</h3>
+<ul><li>Did at least 5 replies turn into profile clicks? If yes, repeat that pattern. If no, study the ones that didn't.</li><li>Did any DM convert into an install or a real conversation? Note how it started.</li></ul>
+<hr>
+<h2>What this looks like in 90 days</h2>
+<p>If we run this honestly:</p>
+<ul><li>~200–600 followers (most low-quality)</li><li>~30 high-signal niche people who recognize MediNest</li><li>1–3 micro-creator mentions</li><li>~50–200 organic installs/month attributable to X</li><li>One pinned testimonial in DMs you can use as social proof</li></ul>
+<p><strong>That is the realistic outcome.</strong> Anyone promising 10k followers in 90 days for a pill-reminder app is either lying or going to make us look like a clickbait farm.</p>
+<hr>
+<h2>See also</h2>
+<ul><li>Day-by-day post list: <code>x-content-30day.md</code></li><li>Cross-channel calendar context: <code>../linkedin/linkedin-strategy.md</code>, <code>../reddit/reddit-strategy.md</code></li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>X (Twitter) Strategy — MediNest</code></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F13 · ProVersion Screen Copy Refresh (extends F01 pattern) — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F13 · ProVersion Screen Copy Refresh (extends F01 pattern)</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>follow-up to F01 (paywall copy rewrite)</td></tr><tr><td>Effort</td><td>½ day</td></tr><tr><td>Risk</td><td>low</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>no</td></tr><tr><td>Premium-gated</td><td>n/a</td></tr><tr><td>ASO signals moved</td><td>$$, ★</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>F01 rewrote the bottom-sheet paywall (<code>CommonSubscriptionDialog</code>). But the <strong>full Subscription screen</strong> at <code>AppRoutes.proVersion</code> — where users land after tapping the F01 CTA, OR via Settings → Subscribe — still has the old developer-style copy:</p>
+<ul><li>A hardcoded English <code>MOST POPULAR</code> badge (not localized)</li><li>Only <strong>2 benefits</strong> shown vs the <strong>3</strong> F01 promises</li><li>A weak <code>Apply Now</code> CTA without price anchor</li><li>A short <code>Cancel Anytime</code> line that doesn't carry the trust copy F01 introduced</li></ul>
+<p>This is a copy-only follow-up to F01, applying the same pattern to the screen the user actually buys from.</p>
+<h2>2. What changes for the user</h2>
+<p>Before:</p>
+<ul><li>Card shows <code>MOST POPULAR</code> (English-only) → <code>Monthly</code> → <code>SAR 5.79</code> → <code>per month</code> → 2 benefit pills (Remove Ads, Add Unlimited Medicines)</li><li>Button says <code>Apply Now</code></li><li>Below button: small <code>Cancel Anytime</code></li></ul>
+<p>After:</p>
+<ul><li>Card shows localized "Most Popular" badge → <code>Monthly</code> → <code>SAR 5.79</code> → <code>per month</code> → <strong>3 benefit pills</strong> (Remove Ads, Add Unlimited Medicines, Add Unlimited Appointments — matching F01's promises)</li><li>Button says <code>UPGRADE — SAR 5.79</code> (or just <code>UPGRADE</code> if price not loaded — same fallback as F01)</li><li>Below button: <code>Cancel anytime. No charge until you confirm.</code> (F01 subtext, reused)</li></ul>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>lib/ui/pro_version/pro_version_screen.dart</code></strong>:</li><li>Replace hardcoded <code>'MOST POPULAR'</code> (line ~224) with <code>'txtMostPopular'.tr</code></li><li>Duplicate the existing benefit-pill container once more, using <code>'txtAddUnlimitedAppointment'.tr</code> (key already exists; used by F01 dialog)</li><li>Replace <code>text: 'txtApplyNow'.tr</code> with the F01 <code>_buildCtaText</code>-style: <code>'txtPaywallCtaUpgrade'.tr</code> + price suffix from <code>InAppPurchaseHelper().monthlyPriceLabel</code></li><li>Replace <code>'txtCancelAnytime'.tr</code> line with <code>'txtPaywallCtaSubtext'.tr</code> (already added in F01 to all 52 locales)</li><li><strong><code>lib/localization/languages/language_en.dart</code></strong>: add <code>txtMostPopular</code>: "Most Popular"</li><li><strong><code>lib/localization/languages/language_*.dart</code></strong> × 51: same key with English fallback</li></ul>
+<p>No other files touched.</p>
+<h2>4. Data model</h2>
+<p>No schema. No new prefs.</p>
+<h2>5. Locale keys</h2>
+<p>One new key:</p>
+<pre><code class="lang-">'txtMostPopular': "Most Popular",</code></pre>
+<p>Reused (already added in F01):</p>
+<ul><li><code>txtPaywallCtaUpgrade</code></li><li><code>txtPaywallCtaSubtext</code></li></ul>
+<p>Reused (existed before F01):</p>
+<ul><li><code>txtAddUnlimitedAppointment</code></li></ul>
+<h2>6. Routing</h2>
+<p>No routing changes.</p>
+<h2>7. Implementation steps</h2>
+<ol><li>Add <code>txtMostPopular</code> to <code>language_en.dart</code>.</li><li>Replicate to 51 non-en locale files with English fallback (Node injection script, same shape as F01 / F08).</li><li>Edit <code>pro_version_screen.dart</code>:</li></ol>
+<ul><li>Replace <code>'MOST POPULAR'</code> literal with <code>'txtMostPopular'.tr</code></li><li>Duplicate the second benefit-pill block once with <code>txtAddUnlimitedAppointment</code></li><li>Update the CommonButton: build CTA text with price suffix (use <code>InAppPurchaseHelper().monthlyPriceLabel</code>)</li><li>Update the cancel-anytime CommonText to use <code>txtPaywallCtaSubtext</code> instead of <code>txtCancelAnytime</code></li></ul>
+<ol><li>Verify in-app on emulator/device.</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path:</strong></p>
+<ol><li>Open Settings → Subscribe (or hit medicine cap → tap UPGRADE in F01 dialog).</li><li><strong>Expected:</strong> card with <code>Most Popular</code> badge (in current locale), <code>Monthly</code>, <code>SAR X.XX</code>, <code>per month</code>, three benefit pills (Remove Ads, Unlimited Medicines, Unlimited Appointments).</li><li><strong>Expected:</strong> CTA reads <code>UPGRADE — SAR X.XX</code> if products loaded, else <code>UPGRADE</code>.</li><li><strong>Expected:</strong> subtext below CTA reads <code>Cancel anytime. No charge until you confirm.</code></li></ol>
+<p><strong>Edge case 1 — IAP not loaded:</strong></p>
+<ol><li>Force quit, immediately open ProVersion.</li><li><strong>Expected:</strong> price area shows <code>Loading price…</code> (already F12 behavior); CTA reads <code>UPGRADE</code> without price suffix; no crash.</li></ol>
+<p><strong>Edge case 2 — Arabic:</strong></p>
+<ol><li>Switch to ar locale.</li><li><strong>Expected:</strong> RTL layout, English fallback strings render until translator delivers.</li></ol>
+<h2>9. Rollout</h2>
+<ul><li>Ship in next versionCode bump.</li><li>Roll-back: revert the screen file; the new locale key remains in storage harmlessly.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>No more hardcoded English on this screen</li><li>3 benefits match the F01 dialog promises</li><li>CTA uses F01 pattern</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Restoring the yearly card. It's commented out in this file (lines 371-501). Bringing it back requires layout work + <code>onChangePlanSelection(false)</code> wiring; tracked separately as <strong>F13a</strong>.</li><li>Visual redesign (gradient, badges) — keep current visual identity.</li><li>Removing the unused <code>txtCancelAnytime</code> key — leave it (might be referenced elsewhere; cleanup pass for v2).</li><li>Removing <code>txtApplyNow</code> key — same reasoning.</li></ul>
+<h2>12. Open questions</h2>
+<p>None.</p>
+<hr>
+<h2>Implemented</h2>
+<ul><li>Date: 2026-05-10</li><li>versionCode shipped: pending</li><li>Files changed:</li><li><code>lib/ui/pro_version/pro_version_screen.dart</code>:</li><li>Added <code>InAppPurchaseHelper</code> import</li><li><code>'MOST POPULAR'</code> literal → <code>'txtMostPopular'.tr.toUpperCase()</code></li><li>CTA: <code>'txtApplyNow'.tr</code> → <code>Builder</code> block computing <code>'UPGRADE — {price}'</code> from <code>InAppPurchaseHelper().monthlyPriceLabel</code>, fallback to plain <code>UPGRADE</code></li><li>Subtext: <code>'txtCancelAnytime'.tr</code> (small centered) → <code>'txtPaywallCtaSubtext'.tr</code> wrapped in horizontal <code>Padding</code> with <code>TextAlign.center</code></li><li>Added third benefit pill (<code>txtAddUnlimitedAppointment</code>) duplicating the visual style of the existing two</li><li><code>lib/localization/languages/language_en.dart</code> — added <code>txtMostPopular</code>: "Most Popular"</li><li>51 other locale files — <code>txtMostPopular</code> with English fallback</li><li>Reused existing keys (no new translation work for these): <code>txtPaywallCtaUpgrade</code>, <code>txtPaywallCtaSubtext</code>, <code>txtAddUnlimitedAppointment</code></li><li>2 new deprecation warnings on the duplicated third-benefit block — they match the existing two benefit rows exactly. Per canon: do not isolate-fix.</li><li>Pre-existing keys NOT removed: <code>txtApplyNow</code>, <code>txtCancelAnytime</code>. Left in 52 locale files as harmless dead keys; cleanup pass for v2.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F13 · ProVersion Screen Copy Refresh (extends F01 pattern)</code></div>
+</div>
+</body>
+</html>

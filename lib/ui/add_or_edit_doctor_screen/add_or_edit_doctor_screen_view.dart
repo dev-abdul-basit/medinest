@@ -53,7 +53,7 @@ class AddOrEditDoctorScreenPage extends StatelessWidget {
                                     FilteringTextInputFormatter.allow(RegExp("[a-z A-Z .]")),
                                   ],
                                   fillColor: Get.theme.colorScheme.surfaceVariant,
-                                  prefixIcon: Assets.iconsIcDoctorName,
+                                  prefixIcon: Assets.icons.icDoctorName.path,
                                   validatorText: 'txtEnterDoctorName'.tr,
                                 );
                               }),
@@ -67,7 +67,7 @@ class AddOrEditDoctorScreenPage extends StatelessWidget {
                                   prefix: Padding(
                                     padding:  EdgeInsetsDirectional.only(
                                         start: AppSizes.width_4_5,end: AppSizes.width_3_6),
-                                    child: Image.asset(Assets.iconsIcGender,
+                                    child: Image.asset(Assets.icons.icGender.path,
                                         width: AppSizes.width_6,
                                         height: AppSizes.width_6),
                                   ),
@@ -91,7 +91,7 @@ class AddOrEditDoctorScreenPage extends StatelessWidget {
                                   controller: logic.doctorExpController,
                                   hintText: 'txtEnterDoctorCategory'.tr,
                                   fillColor: Get.theme.colorScheme.surfaceVariant,
-                                  prefixIcon: Assets.iconsIcBag,
+                                  prefixIcon: Assets.icons.icBag.path,
                                   validatorText: 'txtEnterDoctorCategory'.tr,
                                 );
                               }),
@@ -110,7 +110,7 @@ class AddOrEditDoctorScreenPage extends StatelessWidget {
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(RegExp("[a-z A-Z 0-9 . @]")),
                                   ],
-                                  prefixIcon: Assets.iconsIcMessage,
+                                  prefixIcon: Assets.icons.icMessage.path,
                                   validatorText: 'txtEnterEmailAddress'.tr,
                                 );
                               }),
@@ -126,7 +126,7 @@ class AddOrEditDoctorScreenPage extends StatelessWidget {
                                   // validatorType: Constant.validationTypePhone,
                                   fillColor: Get.theme.colorScheme.surfaceVariant,
                                   keyboardType : TextInputType.phone,
-                                  prefixIcon: Assets.iconsIcPhone,
+                                  prefixIcon: Assets.icons.icPhone.path,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly,
                                   ],
@@ -145,7 +145,7 @@ class AddOrEditDoctorScreenPage extends StatelessWidget {
                                   hintText: 'txtEnterHospitalName'.tr,
                                   fillColor: Get.theme.colorScheme.surfaceVariant,
                                   keyboardType : TextInputType.text,
-                                  prefixIcon: Assets.iconsIcHospital,
+                                  prefixIcon: Assets.icons.icHospital.path,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(RegExp("[a-z A-Z .]")),
                                   ],
@@ -167,7 +167,7 @@ class AddOrEditDoctorScreenPage extends StatelessWidget {
                                     FilteringTextInputFormatter.allow(RegExp("[a-z A-Z 0-9 , . -]")),
                                   ],
                                   maxLines: 6,
-                                  prefixIcon: Assets.iconsIcLocation,
+                                  prefixIcon: Assets.icons.icLocation.path,
                                   validatorText: 'txtEnterHospitalAddress'.tr,
                                 );
                               }),

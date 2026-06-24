@@ -8,6 +8,7 @@ import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:medinest/Widgets/add_success_dialoge.dart';
 import 'package:medinest/Widgets/choose_color.dart';
+import 'package:medinest/Widgets/cupertino_pickers.dart';
 import 'package:medinest/Widgets/select_shape.dart';
 import 'package:medinest/Widgets/select_sound_screen_view.dart';
 import 'package:medinest/connectivity_manager/connectivity_manager.dart';
@@ -22,8 +23,10 @@ import 'package:medinest/notification/notification_helper.dart';
 import 'package:medinest/routes/app_routes.dart';
 import 'package:medinest/ui/medicine_screen/medicine_screen_logic.dart';
 import 'package:medinest/utils/ringtone_service.dart';
+import 'package:medinest/utils/color.dart';
 import 'package:medinest/utils/constant.dart';
 import 'package:medinest/utils/debug.dart';
+import 'package:medinest/utils/preference.dart';
 import 'package:medinest/utils/utils.dart';
 
 class AddMedicineController extends GetxController with WidgetsBindingObserver {
@@ -93,7 +96,64 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
     medicineNameController.text = (isEdit ? medicines?.mName : "")!;
     dosageController.text = (isEdit ? dosage : "")!;
 
+    // Open a fresh add-form ready to save — only Name, Dose and Time are left
+    // for the user; everything else is pre-filled with a sensible default.
+    applyDefaults();
+
     super.onInit();
+  }
+
+  /// Brand-blue default pill colour (matches AppColor.colorSecondaryLight).
+  static const Color _defaultPillColor = AppColor.colorSecondaryLight;
+
+  /// Fill any unset optional field with a sensible default so a medicine can be
+  /// saved with just Name + Dose + Time. Mirrors the onboarding "first medicine"
+  /// defaults. Safe to call repeatedly (only fills nulls).
+  void _ensureSaveDefaults() {
+    dosageChoose ??= 'PILLS';
+    if (selectedShape == null && allShapeList.isNotEmpty) {
+      selectedShape = allShapeList.first;
+    }
+    shadeColor ??= _defaultPillColor;
+    beforeOrAfterMeal ??= 'Take Any Time';
+    startDate ??= DateTime.now();
+    // No explicit end date → treat as ongoing rather than blocking the save.
+    if (endDate == null) isNoEndDate = true;
+    if (frequency == null) {
+      selectedEverydayFrequency = true;
+      updateFrequency();
+    }
+    selectedFamilyMembers ??= _resolveSelfMember();
+  }
+
+  /// The current user's own "Me" profile, used as the default owner so the user
+  /// doesn't have to pick themselves every time.
+  FamilyMemberTable? _resolveSelfMember() {
+    if (familyMembersList.isEmpty) return null;
+    final int? selfId = Preference.shared.getSelfMemberId();
+    if (selfId != null) {
+      final matches = familyMembersList.where((m) => m.fId == selfId);
+      if (matches.isNotEmpty) return matches.first;
+    }
+    return familyMembersList.first;
+  }
+
+  /// Pre-fill defaults for a brand-new medicine (no-op while editing — there we
+  /// load the medicine's own saved values).
+  void applyDefaults() {
+    if (isEdit) return;
+    _ensureSaveDefaults();
+    update([
+      Constant.idSelectUnit,
+      Constant.idSelectedShape,
+      Constant.idSelectedColor,
+      Constant.idSelectBeforeOrAfterMeal,
+      Constant.idSelectStartDate,
+      Constant.idSelectEndDate,
+      Constant.idNoEndDate,
+      Constant.idSelectFrequency,
+      Constant.idSelectMember,
+    ]);
   }
 
   splitDosage() {
@@ -376,31 +436,10 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
       startDate = currentDate;
     }
 
-    final DateTime? picked = await showDatePicker(
-      context: Get.context!,
-      initialDate: startDate!,
-      firstDate: currentDate,
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      lastDate: endDate != null ? endDate! : DateTime(2101),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            datePickerTheme: sampleDatePickerThemeData,
-            colorScheme: ColorScheme.light(
-              primary: Get.theme.colorScheme.primary,
-              onPrimary: Get.theme.colorScheme.background,
-              onSurface: Get.theme.colorScheme.primary,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor:
-                    Get.theme.colorScheme.primary, // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
+    final DateTime? picked = await showAppDatePicker(
+      initial: startDate!,
+      minimum: currentDate,
+      maximum: endDate ?? DateTime(2101),
     );
 
     if (picked != null) {
@@ -409,25 +448,6 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
       update([Constant.idSelectStartDate]);
     }
   }
-
-  DatePickerThemeData sampleDatePickerThemeData = DatePickerThemeData(
-    headerBackgroundColor: Get.theme.colorScheme.primary,
-    headerForegroundColor: Get.theme.colorScheme.onError,
-    headerHeadlineStyle:
-        const TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
-    headerHelpStyle:
-        const TextStyle(fontSize: 25, fontWeight: FontWeight.normal),
-    yearOverlayColor: MaterialStateProperty.all<Color>(Colors.blue[100]!),
-    weekdayStyle: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.normal,
-        color: Get.theme.colorScheme.onError),
-    shadowColor: Colors.grey[300],
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
-    ),
-    surfaceTintColor: Colors.white,
-  );
 
   Future<void> selectEndDateDate() async {
     Utils.unFocusKeyboard();
@@ -444,31 +464,10 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
       startDate = endDate;
     }
 
-    final DateTime? picked = await showDatePicker(
-      context: Get.context!,
-      initialDate: endDate!,
-      firstDate: startDate!,
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      lastDate: DateTime(2101),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            datePickerTheme: sampleDatePickerThemeData,
-            colorScheme: ColorScheme.light(
-              primary: Get.theme.colorScheme.primary,
-              onPrimary: Get.theme.colorScheme.background,
-              onSurface: Get.theme.colorScheme.primary,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor:
-                    Get.theme.colorScheme.primary, // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
+    final DateTime? picked = await showAppDatePicker(
+      initial: endDate!,
+      minimum: startDate!,
+      maximum: DateTime(2101),
     );
     if (picked != null) {
       endDate = picked;
@@ -492,6 +491,8 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
   }
 
   insertMedicineToDatabase(context) async {
+    // Required: Name + Dose + at least one Time. Everything else is optional and
+    // gets a sensible default via _ensureSaveDefaults() below.
     if (medicineNameController.text.trim().isEmpty) {
       Utils.showToast(context, 'toastMedicineName'.tr);
       return false;
@@ -500,50 +501,16 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
       Utils.showToast(context, 'toastDosageName'.tr);
       return false;
     }
-    if (dosageChoose == null) {
-      Utils.showToast(context, 'txtAddUnits'.tr);
-      return false;
-    }
-    if (selectedShape == null) {
-      Utils.showToast(context, 'toastSelectShape'.tr);
-      return false;
-    }
-    if (shadeColor == null) {
-      Utils.showToast(context, 'toastSelectImageAndColor'.tr);
-      return false;
-    }
-    if (beforeOrAfterMeal == null) {
-      Utils.showToast(context, 'txtSelectHowToTakeYourMedicine'.tr);
-      return false;
-    }
-    if (startDate == null) {
-      Utils.showToast(context, 'toastSelectStartDate'.tr);
-      return false;
-    }
-    if (!isNoEndDate && endDate == null) {
-      Utils.showToast(context, 'toastSelectEndDate'.tr);
-      return false;
-    }
     if (selectedTimeList.isEmpty) {
       Utils.showToast(context, 'toastSelectTime'.tr);
       return false;
     }
-    if (frequency == null) {
-      Utils.showToast(context, 'txtSelectFrequency'.tr);
-      return false;
-    }
-    if (Platform.isAndroid && pickedSoundUri == null) {
-      Utils.showToast(context, 'toastSelectSound'.tr);
-      return false;
-    }
+    _ensureSaveDefaults();
     if (selectedFamilyMembers == null) {
+      // Safety net — a self profile is normally guaranteed to exist.
       Utils.showToast(context, 'txtSelectMember'.tr);
       return false;
     }
-    // if (selectedDoctorItem == null) {
-    //   Utils.showToast(context, 'txtSelectDoctor'.tr);
-    //   return false;
-    // }
 
     // Construct the mDosage string using dosageController and dosageChoose
     String dosage = dosageController.text.trim();
@@ -603,7 +570,11 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
     );
     medicineTable.mId = result;
 
-    if (await InternetConnectivity.isInternetConnect(Get.context!)) {
+    // Cloud write only when signed in — a guest's data stays local (mIsSynced=0)
+    // and is pushed automatically once they sign in. Never write to a stale or
+    // null account.
+    if (Preference.shared.getIsUserLogin() &&
+        await InternetConnectivity.isInternetConnect(Get.context!)) {
       FireStoreHelper().addAndUpdateMedicine(result.toString(), medicineTable);
     }
     List<MedicineTable> medicineDataList =
@@ -632,6 +603,8 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
   }
 
   updateMedicineToDatabase(context) async {
+    // Required: Name + Dose + at least one Time. Everything else is optional and
+    // gets a sensible default via _ensureSaveDefaults() below.
     if (medicineNameController.text.trim().isEmpty) {
       Utils.showToast(context, 'toastMedicineName'.tr);
       return false;
@@ -640,50 +613,16 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
       Utils.showToast(context, 'toastDosageName'.tr);
       return false;
     }
-    if (dosageChoose == null) {
-      Utils.showToast(context, 'txtAddUnits'.tr);
-      return false;
-    }
-    if (selectedShape == null) {
-      Utils.showToast(context, 'toastSelectShape'.tr);
-      return false;
-    }
-    if (shadeColor == null) {
-      Utils.showToast(context, 'toastSelectImageAndColor'.tr);
-      return false;
-    }
-    if (beforeOrAfterMeal == null) {
-      Utils.showToast(context, 'txtSelectHowToTakeYourMedicine'.tr);
-      return false;
-    }
-    if (startDate == null) {
-      Utils.showToast(context, 'toastSelectStartDate'.tr);
-      return false;
-    }
-    if (!isNoEndDate && endDate == null) {
-      Utils.showToast(context, 'toastSelectEndDate'.tr);
-      return false;
-    }
     if (selectedTimeList.isEmpty) {
       Utils.showToast(context, 'toastSelectTime'.tr);
       return false;
     }
-    if (frequency == null) {
-      Utils.showToast(context, 'txtSelectFrequency'.tr);
-      return false;
-    }
-    if (Platform.isAndroid && pickedSoundUri == null) {
-      Utils.showToast(context, 'toastSelectSound'.tr);
-      return false;
-    }
+    _ensureSaveDefaults();
     if (selectedFamilyMembers == null) {
+      // Safety net — a self profile is normally guaranteed to exist.
       Utils.showToast(context, 'txtSelectMember'.tr);
       return false;
     }
-    // if (selectedDoctorItem == null) {
-    //   Utils.showToast(context, 'txtSelectDoctor'.tr);
-    //   return false;
-    // }
 
     // Construct the mDosage string using dosageController and dosageChoose
     String dosage = dosageController.text.trim();
@@ -740,7 +679,8 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
       medicineTable,
     );
 
-    if (await InternetConnectivity.isInternetConnect(Get.context!)) {
+    if (Preference.shared.getIsUserLogin() &&
+        await InternetConnectivity.isInternetConnect(Get.context!)) {
       FireStoreHelper()
           .addAndUpdateMedicine(medicines!.mId!.toString(), medicineTable);
     }
@@ -833,35 +773,10 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
   Future<void> selectTime(BuildContext context) async {
     Utils.unFocusKeyboard();
 
-    TimeOfDay selectedTime = TimeOfDay.now();
-    final TimeOfDay? pickedS = await showTimePicker(
-      context: context,
-      initialTime: selectedTime,
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            datePickerTheme: sampleDatePickerThemeData,
-            colorScheme: ColorScheme.light(
-              primary: Get.theme.colorScheme.primary,
-              onPrimary: Get.theme.colorScheme.background,
-              onSurface: Get.theme.colorScheme.primary,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor:
-                    Get.theme.colorScheme.primary, // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
+    final TimeOfDay? pickedS = await showAppTimePicker(initial: TimeOfDay.now());
 
-    if (pickedS != null && pickedS != selectedTime) {
-      selectedTime = pickedS;
-      selectedTimeList.add(selectedTime); // Directly add to list
-     // tempSelectedTime = selectedTime;
+    if (pickedS != null) {
+      selectedTimeList.add(pickedS); // Directly add to list
       update([Constant.idSelectedTime]);
     }
   }
@@ -991,6 +906,8 @@ class AddMedicineController extends GetxController with WidgetsBindingObserver {
       Constant.isUserActive,
       Constant.idProVersionProgress,
     ]);
+    // Leave the form ready-to-use after a Reset (fresh add only).
+    applyDefaults();
   }
 
   void onSelectColor(int index) {

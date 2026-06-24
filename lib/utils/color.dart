@@ -18,8 +18,13 @@ class AppColor {
 
   static const colorPrimaryLight = Color(0xff3264C1);
   static const colorBackGroundDark = Color(0xFF1E2129);
-  static const colorSecondaryLight = Color(0xffF7B267);
-  static const colorSecondaryDark = Color(0xffE68A2E);
+  // Brand accent (secondary). Emerald green — reads "health / success", pairs
+  // with the navy primary (#3264C1), and is used for selection/active states
+  // (toggles, checkboxes, selected chips/segments, time chips). White text on it
+  // is legible at semibold. Feeds `secondary`/`onSecondary`/`onTertiary` in the
+  // light theme and the `primary` in the dark theme (see themes/*.dart).
+  static const colorSecondaryLight = Color(0xFF10B981);
+  static const colorSecondaryDark = Color(0xFF059669);
   static const colorBackGroundLight = Color(0xffFFFFFF);
   static const colorTextBlack = Color(0xFF1E2129);
   static const colorTextGray = Color(0xff9EA2A7);

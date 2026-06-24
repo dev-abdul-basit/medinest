@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>F09 · Google Health Connect Integration — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1 · feature spec</span>
+<h1>F09 · Google Health Connect Integration</h1>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Roadmap ref</td><td>T1-3</td></tr><tr><td>Effort</td><td>1 week</td></tr><tr><td>Risk</td><td>med</td></tr><tr><td>Schema change</td><td>no</td></tr><tr><td>New package</td><td>YES — requires Abdul approval</td></tr><tr><td>Premium-gated</td><td>no (basic write) — extended read in v2</td></tr><tr><td>ASO signals moved</td><td>KW (<code>health connect</code>, <code>google fit</code>), ★</td></tr><tr><td>Status</td><td>spec</td></tr></tbody></table>
+<h2>1. Why we're shipping it</h2>
+<p>Google Health Connect is the centralized health-data layer on Android (replacing Google Fit's apps-side API). Apps that integrate get a "Health Connect compatible" badge in Play Store and access to the <code>health connect</code> keyword surface. Implementation is thinner than expected — we only need to write a "medication taken" record per dose. Reading data from Health Connect is <em>not</em> in v1 scope.</p>
+<h2>2. What changes for the user</h2>
+<ul><li>New Settings → "Connect to Health Connect" toggle.</li><li>On enable: OS-level Health Connect permission flow.</li><li>Once granted: each dose marked taken in MediNest writes a record to Health Connect's medication log. User can view their MediNest doses inside Health Connect alongside other health apps.</li><li>No change to app behavior if the user doesn't enable it.</li></ul>
+<h2>3. What changes in the code</h2>
+<ul><li><strong><code>pubspec.yaml</code></strong> — add <code>health: ^X.Y.Z</code> (current stable). Confirm version with Abdul before editing. Recommended: <code>^11.x</code> or whatever is latest at implementation time.</li><li><strong><code>android/app/src/main/AndroidManifest.xml</code></strong> — Health Connect permissions block. Required entries (per Health Connect docs):</li></ul>
+<p>  ``<code>xml   &lt;uses-permission android:name="android.permission.health.WRITE_HYDRATION" /&gt;   &lt;!-- adjust based on what we actually write; medication is in some SDK versions, hydration as a placeholder is wrong --&gt;   </code>`<code>   **Note:** as of writing, Health Connect's "medication" data type is in beta. If unavailable in the </code>health` plugin version we choose, we proxy by writing to "Notes" or "Other" with a typed payload. Confirm at implementation time. If the data type isn't available, <strong>stop and discuss with Abdul</strong> before writing a workaround.</p>
+<ul><li><strong><code>android/app/src/main/AndroidManifest.xml</code></strong> — add the intent-filter for Health Connect permissions screen as required by the docs.</li><li><strong>NEW: <code>lib/services/health_connect_service.dart</code></strong> <em>(new file)</em> — wraps the <code>health</code> package. Methods:</li><li><code>Future&lt;bool&gt; isAvailable()</code></li><li><code>Future&lt;bool&gt; requestPermissions()</code></li><li><code>Future&lt;void&gt; recordDoseTaken({required String medicineName, required DateTime takenAt})</code></li><li><strong><code>lib/utils/preference.dart</code></strong> — add <code>healthConnectEnabled</code> bool.</li><li><strong><code>lib/ui/setting/setting_screen_view.dart</code></strong> — new toggle row.</li><li><strong><code>lib/ui/home/home_controller.dart</code></strong> — when "Taken" is tapped (existing handler), additionally call <code>HealthConnectService().recordDoseTaken(...)</code> if <code>healthConnectEnabled</code>. Wrap in try/catch — Health Connect write failure must not block the local save.</li><li><strong><code>lib/ui/full_screen_notification/full_screen_notification_view.dart</code></strong> — same.</li><li><strong>Locale files</strong> — new keys.</li></ul>
+<h2>4. Data model</h2>
+<p>No SQLite schema changes.</p>
+<p>New <code>Preference</code> key:</p>
+<pre><code class="lang-dart">static const String healthConnectEnabled = "HEALTH_CONNECT_ENABLED";
+Future&lt;void&gt; setHealthConnectEnabled(bool v) =&gt; _pref!.write(healthConnectEnabled, v);
+bool getHealthConnectEnabled()              =&gt; _pref!.read(healthConnectEnabled) ?? false;</code></pre>
+<h2>5. Locale keys</h2>
+<pre><code class="lang-">'txtHealthConnectTitle': "Health Connect",
+'txtHealthConnectSubtitle': "Sync your medication doses with Google Health Connect.",
+'txtHealthConnectEnable': "Enable",
+'txtHealthConnectDisable': "Disable",
+'txtHealthConnectNotAvailable': "Health Connect is not available on this device.",
+'txtHealthConnectPermissionDenied': "Permission denied. You can enable later from Settings.",</code></pre>
+<h2>6. Routing</h2>
+<p>No new route. The setting toggle handles the OS permission flow inline.</p>
+<h2>7. Implementation steps (linear)</h2>
+<ol><li>Confirm with Abdul: package choice, version, AndroidManifest changes are OK to make.</li><li>Run <code>flutter pub add health@^&lt;version&gt;</code> (Abdul does this; Claude does not run pub).</li><li>Update <code>AndroidManifest.xml</code> with required permissions and Health Connect activity intent-filter.</li><li>Add <code>Preference</code> key + accessors.</li><li>Add locale keys + replicate.</li><li>Implement <code>HealthConnectService</code> with the three methods. Handle "not available" (older Android, Health Connect not installed) and "permission denied" branches gracefully.</li><li>Add the Settings toggle. On tap-enable: call <code>isAvailable()</code>, then <code>requestPermissions()</code>, then <code>setHealthConnectEnabled(true)</code>. On tap-disable: just <code>setHealthConnectEnabled(false)</code> (revoking the permission requires the user to do it from Health Connect's app — reflect in copy if needed).</li><li>In all "Taken" tap handlers: best-effort write to Health Connect, swallow exceptions, log via <code>Debug.printLog</code>.</li><li>Test on Android 14 device with Health Connect installed, Android 11 device without.</li></ol>
+<h2>8. Manual test plan</h2>
+<p><strong>Golden path:</strong></p>
+<ol><li>Android 14 device, Health Connect installed.</li><li>Settings → Toggle Health Connect ON.</li><li><strong>Expected:</strong> OS permission screen. Grant permissions.</li><li>Add a medicine. Mark a dose taken.</li><li>Open Health Connect app → Medications (or the data type we wrote to). Verify the dose record exists with correct medicine name and timestamp.</li></ol>
+<p><strong>Edge case 1 — Health Connect not installed:</strong></p>
+<ol><li>Older Android device or fresh device without Health Connect.</li><li>Tap toggle.</li><li><strong>Expected:</strong> toast / message: <code>Health Connect is not available on this device.</code> Toggle does not flip. No crash.</li></ol>
+<p><strong>Edge case 2 — Permission denied:</strong></p>
+<ol><li>Tap toggle. On the OS prompt, deny.</li><li><strong>Expected:</strong> toggle stays off. Message shown.</li></ol>
+<p><strong>Edge case 3 — Health Connect write fails after permission granted:</strong></p>
+<ol><li>Force a write failure (e.g., revoke permission via Health Connect app while MediNest is foregrounded).</li><li>Mark a dose taken.</li><li><strong>Expected:</strong> local save succeeds, dose appears in MediNest history. Health Connect write logged as failure but does not crash.</li></ol>
+<p><strong>Edge case 4 — Premium vs free:</strong></p>
+<p>This feature is free in v1 (it's a trust signal, not a monetization point). Confirm both free and premium can use it.</p>
+<p><strong>Regression check:</strong></p>
+<p>Take a dose with toggle OFF. Local history still works. No background writes happen.</p>
+<h2>9. Rollout</h2>
+<ul><li>Internal track first.</li><li>After internal QA, full production.</li><li>Roll-back: revert toggle (the settings row), keep package + service code in place. Less destructive than removing the package.</li></ul>
+<h2>10. Definition of done</h2>
+<p>Per <code>../04-definition-of-done.md</code>. Specifically:</p>
+<ul><li>Real Health Connect write verified in HC app</li><li>Failure cases all handled gracefully</li><li>AndroidManifest changes documented in the <code>Implemented</code> block</li></ul>
+<h2>11. Out of scope</h2>
+<ul><li>Reading medication data from Health Connect (importing meds set up in another app)</li><li>Writing other data types (sleep, weight, etc.)</li><li>iOS / Apple Health equivalent (separate spec, F-future)</li><li>Dynamic permission revocation handling — beyond best-effort try/catch</li></ul>
+<h2>12. Open questions</h2>
+<ol><li>Exact data type to write — confirm Health Connect SDK supports "Medication" record. If not, fallback design is needed.</li><li>Wording around "Disable" — if it doesn't actually revoke OS permission, the copy must say "Stop syncing" rather than "Disable" to be honest.</li><li>Privacy policy update — if we write to Health Connect, our privacy policy must say so. Update in tandem with F05.</li></ol>
+<hr>
+<h2>Implemented — STATUS: BLOCKED on package + AndroidManifest approval</h2>
+<ul><li>Date of attempt: 2026-05-09</li><li>versionCode shipped: <strong>none</strong></li><li><strong>Why blocked:</strong> the spec explicitly calls these out as requiring Abdul's approval <em>before</em> implementation:</li></ul>
+<ol><li>Adding <code>health: ^11.x</code> (or current stable) to <code>pubspec.yaml</code></li><li>Modifying <code>android/app/src/main/AndroidManifest.xml</code> with Health Connect permissions + intent-filter</li></ol>
+<ul><li>The role doc explicitly forbids Claude from making these decisions silently.</li><li><strong>What I did NOT do (deliberately):</strong></li><li>Did not edit <code>pubspec.yaml</code> to add the package</li><li>Did not modify any file under <code>android/</code></li><li>Did not create the <code>HealthConnectService</code> shell — without the package, the file would not compile, polluting the codebase</li><li><strong>What I'm asking from you to unblock F09:</strong></li></ul>
+<ol><li>Decide: ship Health Connect support in v1 or defer to v2? (Realistic: this is a 1-week feature with regulatory implications. The store-listing benefit is real but small.)</li><li>If yes: confirm package version (<code>health: ^X.Y.Z</code>) — recommend using whatever's current at implementation time. Confirm the <code>medication</code> data type is supported in that version.</li><li>If yes: review the AndroidManifest changes I'll propose before they land.</li></ol>
+<ul><li><strong>Recommended next session:</strong> confirm decision, then I implement service + settings toggle + tap-handler wiring in one focused pass. Estimate: 1 day with the package and manifest sign-off in hand.</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>F09 · Google Health Connect Integration</code></div>
+</div>
+</body>
+</html>

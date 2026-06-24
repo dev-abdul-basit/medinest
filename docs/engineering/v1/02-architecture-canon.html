@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Architecture Canon (v1) — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../README.md">← back to docs index</a>
+  <span class="kicker">Engineering · v1</span>
+<h1>Architecture Canon (v1)</h1>
+<p>This is what the codebase <em>actually</em> does, audited from real files. Implementation in v1 conforms to this document. If something here is wrong, fix this file before changing the code.</p>
+<blockquote><p>When the doc and the code disagree, <strong>the code wins</strong> for v1. Update the doc, then keep going.</p>
+</blockquote>
+<hr>
+<h2>Folder layout (under <code>lib/</code>)</h2>
+<pre><code class="lang-">lib/
+├── main.dart                    ← app bootstrap, exposes flutterLocalNotificationsPlugin
+├── Widgets/                     ← reusable widget catalog. PascalCase folder, Dart files snake_case.
+├── connectivity_manager/        ← internet check helper (InternetConnectivity)
+├── database/
+│   ├── helper/
+│   │   ├── database_helper.dart      ← Sqflite singleton: DataBaseHelper.instance
+│   │   └── firestore_helper.dart     ← Firestore wrapper: FireStoreHelper()
+│   └── tables/&lt;entity&gt;_table.dart    ← model classes (one per entity)
+├── date_time_line/              ← infinite calendar widget (in-house)
+├── generated/                   ← codegen (assets.dart). Do not hand-edit.
+├── google_ads/
+│   ├── ad_helper.dart                ← AdMob unit IDs, gated by Debug.googleAd
+│   └── custom_ad.dart                ← BannerAdClass widget
+├── in_app_purchase/
+│   ├── iap_callback.dart
+│   ├── iap_receipt_data.dart
+│   └── in_app_purchase_helper.dart   ← InAppPurchaseHelper().buySubscription(...)
+├── localization/
+│   ├── locale_constant.dart
+│   ├── localizations_delegate.dart   ← AppLanguages extends Translations (GetX)
+│   └── languages/language_&lt;locale&gt;.dart  ← ~50 locales, each is final Map&lt;String, String&gt;
+├── notification/
+│   └── notification_helper.dart      ← NotificationHelper.instance
+├── routes/
+│   ├── app_routes.dart               ← string constants
+│   └── app_pages.dart                ← GetPage list
+├── services/
+│   └── google_auth_service.dart
+├── themes/
+│   ├── app_theme.dart
+│   ├── light_theme.dart
+│   └── dark_theme.dart
+├── ui/                          ← one folder per screen
+│   └── &lt;feature&gt;/
+│       ├── &lt;feature&gt;_binding.dart
+│       ├── &lt;feature&gt;_logic.dart  OR  &lt;feature&gt;_controller.dart
+│       └── &lt;feature&gt;_view.dart   OR  &lt;feature&gt;_screen.dart  OR  &lt;feature&gt;_screens.dart
+└── utils/
+    ├── constant.dart                 ← Constant class — kitchen sink
+    ├── preference.dart               ← Preference singleton over GetStorage
+    ├── debug.dart                    ← Debug.printLog, feature flags
+    ├── enums.dart, asset.dart, color.dart, font_style.dart, sizer_utils.dart
+    ├── ringtone_service.dart
+    └── utils.dart                    ← Utils.showToast, generic helpers</code></pre>
+<h3>Naming inconsistencies that are normal here</h3>
+<p>These exist in the codebase and are part of v1's accepted reality. <strong>Don't refactor.</strong></p>
+<ul><li>Some screens use <code>*_logic.dart</code>, others <code>*_controller.dart</code>. Both extend <code>GetxController</code>.</li><li>Some screens end in <code>_view.dart</code>, others <code>_screen.dart</code>, others <code>_screens.dart</code>.</li><li>Mixed: <code>MedicineScreenLogic</code>, <code>HomeController</code>, <code>ProVersionController</code>. All are bound the same way.</li><li>New features should pick one of the two patterns and stick with it inside that one feature folder.</li></ul>
+<hr>
+<h2>State management — GetX</h2>
+<h3>Controller pattern</h3>
+<pre><code class="lang-dart">class XxxLogic extends GetxController {
+  // public state — plain Dart fields, NOT Rx&lt;T&gt;
+  int selectedIndex = 0;
+  List&lt;MedicineTable?&gt; medicines = List&lt;MedicineTable?&gt;.empty(growable: true);
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadData();
+  }
+
+  Future&lt;void&gt; loadData() async {
+    medicines = await DataBaseHelper.instance.getMedicineData();
+    update([Constant.idMedicineList]);   // ← rebuild target, by id
+  }
+}</code></pre>
+<ul><li><strong>No <code>Rx&lt;T&gt;</code> / <code>Obx</code>.</strong> State is plain fields; rebuilds are fired with <code>update([...])</code>.</li><li>Update IDs are <code>Constant.idXxx</code> strings, declared in <code>lib/utils/constant.dart</code>.</li><li><code>Future.delayed</code>, <code>Get.forceAppUpdate()</code>, and <code>Debug.printLog</code> are common in real controllers — match their use.</li></ul>
+<h3>Binding pattern</h3>
+<pre><code class="lang-dart">import 'package:get/get.dart';
+import 'xxx_logic.dart';
+
+class XxxBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() =&gt; XxxLogic());
+  }
+}</code></pre>
+<p>Always <code>Get.lazyPut</code>, never <code>Get.put</code> (instantiation on first navigation, freed on <code>Get.off*</code>).</p>
+<h3>View pattern</h3>
+<pre><code class="lang-dart">class XxxScreen extends StatelessWidget {
+  const XxxScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder&lt;XxxLogic&gt;(
+      id: Constant.idXxx,
+      builder: (logic) =&gt; Scaffold( ... ),
+    );
+  }
+}</code></pre>
+<ul><li><code>StatelessWidget</code> is preferred. State lives in the logic class.</li><li><code>GetBuilder&lt;T&gt;(id: ..., builder: ...)</code> for partial rebuilds.</li><li>Multiple <code>GetBuilder</code>s can target different <code>Constant.idXxx</code> ids inside one screen.</li></ul>
+<h3>Routing</h3>
+<p>Add a route by editing <strong>two</strong> files:</p>
+<ol><li><code>lib/routes/app_routes.dart</code> — <code>static const String xxx = '/xxx';</code></li><li><code>lib/routes/app_pages.dart</code> — append to <code>AppPages.list</code>:</li></ol>
+<p>   ``<code>dart    GetPage(      name: AppRoutes.xxx,      page: () =&gt; const XxxScreen(),      binding: XxxBinding(),    ),    </code>``</p>
+<p>Navigate with <code>Get.toNamed(AppRoutes.xxx)</code>. Pass arguments via <code>Get.toNamed(... , arguments: { Constant.idIsEditProfile: true })</code> and read in <code>onInit</code> via <code>Get.arguments</code>.</p>
+<hr>
+<h2>Persistence</h2>
+<h3>SQLite — <code>DataBaseHelper</code></h3>
+<p>Singleton at <code>lib/database/helper/database_helper.dart</code> accessed via <code>DataBaseHelper.instance</code>.</p>
+<ul><li>Tables in <code>lib/database/tables/&lt;entity&gt;_table.dart</code>.</li><li>Each table file defines a model class with <code>toMap()</code>, <code>fromMap()</code>, <code>toJson()</code>, <code>toRawJson()</code>, <code>fromJson()</code>.</li><li>Core tables in v1: <code>medicine_table</code>, <code>medicine_history_table</code>, <code>family_member_table</code>, <code>notification_table</code>, <code>journal_table</code>, <code>journal_history_table</code>, <code>journal_notification_table</code>, <code>doctors_table</code>, <code>user_table</code>, <code>shape_table</code>.</li><li><strong>Schema changes require a database version bump.</strong> Find the current version in <code>database_helper.dart</code>. Any spec that touches the schema must explicitly call this out and include the migration plan.</li></ul>
+<h3>Firestore — <code>FireStoreHelper</code></h3>
+<p>Wrapper at <code>lib/database/helper/firestore_helper.dart</code>. Used as cloud sync, <em>not</em> as source of truth. SQLite is the source of truth.</p>
+<p>Pattern:</p>
+<pre><code class="lang-dart">if (await InternetConnectivity.isInternetConnect(Get.context!)) {
+  FireStoreHelper().addAndUpdateMedicine(id.toString(), data);
+}</code></pre>
+<p>Always wrap in the connectivity check. Never assume online.</p>
+<h3>Key/value — <code>Preference</code> (GetStorage wrapper)</h3>
+<p>Singleton at <code>lib/utils/preference.dart</code>. Access via <code>Preference.shared</code>.</p>
+<p>Adding a new pref:</p>
+<ol><li>Append a <code>static const String yourKey = "YOUR_KEY";</code> (UPPER_SNAKE_CASE values).</li><li>Add a typed getter + setter pair beneath the existing ones, following the existing style:</li></ol>
+<p>   ``<code>dart    Future&lt;void&gt; setYourFlag(bool value) =&gt;        _pref!.write(yourKey, value);    bool getYourFlag() =&gt; _pref!.read(yourKey) ?? false;    </code>``</p>
+<ol><li>Use via <code>Preference.shared.setYourFlag(true)</code> / <code>Preference.shared.getYourFlag()</code>.</li></ol>
+<p>Don't sprinkle raw <code>_pref!.read(...)</code> calls in feature code — always go through a typed accessor.</p>
+<hr>
+<h2>Notifications</h2>
+<p><code>lib/notification/notification_helper.dart</code> — <code>NotificationHelper.instance</code>.</p>
+<p>The plugin instance is <strong>global</strong>, exposed from <code>main.dart</code>:</p>
+<pre><code class="lang-dart">import 'package:medinest/main.dart';
+// ...
+await flutterLocalNotificationsPlugin.cancel(notificationId);</code></pre>
+<h3>Notification ID convention</h3>
+<pre><code class="lang-dart">final id = notification.nId! + Constant.notificationStartID;  // 1000 + nId</code></pre>
+<p>Always use <code>Constant.notificationStartID</code> (1000) as the offset. Direct integer IDs are fragile.</p>
+<h3>Scheduling</h3>
+<ul><li>Medicine reminders: <code>NotificationHelper.instance.scheduleMedicineNotification()</code></li><li>Appointment reminders: <code>NotificationHelper.instance.reScheduleAppointmentNotification()</code> (called from medicine schedule)</li><li>Both read from SQLite, cancel-all, then re-create. <strong>Never schedule directly without going through the helper.</strong></li><li>Android cap: 400 pending notifications. iOS cap: 45 (and 100 for appointments). Helper enforces these via <code>limit:</code> parameter — don't bypass.</li></ul>
+<h3>Timezone</h3>
+<p>Uses <code>package:timezone/timezone.dart</code> as <code>tz</code>. Convert <code>DateTime</code> → <code>tz.TZDateTime(tz.local, …)</code> before scheduling. Helper does this; if you schedule outside the helper (don't), you must too.</p>
+<hr>
+<h2>Localization</h2>
+<p>GetX-based. The translation map lives in <code>lib/localization/localizations_delegate.dart</code> (<code>AppLanguages extends Translations</code>), pulling per-locale maps from <code>lib/localization/languages/language_&lt;locale&gt;.dart</code>.</p>
+<h3>Adding a new string</h3>
+<ol><li>Decide the key. Format: <code>txtCamelCase</code>. Be specific and avoid clashes (<code>txtTaken</code> exists; use <code>txtMarkAsTaken</code> if you need a separate verb).</li><li>Add to <code>lib/localization/languages/language_en.dart</code>:</li></ol>
+<p>   ``<code>dart    'txtMyNewKey': "My new English string",    </code>``</p>
+<ol><li><strong>Add the same key to every other language file</strong> with at minimum a placeholder English fallback. v1 expects all locales to have all keys present. Leaving a key missing in <code>language_ar.dart</code> causes the Arabic UI to render the raw key. The translation pipeline (Fiverr/Upwork native-fluent reviewer) takes the English fallback and replaces it.</li></ol>
+<h3>Using the string</h3>
+<pre><code class="lang-dart">CommonText(text: 'txtMyNewKey'.tr)        // GetX extension
+Text('txtMyNewKey'.tr)
+Utils.showToast(Get.context!, 'txtMyNewKey'.tr)</code></pre>
+<p>Hardcoded English strings in UI are bugs in this codebase.</p>
+<hr>
+<h2>AdMob</h2>
+<p><code>lib/google_ads/ad_helper.dart</code> — only place where unit IDs live. Gated by <code>Debug.googleAd</code>.</p>
+<h3>Banner</h3>
+<p>Use <code>BannerAdClass()</code> from <code>lib/google_ads/custom_ad.dart</code> — already wraps logic for premium users (no ad if <code>Preference.shared.getIsPurchase()</code>).</p>
+<pre><code class="lang-dart">const Align(alignment: Alignment.bottomCenter, child: BannerAdClass())</code></pre>
+<p>Don't inline a fresh <code>AdWidget</code> anywhere.</p>
+<h3>Interstitial</h3>
+<p>Pattern lives in <code>lib/ui/home/home_controller.dart</code>. Counter-gated via <code>Preference.shared.getInterstitialAdCount()</code> and <code>Constant.interstitialCount</code> (= 5).</p>
+<p>Only the home controller currently fires interstitials. <strong>Don't add interstitial fires from other controllers without an explicit spec.</strong> Frequency caps are global, not per-controller.</p>
+<hr>
+<h2>In-app purchases</h2>
+<p><code>lib/in_app_purchase/in_app_purchase_helper.dart</code> — <code>InAppPurchaseHelper()</code>.</p>
+<ul><li>Product IDs: <code>Constant.productIdAndroid</code> / <code>Constant.productIdiOS</code> / <code>Constant.productIdiOSYearly</code></li><li>Premium check: <code>Preference.shared.getIsPurchase()</code> returns bool</li><li>Gate code with <code>if (!Preference.shared.getIsPurchase()) { ... }</code></li><li>Use the existing <code>CommonSubscriptionDialog</code> widget (<code>lib/Widgets/common_subscribe_dialog.dart</code>) for paywall presentations — don't roll your own modal.</li></ul>
+<p><strong>Do not modify <code>in_app_purchase_helper.dart</code> substantively without a spec that calls out the IAP change.</strong> Receipt validation logic in particular is touchy.</p>
+<hr>
+<h2>Theming</h2>
+<ul><li>Always: <code>Get.theme.colorScheme.&lt;role&gt;</code> — never raw <code>Color(0xFF...)</code> in feature code.</li><li>Available roles in current theme files (<code>lib/themes/light_theme.dart</code>, <code>dark_theme.dart</code>): <code>primary</code>, <code>onBackground</code>, <code>onPrimary</code>, <code>onTertiary</code>, <code>surfaceVariant</code>, <code>onSecondary</code>, <code>background</code>.</li><li>New colors require an addition in <strong>both</strong> <code>light_theme.dart</code> and <code>dark_theme.dart</code>. v1 does not allow color use that only exists in one theme.</li></ul>
+<h3>Sizing</h3>
+<p><code>lib/utils/sizer_utils.dart</code> exposes <code>AppSizes.height_2</code>, <code>AppSizes.fullWidth</code>, <code>AppFontSize.size_12</code>, etc. Use these. No magic numbers in widgets.</p>
+<h3>Fonts</h3>
+<p>Four families registered in <code>pubspec.yaml</code>: Poppins, NunitoSans, LexendDeca, Righteous. New strings should pick from these — don't bring in new fonts for v1.</p>
+<hr>
+<h2>Logging</h2>
+<pre><code class="lang-dart">import 'package:medinest/utils/debug.dart';
+Debug.printLog("a useful message: $variable");</code></pre>
+<ul><li>Never <code>print(...)</code>.</li><li><code>Debug.googleAd</code>, <code>Debug.printLog</code>, etc. — flags in <code>lib/utils/debug.dart</code> gate testability.</li></ul>
+<hr>
+<h2>Toasts &amp; dialogs</h2>
+<ul><li>Toast: <code>Utils.showToast(Get.context!, 'txtSomething'.tr);</code></li><li>Confirm dialog: see <code>CommonDeleteConfirmation</code> in <code>lib/Widgets/common_delete_conformation.dart</code></li><li>Subscribe paywall: <code>CommonSubscriptionDialog</code></li><li>Generic info: prefer adding a new common widget over inlining <code>showDialog</code>-spaghetti, but only if the same dialog will be reused 3+ places.</li></ul>
+<hr>
+<h2>Linter / formatter</h2>
+<ul><li><code>analysis_options.yaml</code> is lenient. We don't enforce strict-mode null safety beyond Flutter defaults.</li><li>Lints we follow without ceremony:</li><li><code>prefer_const_constructors</code> — yes</li><li>Trailing commas in collection literals — yes</li><li><code>dart format</code> is not enforced; match the surrounding file's style</li><li><code>flutter_lints: ^5.0.0</code> is on; warnings are tolerated, not errors.</li></ul>
+<hr>
+<h2>Logging-as-truth: things that already work</h2>
+<p>These are working patterns you can lean on:</p>
+<ul><li><code>Get.arguments</code> for passing data between screens</li><li><code>Get.back(result: ...)</code> for returning a value</li><li><code>Get.bottomSheet(...)</code> for the modals in <code>Widgets/common_*_dialog.dart</code></li><li>Connectivity check via <code>InternetConnectivity.isInternetConnect(Get.context!)</code></li><li>Image picker via <code>image_picker</code> package, wrapped in <code>Widgets/pick_form_dialog.dart</code></li><li><code>lottie</code> for the splash and error states (already wired)</li></ul>
+<hr>
+<h2>What does NOT exist (don't reach for it)</h2>
+<ul><li>No GraphQL, no REST API client beyond <code>dio</code> (which is barely used)</li><li>No analytics SDK in v1 (Firebase Analytics is <em>not</em> wired even though <code>firebase_core</code> is)</li><li>No DI container beyond GetX <code>Bindings</code></li><li>No code-gen build_runner step (assets.dart is committed; nothing else is generated)</li><li>No iOS-only code paths beyond what <code>Platform.isIOS</code> checks already handle</li></ul>
+<p>If a spec asks for any of these, the spec is wrong — flag it.</p>
+
+  <div class="footer">MediNest growth brain · generated from <code>Architecture Canon (v1)</code></div>
+</div>
+</body>
+</html>

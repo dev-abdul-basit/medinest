@@ -12,6 +12,7 @@ import 'package:medinest/database/tables/journal_table.dart';
 import 'package:medinest/database/tables/doctors_table.dart';
 import 'package:medinest/database/tables/family_member_table.dart';
 import 'package:medinest/generated/assets.dart';
+import 'package:medinest/in_app_purchase/in_app_purchase_helper.dart';
 import 'package:medinest/routes/app_routes.dart';
 import 'package:medinest/ui/appointment_screen/journal_screen_logic.dart';
 import 'package:medinest/utils/constant.dart';
@@ -61,15 +62,19 @@ class AppointmentHistoryScreenLogic extends GetxController {
       Get.toNamed(AppRoutes.addOrEditJournal)!.then(
           (value) => Get.find<JournalScreenLogic>().getAllFamilyMembers());
     } else {
+      Preference.shared
+          .setLastPaywallTs(DateTime.now().millisecondsSinceEpoch);
       showModalBottomSheet(
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           context: context,
           builder: (context) => CommonSubscriptionDialog(
-                title: 'txtSubscribeNow'.tr,
-                description:
-                    'You have reached the limit.\nPlease subscribe to the plan.\n(In the free version, you only have a limit of 10 medicines and appointments.)',
-                image: Assets.imagesImgSuscription,
+                title: 'txtPaywallTitleAppointments'.tr,
+                description: 'txtPaywallBodyAppointments'.tr,
+                buttonText: 'txtPaywallCtaUpgrade'.tr,
+                ctaSubtext: 'txtPaywallCtaSubtext'.tr,
+                priceLabel: InAppPurchaseHelper().monthlyPriceLabel,
+                image: Assets.images.imgSuscription.path,
                 imageWidth: AppSizes.height_35,
                 onTapDelete: () {
                   Get.back();
@@ -179,8 +184,8 @@ class AppointmentHistoryScreenLogic extends GetxController {
               title: 'txtDeleteHistory'.tr,
               description: 'txtMedicineHistoryDeleteDescription'.tr,
               image: Utils.isLightTheme()
-                  ? Assets.imagesImgDeleteHistory
-                  : Assets.imagesImgDeleteHistoryDark,
+                  ? Assets.images.imgDeleteHistory.path
+                  : Assets.images.imgDeleteHistoryDark.path,
               imageWidth: AppSizes.height_35,
               onTapDelete: deleteHistoryOfSelectedDate,
             ));

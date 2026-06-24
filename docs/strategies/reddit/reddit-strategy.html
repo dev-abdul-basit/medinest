@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reddit Strategy — MediNest — MediNest brain</title>
+<style>
+:root {
+  --bg: #fafbfc;
+  --panel: #ffffff;
+  --ink: #1a2332;
+  --muted: #5a6b80;
+  --line: #e3e8ef;
+  --accent: #1976d2;
+  --accent-soft: #e8f1fb;
+  --warn-bg: #fff8e1;
+  --warn-line: #ffe082;
+  --code-bg: #f3f5f8;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nav-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+.nav-back:hover { color: var(--accent); }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; letter-spacing: -.01em; }
+h2 { font-size: 22px; margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); letter-spacing: -.005em; }
+h3 { font-size: 17px; margin: 28px 0 8px; }
+h4 { font-size: 15px; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+p { margin: 12px 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+a:hover { border-bottom-color: var(--accent); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 4px 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+strong { color: #0c1626; }
+blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-line);
+  border-radius: 0 6px 6px 0;
+  color: #5a4a10;
+}
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child { margin-bottom: 0; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+pre code { background: transparent; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 20px;
+  font-size: 14.5px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { background: var(--accent-soft); color: #0c1626; font-weight: 700; font-size: 13px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) td { background: #fafbfc; }
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+@media print {
+  body { background: white; }
+  .wrap { max-width: none; padding: 0; }
+  .nav-back { display: none; }
+  blockquote { background: #f7f7f7; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="nav-back" href="../README.md">← back to docs index</a>
+  <span class="kicker">Reddit strategy</span>
+<h1>Reddit Strategy — MediNest</h1>
+<blockquote><p><strong>Read this entire file before posting anything on Reddit.</strong> Reddit punishes self-promotion harder than any other platform. Done right, it's the highest-CVR install channel for utilities like MediNest. Done wrong, your account is banned within 24 hours and the subreddit becomes hostile to MediNest forever — including from new accounts. There are no second chances.</p>
+</blockquote>
+<hr>
+<h2>How Reddit actually works (for a solo dev marketing an app)</h2>
+<p>Three rules that override everything else:</p>
+<ol><li><strong>The 90-9-1 rule, enforced by mods.</strong> Reddit moderators expect you to give 9× more than you take. If your post history shows mostly self-promotion, you get banned. Reddit's auto-moderator counts your last ~30 posts/comments per subreddit.</li><li><strong>Subreddit rules vary widely.</strong> r/Caregivers might tolerate a self-promo post once you have karma there. r/ChronicIllness will ban on first link. Read the rules of every sub before posting.</li><li><strong>Karma per subreddit, not total karma.</strong> Mods filter on subreddit-specific karma. Sitewide karma is largely useless for marketing.</li></ol>
+<p>If you remember nothing else: <strong>comment for 4–6 weeks before posting your link anywhere.</strong></p>
+<hr>
+<h2>Account setup</h2>
+<p>Use a real Reddit account, not a brand-new throwaway. Mods detect throwaways instantly.</p>
+<ul><li><strong>Username:</strong> something human, not <code>MediNestSupport</code> or <code>medinest_app</code>. Suggested: <code>abdul_dev</code> or <code>medinest_abdul</code>. Real-name-style works because Reddit treats developer-builder accounts more leniently.</li><li><strong>Bio:</strong> one line — <code>Solo dev. Building MediNest, a pill reminder app. Caregiver for elderly family.</code></li><li><strong>Profile post:</strong> a single self-introduction post on your profile (not in any sub). Makes you searchable as legit.</li><li><strong>Existing karma:</strong> if you have an old Reddit account with karma, use it. Pre-existing history is gold.</li></ul>
+<hr>
+<h2>The four phases</h2>
+<h3>Phase 1 — Listen (Week 1–2, no posting)</h3>
+<p>Don't post. Don't comment. Read.</p>
+<ul><li>Subscribe to the 15 subs in <code>reddit-subreddits.md</code></li><li>Read top posts from the last year in each</li><li>Note: which sub allows app-link comments? Which has dedicated <code>Self-Promotion Saturday</code> threads? Which has an automod that removes any post with a Play Store URL?</li><li>Save 30 posts to your saved list — these are the threads where MediNest <em>would have been a useful answer</em>. You will not reply to them retroactively, but they are your training data for what good replies look like.</li></ul>
+<h3>Phase 2 — Comment (Week 3–6)</h3>
+<p>Comment-only. No app links. No "I'm building an app." Just be useful.</p>
+<p>Goal: 50–100 comments per target subreddit, getting upvoted, before you post anything that mentions MediNest.</p>
+<p>Where to comment:</p>
+<ul><li>"I forgot to take my meds" type confessions in r/AskReddit / r/CasualConversation — answer with empathy and a real tip (NOT the app name)</li><li>Caregiver burnout threads in r/Caregivers, r/AgingParents — empathy first, practical second</li><li>Medication-routine questions in r/ChronicIllness, r/CrohnsDisease, r/MultipleSclerosis — never name the app</li><li>"Best pill reminder app?" threads — <strong>DO NOT ANSWER YET</strong>, even if you're tempted. These are bait threads where mods watch for self-promotion. Save them. We come back in Phase 3 or 4.</li></ul>
+<p>What good Reddit comments look like:</p>
+<blockquote><p><em>I dealt with this for years caring for my grandfather. The thing that actually moved the needle wasn't a smarter app — it was switching from a side-table pillbox to one chained to the bathroom mirror. The cue change mattered more than the technology change. Worth trying before any app.</em></p>
+</blockquote>
+<p>That comment helps the asker. Mentions no app. Earns you karma in the right sub. Establishes you as a credible voice.</p>
+<h3>Phase 3 — Soft mention (Week 7–10)</h3>
+<p>Once you have ≥100 karma in a target sub AND you've been active for 4+ weeks, you can start naming MediNest <strong>in direct response to "what app do you use?" threads</strong>. Not in your own posts. Not unprompted.</p>
+<p>Pattern:</p>
+<blockquote><p><em>I've tried Medisafe, MyTherapy, and MediNest. Honestly, all three are fine — pick the one that matches how your brain works. Medisafe has the most features, MyTherapy is the prettiest, MediNest (full disclosure: I built MediNest) is the lightest and supports family profiles without making you sign up. Try Medisafe first if you're new — it's the gold standard.</em></p>
+</blockquote>
+<p>Three things this comment does:</p>
+<ol><li>Lists competitors first. Signals honesty.</li><li>Includes the disclosure (<code>full disclosure: I built MediNest</code>). Required by Reddit etiquette and several sub rules.</li><li>Recommends Medisafe to new users. Counter-intuitive but works — moderators trust developers who don't act like everyone needs <em>their</em> app.</li></ol>
+<h3>Phase 4 — Own posts (Week 11+, sparingly)</h3>
+<p>Once you have karma + mod trust + a track record of useful comments, you can post your own. Two formats only:</p>
+<p><strong>Format 1 — Build update (in r/SideProject, r/AndroidApps, r/Flutter, r/IndieDev)</strong></p>
+<blockquote><p><em>MediNest hit [__]k installs this month. Here's what 90 days of ASO + Reddit comments did for a solo dev's pill reminder app.</em></p>
+<p>[Numbers, lessons, link in body]</p>
+</blockquote>
+<p>These subs explicitly allow self-promotion. They're not your user base — they're other developers — but the karma earned here legitimizes your account everywhere else.</p>
+<p><strong>Format 2 — Useful resource (in r/Caregivers and similar)</strong></p>
+<p>NOT a "check out my app" post. A genuinely useful long-form post that mentions MediNest as one tool among several.</p>
+<blockquote><p><em>I made a free 1-page printable medication schedule template after struggling to find one for my grandmother. (Link to PDF on a real site, not Play Store.) If you want a digital version, Medisafe and MediNest both do it well — I'm biased on MediNest because I built it.</em></p>
+</blockquote>
+<p>This is the gold standard of Reddit marketing. The post is genuinely useful even if you ignore the app entirely. The app mention is incidental and disclosed.</p>
+<hr>
+<h2>Subreddit rules cheat sheet (per sub, study before posting)</h2>
+<p>Specific subs to study, with quick read on tolerance:</p>
+<table><thead><tr><th>Sub</th><th>Self-promo tolerance</th><th>Karma threshold</th><th>Notes</th></tr></thead><tbody><tr><td>r/Caregivers</td><td>Low–Med</td><td>Build before mentioning</td><td>Empathetic community; comments should lead with empathy</td></tr><tr><td>r/AgingParents</td><td>Low</td><td>Comments only Phase 1–3</td><td>Strict — read sticky posts</td></tr><tr><td>r/ChronicIllness</td><td>Very low</td><td>Phase 4 only</td><td>Mods aggressive about app pitches</td></tr><tr><td>r/Crohns</td><td>Low</td><td>Comments build trust</td><td>Mention only when asked</td></tr><tr><td>r/MultipleSclerosis</td><td>Low</td><td>Same</td><td>Same</td></tr><tr><td>r/Type1Diabetes</td><td>Low</td><td>Same</td><td>Same</td></tr><tr><td>r/Polypharmacy</td><td>Niche / med-pro</td><td>Be a useful presence</td><td>Smaller, professional audience</td></tr><tr><td>r/SideProject</td><td>High</td><td>Allowed</td><td>Best place for build-in-public posts</td></tr><tr><td>r/Flutter</td><td>Medium</td><td>Allowed</td><td>Technical audience — share Flutter learnings</td></tr><tr><td>r/IndieDev</td><td>High</td><td>Allowed</td><td>Same as SideProject</td></tr><tr><td>r/Entrepreneur</td><td>Medium</td><td>Allowed but spammy</td><td>Lower-quality audience</td></tr><tr><td>r/AndroidApps</td><td>High</td><td>Allowed (post weekly)</td><td>App discovery sub</td></tr><tr><td>r/apps</td><td>High</td><td>Allowed</td><td>Same</td></tr><tr><td>r/CasualConversation</td><td>Medium</td><td>Comments only</td><td>Good for empathy practice</td></tr><tr><td>r/AskReddit</td><td>High volume</td><td>Comments</td><td>"What app do you use to..." gold</td></tr></tbody></table>
+<p>Full annotated list (and as we discover threads worth tracking): <code>reddit-subreddits.md</code>.</p>
+<hr>
+<h2>What gets you banned (do not do these)</h2>
+<ol><li>Cross-posting the same content to 5+ subs in one day</li><li>Posting a Play Store link in any health sub before Phase 4</li><li>Replying to "what app do you use?" threads with only your app name</li><li>Using your account exclusively to talk about MediNest (looks like a marketing account)</li><li>Editing in a Play Store link to a high-upvote comment after the fact</li><li>Asking friends/colleagues to upvote — vote manipulation = sitewide ban</li><li>Buying upvotes — sitewide ban + Reddit-blacklists the URL</li><li>Replying to mod removals with hostility — irrecoverable</li><li>Engaging in subreddit drama or political threads — unrelated, but kills the account's reputation</li><li>Re-posting a removed post under a slightly different title — bannable</li></ol>
+<hr>
+<h2>Cadence</h2>
+<table><thead><tr><th>Activity</th><th>Frequency</th><th>Time/day</th></tr></thead><tbody><tr><td>Comments in target subs</td><td>5–8 / day</td><td>30–45 min</td></tr><tr><td>Profile posts (any sub)</td><td>Phase 1–2: 0. Phase 3: 1/wk. Phase 4: 2/wk.</td><td>—</td></tr><tr><td>Mod-message: introducing yourself</td><td>1 sub / week</td><td>5 min</td></tr><tr><td>Saving "what's the best…" threads for later</td><td>ongoing</td><td>—</td></tr></tbody></table>
+<blockquote><p>Total Reddit time investment: 4 hours/week, mostly comments. This compounds slowly. Don't expect anything in weeks 1–4.</p>
+</blockquote>
+<hr>
+<h2>Mod outreach (legitimate, do this)</h2>
+<p>Modmail one sub per week starting Week 4:</p>
+<blockquote><p>*Hi mods,</p>
+<p>I'm a solo developer building MediNest, a free pill reminder app. I've been reading and commenting in r/[Subreddit] for a few weeks. Before I post anything related to my app, I wanted to ask:</p>
+<ol><li>Are app-recommendation comments OK if disclosed (e.g., when someone asks "what app do you use")?</li><li>Is there a self-promotion thread / weekly thread for app developers?</li><li>Anything you'd like me to know about how your community feels about app pitches?</li></ol>
+<p>Happy to follow whatever you suggest. No worries if the answer is "don't post here, just keep commenting" — that's perfectly fine.</p>
+<p>Thanks for moderating.*</p>
+</blockquote>
+<p>Mods almost always reply. Sometimes they greenlight a post that the rules look like they forbid. Always worth the 5 minutes.</p>
+<hr>
+<h2>What to measure</h2>
+<table><thead><tr><th>Metric</th><th>Where</th><th>Cadence</th></tr></thead><tbody><tr><td>Total karma in target subs</td><td>Reddit profile</td><td>Weekly</td></tr><tr><td>Mods who replied positively to outreach</td><td>Notes</td><td>As they happen</td></tr><tr><td>Post upvote ratios (if any)</td><td>Reddit</td><td>Per post</td></tr><tr><td>Installs attributable to Reddit</td><td>Play Console acquisition</td><td>Monthly</td></tr><tr><td>Comments-to-comment-replies ratio</td><td>Manual count</td><td>Monthly</td></tr></tbody></table>
+<p>Vanity metrics to ignore: total Reddit karma sitewide; subscribers to subs you post in.</p>
+<hr>
+<h2>Realistic 90-day outcome</h2>
+<p>Honest:</p>
+<ul><li>Phase 1–2 (Week 1–6): zero installs from Reddit. Pure investment.</li><li>Phase 3 (Week 7–10): 50–200 installs.</li><li>Phase 4 (Week 11+): if everything works — 300–1500 installs/month, with one post that occasionally goes mid-viral and adds another 1k.</li></ul>
+<p>That last "viral post" is a real pattern in pill-reminder space — happens once or twice a year per app. Can't be forced. The only way to be in position when it does is to have done the boring 12 weeks first.</p>
+<hr>
+<h2>See also</h2>
+<ul><li><code>reddit-subreddits.md</code> — annotated subreddit list</li><li><code>../x/x-strategy.md</code> and <code>../linkedin/linkedin-strategy.md</code> — parallel channels</li></ul>
+
+  <div class="footer">MediNest growth brain · generated from <code>Reddit Strategy — MediNest</code></div>
+</div>
+</body>
+</html>

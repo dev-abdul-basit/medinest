@@ -44,6 +44,13 @@ class Preference {
   // F18 — highest streak milestone already celebrated (so each fires once)
   static const String lastCelebratedMilestone = "LAST_CELEBRATED_MILESTONE";
 
+  // F19 — evening nudge scheduling guard (epoch ms of last schedule)
+  static const String lastEveningNudgeScheduledTs = "LAST_EVENING_NUDGE_TS";
+
+  // F20 — instrumentation
+  static const String openCount           = "OPEN_COUNT";
+  static const String engagementTapCount  = "ENGAGEMENT_TAP_COUNT";
+
   // F11 — caregiver mode
   static const String caregiverModeEnabled = "CAREGIVER_MODE_ENABLED";
 
@@ -261,6 +268,20 @@ class Preference {
   int getLastCelebratedMilestone() => _pref!.read(lastCelebratedMilestone) ?? 0;
   Future<void> setLastCelebratedMilestone(int value) =>
       _pref!.write(lastCelebratedMilestone, value);
+
+  /// F19 — evening nudge scheduling guard
+  int getLastEveningNudgeScheduledTs() =>
+      _pref!.read(lastEveningNudgeScheduledTs) ?? 0;
+  Future<void> setLastEveningNudgeScheduledTs(int value) =>
+      _pref!.write(lastEveningNudgeScheduledTs, value);
+
+  /// F20 — instrumentation
+  int getOpenCount() => _pref!.read(openCount) ?? 0;
+  Future<void> setOpenCount(int value) => _pref!.write(openCount, value);
+
+  int getEngagementTapCount() => _pref!.read(engagementTapCount) ?? 0;
+  Future<void> setEngagementTapCount(int value) =>
+      _pref!.write(engagementTapCount, value);
 
   /// F11 — caregiver mode
   bool getCaregiverMode() => _pref!.read(caregiverModeEnabled) ?? false;

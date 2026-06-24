@@ -80,21 +80,12 @@ class SettingScreenPage extends StatelessWidget {
                           menuItem(
                               icon: Assets.icons.icLanguages.path,
                               text: "txtChangeLanguages".tr,
+                              isLast: true,
                               onTap: () {
                                 logic.goToChangeLanguage();
                               }),
-                          SizedBox(height: AppSizes.height_6_5),
-                          // F11 — caregiver mode toggle (Stage 1)
-                          menuItem(
-                              icon: Assets.icons.icFamilyMember.path,
-                              text: 'txtCaregiverModeSettingTitle'.tr,
-                              isLast: true,
-                              isSwitch: true,
-                              switchValue: logic.caregiverMode,
-                              onTap: () {
-                                logic.onCaregiverModeChange(!logic.caregiverMode);
-                              },
-                              onChanged: logic.onCaregiverModeChange),
+                          // F11 — caregiver mode toggle hidden until it has
+                          // real functionality (no behaviour wired yet).
                           //TODO: 1:Uncomment to enable Dark/light theme
                           // SizedBox(
                           //   height: AppSizes.height_6_5,

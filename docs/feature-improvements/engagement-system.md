@@ -161,10 +161,16 @@ These are encoded as constants (not magic numbers) so a future data-driven chang
 - ✅ `F15-engagement-budget.md` — the §2 guardrail spec + `EngagementService` foundation (shipped, unwired, analyzer-clean).
 - ✅ `F16-winback-notifications.md` — D1/D2 offline win-back (shipped: `scheduleWinBackNotifications()` on the reschedule path + tap guards + 4 locale keys × 52 files).
 - ✅ `F17-permission-rescue.md` — A1 (shipped: rewrote the broken placeholder denial dialog into a real explain + `openAppSettings()` deep-link; 4 locale keys × 52 files).
-- ✅ `F18-streak-milestone-celebration.md` — C1 (shipped: `EngagementScheduler` — the first real consumer of `EngagementService.canFire`/`recordFired`; milestone notification gated by quiet hours + caps; 2 locale keys × 52 files).
-- Next: `F19` — evening scheduled nudges (adherence tip B1 + streak-at-risk C2) — `canFire` against a candidate fire time + reminder spacing.
+- ✅ `F18-streak-milestone-celebration.md` — C1 (shipped: `EngagementScheduler` — first real consumer of `canFire`/`recordFired`; gated by quiet hours + caps).
+- ✅ `F19-evening-nudges.md` — B1 + C2 (shipped: scheduled evening tip / streak-at-risk; first scheduled consumer of the budget; shares the 1/day cap with milestones).
+- ✅ `F20-instrumentation.md` — §6 (shipped: local `openCount` + engagement-tap counters via `InstrumentationService`; Firebase Analytics forwarding deferred pending package approval).
+- ✅ `F21-fcm-client-wiring.md` — §5 client half (shipped: background handler, token refresh, topic subscribe, foreground display — **inert until a backend sends a push**).
 - On request, draft the full local-notification copy set (all IDs × A/B variants) ready to drop into locale files.
 
+**The whole local engagement system (build-order #1–6) is now wired.** What remains is genuinely external:
+- **FCM backend sender** — a Cloud Function / campaign table to actually send pushes. Needs operator decisions (what backend, first campaign). Only pays off after the local system proves it moves D7.
+- **Firebase Analytics** — approve the package to get real D1/D7/D30 funnels instead of local counters.
+
 **You do:**
-- Review F15–F18 (all ship safely — F15 unwired, F16 fires only for absent users, F17 only improves a denial dialog, F18 fires at most once per milestone within budget).
-- Decide phase-1 stopping point: ship through build-order item 5 before any FCM investment (recommended: yes).
+- Review F15–F21 (all ship safely — local-only, additive; FCM client is inert without a sender).
+- Decide if/when to build the FCM backend sender + approve `firebase_analytics`.

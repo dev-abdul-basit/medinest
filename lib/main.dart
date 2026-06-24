@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,12 +25,14 @@ import 'package:medinest/in_app_purchase/in_app_purchase_helper.dart';
 import 'package:medinest/localization/locale_constant.dart';
 import 'package:medinest/localization/localizations_delegate.dart';
 import 'package:medinest/notification/notification_helper.dart';
+import 'package:medinest/services/fcm_service.dart';
 import 'package:medinest/routes/app_pages.dart';
 import 'package:medinest/routes/app_routes.dart';
 import 'package:medinest/services/google_auth_service.dart';
 import 'package:medinest/themes/app_theme.dart';
 import 'package:medinest/utils/color.dart';
 import 'package:medinest/utils/constant.dart';
+import 'package:medinest/utils/debug.dart';
 import 'package:medinest/utils/preference.dart';
 import 'package:medinest/utils/utils.dart';
 import 'package:sizer/sizer.dart';
@@ -268,11 +271,24 @@ Future<void> acceptAppointment({
   );
 }
 
+/// F21 — FCM background handler. Notification-type messages auto-display in the
+/// tray when the app is backgrounded; this runs for data-only messages. Kept
+/// minimal (no plugin work in this isolate).
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  Debug.printLog("FCM bg message: ${message.messageId}");
+}
+
 void main() async {
   // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // F21 — register FCM background handler + client wiring (token, topic,
+  // foreground display). Inert until a backend sends a push.
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await FcmService().initialize();
   // await GoogleAuthService().initialize(
   //   // scopes: ['email'],
   // );

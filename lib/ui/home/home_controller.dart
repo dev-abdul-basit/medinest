@@ -30,6 +30,7 @@ import 'package:medinest/notification/notification_helper.dart';
 import 'package:medinest/routes/app_routes.dart';
 import 'package:medinest/services/adherence_service.dart';
 import 'package:medinest/services/engagement_scheduler.dart';
+import 'package:medinest/services/instrumentation_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:medinest/services/today_plan_service.dart';
 import 'package:medinest/services/review_prompt_service.dart';
@@ -70,6 +71,8 @@ class HomeController extends GetxController
   @override
   Future<void> onInit() async {
     update([Constant.idHome]);
+    // F20 — record this app open for retention instrumentation.
+    InstrumentationService().recordAppOpen();
     /// F14 — three tabs: Reminders (0) · Journal (1) · Family (2).
     mainTabController =
         mainTabController ?? TabController(length: 3, vsync: this);
@@ -82,6 +85,7 @@ class HomeController extends GetxController
         // isn't a medicine JSON).
         !selectedNotificationPayload!.contains(Constant.winBackPayload) &&
         !selectedNotificationPayload!.contains(Constant.engagementPayload)) {
+      // (a win-back/engagement cold-launch tap is counted in onReady's stream)
       if (selectedNotificationPayload!
           .contains(DataBaseHelper().appointmentId)) {
         Get.toNamed(AppRoutes.fullScreenAppointmentNotification,
@@ -176,8 +180,10 @@ class HomeController extends GetxController
     todayPlan = TodayPlanService()
         .compute(medicines: meds, adherence: adherenceSummary!);
     update([Constant.idAdherenceCard]);
-    // F18 — celebrate a streak milestone if the engagement budget allows.
-    await EngagementScheduler().evaluate(summary: adherenceSummary!);
+    // F18/F19 — celebrate a streak milestone and/or schedule an evening nudge,
+    // both gated by the engagement budget.
+    await EngagementScheduler()
+        .evaluate(summary: adherenceSummary!, todayPlan: todayPlan!);
   }
 
   void hideAdherenceCard() {
@@ -299,6 +305,7 @@ class HomeController extends GetxController
       if (payload != null &&
           (payload.contains(Constant.winBackPayload) ||
               payload.contains(Constant.engagementPayload))) {
+        InstrumentationService().recordEngagementTap();
         return;
       }
       if (payload != null && payload.contains(DataBaseHelper().appointmentId)) {

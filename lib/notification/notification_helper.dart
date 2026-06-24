@@ -120,6 +120,67 @@ class NotificationHelper {
     );
   }
 
+  /// F19 — schedule an engagement notification for a specific future [fireAt]
+  /// (e.g. the evening adherence nudge). One-shot, calm channel.
+  Future<void> scheduleEngagementNotification({
+    required int id,
+    required DateTime fireAt,
+    required String title,
+    required String body,
+  }) async {
+    final tz.TZDateTime fireDate = tz.TZDateTime(
+      tz.local,
+      fireAt.year,
+      fireAt.month,
+      fireAt.day,
+      fireAt.hour,
+      fireAt.minute,
+    );
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      Constant.engagementNotificationChannelId,
+      Constant.engagementNotificationChannelName,
+      channelDescription: 'Gentle nudges from MediNest',
+      importance: Importance.defaultImportance,
+      priority: Priority.defaultPriority,
+      visibility: NotificationVisibility.public,
+    );
+    const DarwinNotificationDetails iosDetails =
+        DarwinNotificationDetails(presentSound: true);
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      fireDate,
+      const NotificationDetails(android: androidDetails, iOS: iosDetails),
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      payload: Constant.engagementPayload,
+    );
+  }
+
+  Future<void> cancelEngagementNotification(int id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
+  }
+
+  /// F19 — epoch-ms fire times of today's medicine reminders still ahead of
+  /// [now], for the engagement budget's reminder-spacing check.
+  Future<List<int>> todayRemainingReminderTimestamps(DateTime now) async {
+    final List<MedicineNotificationTable> upcoming =
+        await DataBaseHelper.instance.getNotificationData(
+            startForm: now.millisecondsSinceEpoch,
+            limit: Platform.isAndroid ? 400 : 45);
+    final List<int> result = [];
+    for (final n in upcoming) {
+      final ts = n.nNotificationTimeStamp;
+      if (ts == null) continue;
+      final dt = DateTime.fromMillisecondsSinceEpoch(ts);
+      if (dt.year == now.year && dt.month == now.month && dt.day == now.day) {
+        result.add(ts);
+      }
+    }
+    return result;
+  }
+
   Future<void> _scheduleWinBack({
     required int id,
     required int afterDays,

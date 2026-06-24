@@ -428,4 +428,9 @@ final Map<String, String> myMM = {
   'txtOpenSettings': "Open settings",
   'txtStreakMilestoneTitle': "You're on a streak! 🔥",
   'txtStreakMilestoneBody': "days on track. Keep it going!",
+  'txtRestore': "Restore",
+  'txtEveningTipTitle': "Don't forget today's dose",
+  'txtEveningTipBody': "left to take today. A quick tap keeps you on track.",
+  'txtAtRiskTitle': "Keep your streak alive",
+  'txtAtRiskBody': "day streak is on the line — take today's dose to keep it going.",
 };

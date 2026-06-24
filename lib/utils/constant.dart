@@ -51,6 +51,15 @@ class Constant {
   static const int milestoneNotificationId = 990003;
   static const String engagementPayload = "engagement";
 
+  /// F19 — evening adherence-tip / streak-at-risk nudge.
+  static const int eveningNudgeNotificationId = 990004;
+  static const int engagementEveningHour = 19;
+  static const int engagementEveningMinute = 30;
+
+  /// F21 — FCM push displayed in foreground.
+  static const int fcmNotificationId = 990005;
+  static const String fcmBroadcastTopic = "all";
+
   static const String idAppointmentTitle = 'idAppointmentTitle';
   static const idDosageSelect = 'idDosageSelect';
 

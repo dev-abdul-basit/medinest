@@ -29,7 +29,7 @@ class AddOrEditAppointmentPage extends StatelessWidget {
                     ? 'txtUpdateJournal'.tr
                     : 'txtCreateJournal'.tr,
               ),
-              body: SingleChildScrollView(
+              body: SafeArea(top: false, child: SingleChildScrollView(
                 child: Form(
                   key: logic.formKey,
                   child: Padding(
@@ -96,6 +96,7 @@ class AddOrEditAppointmentPage extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
               ),
             );
           },

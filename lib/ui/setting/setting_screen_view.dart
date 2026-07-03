@@ -22,7 +22,7 @@ class SettingScreenPage extends StatelessWidget {
           return Scaffold(
               backgroundColor: Get.theme.colorScheme.onBackground,
               appBar: CommonAppBar(title: 'txtSettings'.tr),
-              body: SingleChildScrollView(
+              body: SafeArea(top: false, child: SingleChildScrollView(
                 padding:
                     const EdgeInsets.symmetric(vertical: 35, horizontal: 25),
                 child: Column(
@@ -230,7 +230,7 @@ class SettingScreenPage extends StatelessWidget {
                     )
                   ],
                 ),
-              ));
+              )));
         });
   }
 

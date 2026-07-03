@@ -24,7 +24,7 @@ class AddOrEditProfileScreenPage extends StatelessWidget {
         Scaffold(
           backgroundColor: Get.theme.colorScheme.background,
           appBar: CommonAppBar(title: 'txtProfile'.tr),
-          body: SingleChildScrollView(
+          body: SafeArea(top: false, child: SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(height: AppSizes.height_5),
@@ -201,6 +201,7 @@ class AddOrEditProfileScreenPage extends StatelessWidget {
                 ),
               ],
             ),
+          ),
           ),
         ),
         GetBuilder<AddOrEditProfileScreenLogic>(

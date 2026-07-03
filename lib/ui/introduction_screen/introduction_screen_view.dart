@@ -17,7 +17,7 @@ class IntroductionScreenPage extends StatelessWidget {
 
     return Scaffold(
         backgroundColor: Get.theme.colorScheme.onBackground,
-        body: GetBuilder<IntroductionScreenLogic>(
+        body: SafeArea(top: false, child: GetBuilder<IntroductionScreenLogic>(
             id: Constant.idPageView,
             builder: (logic) {
               return Stack(
@@ -80,7 +80,7 @@ class IntroductionScreenPage extends StatelessWidget {
                   )
                 ],
               );
-            }));
+            })));
   }
 
   final pagesImages = List.generate(3, (index) {

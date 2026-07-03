@@ -29,7 +29,7 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
         Scaffold(
             backgroundColor: Get.theme.colorScheme.background,
             appBar: CommonAppBar(title: 'txtAddFamilyMember'.tr),
-            body: SingleChildScrollView(
+            body: SafeArea(top: false, child: SingleChildScrollView(
               child: Column(
                 children: [
                   SizedBox(
@@ -297,7 +297,7 @@ class AddOrEditFamilyMemberScreenPage extends StatelessWidget {
                   ),
                 ],
               ),
-            )),
+            ))),
         GetBuilder<AddOrEditFamilyMemberScreenLogic>(
           id: Constant.idProVersionProgress,
           builder: (logic) {

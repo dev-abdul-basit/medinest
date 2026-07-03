@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +28,29 @@ class NotificationHelper {
 
   NotificationHelper.internal();
 
+  /// Pick the strongest Android schedule mode the OS will actually allow.
+  ///
+  /// On Android 13+ exact alarms need permission (USE_EXACT_ALARM auto-grants it
+  /// for reminder apps; otherwise the user must enable "Alarms & reminders").
+  /// If exact isn't available we fall back to inexact so reminders still fire —
+  /// a few minutes late beats never. iOS/other platforms ignore this.
+  Future<AndroidScheduleMode> resolveAndroidScheduleMode() async {
+    if (!Platform.isAndroid) return AndroidScheduleMode.exactAllowWhileIdle;
+    try {
+      final android = flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+      final bool canExact =
+          await android?.canScheduleExactNotifications() ?? false;
+      return canExact
+          ? AndroidScheduleMode.alarmClock
+          : AndroidScheduleMode.inexactAllowWhileIdle;
+    } catch (e) {
+      Debug.printLog('resolveAndroidScheduleMode failed, using inexact', e);
+      return AndroidScheduleMode.inexactAllowWhileIdle;
+    }
+  }
+
   scheduleMedicineNotification() async {
     await flutterLocalNotificationsPlugin.cancelAll();
     List<MedicineNotificationTable> tempNotificationDataListTemp =
@@ -39,6 +63,8 @@ class NotificationHelper {
         await DataBaseHelper.instance.getNotificationData(
             startForm: DateTime.now().millisecondsSinceEpoch,
             limit: Platform.isAndroid ? 400 : 45);
+    // Resolve the schedule mode once for the whole batch (one platform call).
+    final AndroidScheduleMode scheduleMode = await resolveAndroidScheduleMode();
     for (var tempNotificationData in tempNotificationDataList) {
       String notificationPayload = tempNotificationData.toRawJson();
       Debug.printLog('notificationPayload: $notificationPayload');
@@ -52,11 +78,19 @@ class NotificationHelper {
         notificationTime.hour,
         notificationTime.minute,
       );
-      await scheduleNotification(
-          result: tempNotificationData.nId!+Constant.notificationStartID,
-          currentNotificationDateTime: currentNotificationDateTime,
-          notificationTable: tempNotificationData,
-          notificationPayload: notificationPayload);
+      // Per-item guard: one bad reminder must never abort the whole batch.
+      try {
+        await scheduleNotification(
+            result: tempNotificationData.nId! + Constant.notificationStartID,
+            currentNotificationDateTime: currentNotificationDateTime,
+            notificationTable: tempNotificationData,
+            notificationPayload: notificationPayload,
+            scheduleMode: scheduleMode);
+      } catch (e) {
+        Debug.printLog(
+            'scheduleNotification failed for nId ${tempNotificationData.nId}',
+            e);
+      }
     }
     await reScheduleAppointmentNotification();
     await scheduleWinBackNotifications();
@@ -532,6 +566,7 @@ class NotificationHelper {
     MedicineTable? medicineTable,
     MedicineNotificationTable? notificationTable,
     required String notificationPayload,
+    AndroidScheduleMode? scheduleMode,
   }) async {
     final Int64List vibrationPattern = Int64List(4);
     vibrationPattern[0] = 0;
@@ -621,17 +656,36 @@ class NotificationHelper {
         notificationTable?.nUnits ?? ''} of ${medicineTable?.mName ??
         notificationTable?.nName ?? ''}';
 
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      result,
-      title,
-      description,
-      currentNotificationDateTime,
-      NotificationDetails(
-          android: androidNotificationDetails, iOS: iosNotificationDetails),
-      androidScheduleMode: AndroidScheduleMode.alarmClock,
-      payload: notificationPayload,
-      matchDateTimeComponents: DateTimeComponents.dateAndTime,
-    );
+    final AndroidScheduleMode mode =
+        scheduleMode ?? await resolveAndroidScheduleMode();
+    try {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        result,
+        title,
+        description,
+        currentNotificationDateTime,
+        NotificationDetails(
+            android: androidNotificationDetails, iOS: iosNotificationDetails),
+        androidScheduleMode: mode,
+        payload: notificationPayload,
+        matchDateTimeComponents: DateTimeComponents.dateAndTime,
+      );
+    } on PlatformException catch (e) {
+      // Exact alarms can still be refused at call time (e.g. user revoked the
+      // permission after launch). Retry inexact so the reminder isn't lost.
+      Debug.printLog('zonedSchedule exact refused, retrying inexact', e);
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        result,
+        title,
+        description,
+        currentNotificationDateTime,
+        NotificationDetails(
+            android: androidNotificationDetails, iOS: iosNotificationDetails),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        payload: notificationPayload,
+        matchDateTimeComponents: DateTimeComponents.dateAndTime,
+      );
+    }
   }
   //   await flutterLocalNotificationsPlugin.zonedSchedule(
   //     result,

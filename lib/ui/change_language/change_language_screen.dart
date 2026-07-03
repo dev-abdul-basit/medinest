@@ -29,7 +29,7 @@ class ChangeLanguageScreen extends StatelessWidget {
           _changeLanguageController.onLanguageSave();
         },
       ),
-      body: GetBuilder<ChangeLanguageController>(
+      body: SafeArea(top: false, child: GetBuilder<ChangeLanguageController>(
         id: Constant.idChangeLanguage,
         builder: (logic) {
           return Column(
@@ -98,6 +98,7 @@ class ChangeLanguageScreen extends StatelessWidget {
             ],
           );
         },
+      ),
       ),
     );
   }

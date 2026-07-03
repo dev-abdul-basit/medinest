@@ -32,7 +32,7 @@ class FullScreenAppointmentNotificationPage extends StatelessWidget {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.90),
-          body: GetBuilder<FullScreenAppointmentNotificationLogic>(
+          body: SafeArea(child: GetBuilder<FullScreenAppointmentNotificationLogic>(
               id: Constant.notificationAlert,
               builder: (logic) {
                 TimeOfDay time = NotificationHelper().parseTimeList(logic.appointmentNotificationTable!.appointmentTime!).first;
@@ -202,7 +202,7 @@ class FullScreenAppointmentNotificationPage extends StatelessWidget {
                     ],
                   ),
                 );
-              }),
+              })),
         ),
       ),
     );

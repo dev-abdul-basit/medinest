@@ -20,7 +20,7 @@ class FirstMedicineScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Get.theme.colorScheme.onBackground,
-      body: SingleChildScrollView(
+      body: SafeArea(top: false, child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -73,6 +73,7 @@ class FirstMedicineScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

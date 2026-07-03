@@ -3,7 +3,11 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-    <!--    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />-->
+    <!-- USE_EXACT_ALARM (API 33+) is auto-granted for alarm/reminder apps so
+         medication reminders fire on time without the user hand-enabling
+         "Alarms & reminders". SCHEDULE_EXACT_ALARM covers API 31–32.
+         NOTE: USE_EXACT_ALARM requires a Play Console declaration at submission. -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />

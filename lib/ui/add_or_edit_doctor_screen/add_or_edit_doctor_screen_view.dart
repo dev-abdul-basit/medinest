@@ -27,7 +27,7 @@ class AddOrEditDoctorScreenPage extends StatelessWidget {
         Scaffold(
             backgroundColor: Get.theme.colorScheme.background,
             appBar: CommonAppBar(title: 'txtAddDoctor'.tr),
-            body: SingleChildScrollView(
+            body: SafeArea(top: false, child: SingleChildScrollView(
               child: Column(
                 children: [
 
@@ -206,7 +206,7 @@ class AddOrEditDoctorScreenPage extends StatelessWidget {
                   ),
                 ],
               ),
-            )),
+            ))),
         GetBuilder<AddOrEditDoctorScreenLogic>(
           id: Constant.idProVersionProgress,
           builder: (logic) {

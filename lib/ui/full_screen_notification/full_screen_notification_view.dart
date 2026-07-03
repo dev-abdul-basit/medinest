@@ -36,7 +36,7 @@ class FullScreenNotificationPage extends StatelessWidget {
           resizeToAvoidBottomInset: false,
           backgroundColor:
               Get.theme.colorScheme.onSurfaceVariant.withOpacity(0.90),
-          body: GetBuilder<FullScreenNotificationLogic>(
+          body: SafeArea(child: GetBuilder<FullScreenNotificationLogic>(
               id: Constant.notificationAlert,
               builder: (logic) {
                 DateTime time =
@@ -260,7 +260,7 @@ class FullScreenNotificationPage extends StatelessWidget {
                     ],
                   ),
                 );
-              }),
+              })),
         ),
       ),
     );

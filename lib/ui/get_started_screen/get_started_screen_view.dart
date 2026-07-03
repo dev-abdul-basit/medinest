@@ -23,7 +23,7 @@ class GetStartedScreenPage extends StatelessWidget {
       children: [
         Scaffold(
           backgroundColor: Get.theme.colorScheme.onBackground,
-          body: SingleChildScrollView(
+          body: SafeArea(top: false, child: SingleChildScrollView(
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -146,6 +146,7 @@ class GetStartedScreenPage extends StatelessWidget {
                 ],
               ),
             ),
+          ),
           ),
         ),
         GetBuilder<GetStartedScreenLogic>(
